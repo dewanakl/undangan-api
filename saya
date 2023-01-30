@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * Import semua class yang digunakan dalam framework ini.
+ * Tenang, ini telah otomatis oleh composer.
+ * 
+ * Sekarang, tinggal menjalankan aplikasi ini. 
+ */
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+/**
+ * Okey, sekarang memanggil fungsi console secara static.
+ * Setelah ini, hanya perlu menjalankannya.
+ * 
+ * Ini sangat mudah.
+ */
+
+exit(Core\Facades\Kernel::console()->run());

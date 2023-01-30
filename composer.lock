@@ -1,0 +1,135 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "e8016ece328bc0f67f6658aad351bb17",
+    "packages": [
+        {
+            "name": "firebase/php-jwt",
+            "version": "v6.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/firebase/php-jwt.git",
+                "reference": "ea7dda77098b96e666c5ef382452f94841e439cd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/ea7dda77098b96e666c5ef382452f94841e439cd",
+                "reference": "ea7dda77098b96e666c5ef382452f94841e439cd",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1||^8.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^6.5||^7.4",
+                "phpspec/prophecy-phpunit": "^1.1",
+                "phpunit/phpunit": "^7.5||^9.5",
+                "psr/cache": "^1.0||^2.0",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0"
+            },
+            "suggest": {
+                "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Firebase\\JWT\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Neuman Vong",
+                    "email": "neuman+pear@twilio.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anant Narayanan",
+                    "email": "anant@php.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
+            "homepage": "https://github.com/firebase/php-jwt",
+            "keywords": [
+                "jwt",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/firebase/php-jwt/issues",
+                "source": "https://github.com/firebase/php-jwt/tree/v6.3.2"
+            },
+            "time": "2022-12-19T17:10:46+00:00"
+        },
+        {
+            "name": "kamu/framework",
+            "version": "v1.1.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dewanakl/framework.git",
+                "reference": "8d49966a41b67d5099450980132033cddeeb48c8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dewanakl/framework/zipball/8d49966a41b67d5099450980132033cddeeb48c8",
+                "reference": "8d49966a41b67d5099450980132033cddeeb48c8",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/helpers/helpers.php"
+                ],
+                "psr-4": {
+                    "Core\\": "src/Core/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dewana Kretarta Lokeswara",
+                    "email": "dewanakretarta29@gmail.com"
+                }
+            ],
+            "description": "The Kamu Framework.",
+            "homepage": "https://github.com/dewanakl/framework",
+            "keywords": [
+                "framework",
+                "kamu"
+            ],
+            "support": {
+                "issues": "https://github.com/dewanakl/framework/issues",
+                "source": "https://github.com/dewanakl/framework"
+            },
+            "time": "2023-01-30T18:05:31+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": true,
+    "prefer-lowest": false,
+    "platform": {
+        "php": "^8.1"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
+}

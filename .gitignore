@@ -1,0 +1,8 @@
+/node_modules
+/shared/*.key
+/vendor
+.env
+npm-debug.log
+yarn-error.log
+/.idea
+/.vscode

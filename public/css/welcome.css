@@ -1,0 +1,32 @@
+body {
+    font-family: 'Lato', sans-serif;
+    color: #555;
+    margin: 0;
+}
+
+#main {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fof {
+    text-align: center;
+}
+
+.fof h1 {
+    font-size: 2.5rem;
+    display: inline;
+}
+
+.fof p {
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+    display: inline;
+}
+
+#information {
+    display: block;
+    margin-top: 1rem;
+}

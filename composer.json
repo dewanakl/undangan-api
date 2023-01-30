@@ -1,0 +1,35 @@
+{
+    "name": "kamu/kamu",
+    "type": "project",
+    "description": "The Kamu Framework.",
+    "keywords": [
+        "framework",
+        "kamu"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^8.1",
+        "firebase/php-jwt": "^6.3",
+        "kamu/framework": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php saya key"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

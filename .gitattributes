@@ -1,0 +1,8 @@
+* text=auto
+
+*.php diff=php
+*.html diff=html
+*.css diff=css
+*.md diff=markdown
+
+/.github export-ignore
