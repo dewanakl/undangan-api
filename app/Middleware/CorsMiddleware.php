@@ -24,7 +24,6 @@ final class CorsMiddleware implements MiddlewareInterface
 
         if (https()) {
             header('Referrer-Policy: strict-origin-when-cross-origin');
-            header('Permissions-Policy: geolocation=()');
             header('Content-Security-Policy: upgrade-insecure-requests');
         }
 
