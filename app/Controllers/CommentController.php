@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Comment;
+use Carbon\Carbon;
 use Core\Routing\Controller;
 use Core\Http\Request;
 use Core\Valid\Validator;
@@ -11,9 +12,16 @@ class CommentController extends Controller
 {
     public function index()
     {
+        $data = Comment::orderBy('id', 'DESC')->get();
+
+        foreach ($data as $key => $val) {
+            $date = Carbon::parse($val->created_at)->locale('id');
+            $data->{$key}->created_at = $date->diffForHumans();
+        }
+
         return json([
             'code' => 200,
-            'data' => Comment::get(),
+            'data' => $data,
             'error' => null
         ]);
     }
