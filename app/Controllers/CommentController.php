@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Core\Routing\Controller;
 use Core\Http\Request;
 use Core\Valid\Validator;
+use Ramsey\Uuid\Uuid;
 
 class CommentController extends Controller
 {
@@ -26,9 +27,9 @@ class CommentController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(string $id)
     {
-        $data = Comment::find($id)->fail(fn () => false);
+        $data = Comment::find($id, 'uuid')->fail(fn () => false);
 
         if ($data === false) {
             return json([
@@ -38,7 +39,7 @@ class CommentController extends Controller
             ], 404);
         }
 
-        $status = Comment::destroy($id);
+        $status = Comment::id($id, 'uuid')->delete();
 
         return json([
             'code' => 200,
@@ -66,6 +67,7 @@ class CommentController extends Controller
         }
 
         $data = $valid->get();
+        $data['uuid'] = Uuid::uuid4()->toString();
         $data['user_id'] = context()->user->id;
 
         $result = Comment::create($data);
