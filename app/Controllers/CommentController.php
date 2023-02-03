@@ -13,7 +13,7 @@ class CommentController extends Controller
 {
     public function index()
     {
-        $data = Comment::orderBy('id', 'DESC')->get()->except(['id', 'user_id', 'updated_at']);
+        $data = Comment::select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])->orderBy('id', 'DESC')->get();
 
         foreach ($data as $key => $val) {
             $date = Carbon::parse($val->created_at)->locale('id');
