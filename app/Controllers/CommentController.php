@@ -16,8 +16,9 @@ class CommentController extends Controller
         $data = Comment::select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])->orderBy('id', 'DESC')->get();
 
         foreach ($data as $key => $val) {
-            $date = Carbon::parse($val->created_at)->locale('id');
-            $data->{$key}->created_at = $date->diffForHumans();
+            $data->{$key}->created_at = Carbon::parse($val->created_at)->locale('id')->diffForHumans();
+            $data->{$key}->nama = e($val->nama);
+            $data->{$key}->komentar = e($val->komentar);
         }
 
         return json([
