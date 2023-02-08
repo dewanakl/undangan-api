@@ -126,16 +126,16 @@
         },
         {
             "name": "kamu/framework",
-            "version": "v1.1.14",
+            "version": "v1.1.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/framework.git",
-                "reference": "8b02f01263f8516ecab4811719adf2912e668cec"
+                "reference": "d7f5ae8de12e76fb4c958a942f1feb56caa028a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/framework/zipball/8b02f01263f8516ecab4811719adf2912e668cec",
-                "reference": "8b02f01263f8516ecab4811719adf2912e668cec",
+                "url": "https://api.github.com/repos/dewanakl/framework/zipball/d7f5ae8de12e76fb4c958a942f1feb56caa028a6",
+                "reference": "d7f5ae8de12e76fb4c958a942f1feb56caa028a6",
                 "shasum": ""
             },
             "require": {
@@ -174,7 +174,7 @@
                 "issues": "https://github.com/dewanakl/framework/issues",
                 "source": "https://github.com/dewanakl/framework"
             },
-            "time": "2023-02-08T16:19:12+00:00"
+            "time": "2023-02-08T17:04:29+00:00"
         },
         {
             "name": "nesbot/carbon",
