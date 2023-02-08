@@ -18,11 +18,12 @@ final class OptionsMethodMiddleware implements MiddlewareInterface
         header('Access-Control-Max-Age: 86400');
         header('Vary: origin');
 
-        if ($request->method() !== 'OPTIONS') {
-            return $next($request);
+        if ($request->method() == 'OPTIONS') {
+            http_response_code(204);
+            header('HTTP/1.1 204 No Content', true, 204);
+            exit(0);
         }
 
-        http_response_code(204);
-        header('HTTP/1.1 204 No Content', true, 204);
+        return $next($request);
     }
 }
