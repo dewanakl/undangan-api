@@ -52,6 +52,7 @@ final class Kernel
     public function middlewares(): array
     {
         return [
+            \App\Middleware\OptionsMethodMiddleware::class,
             \App\Middleware\CorsMiddleware::class,
             //\App\Middleware\CsrfMiddleware::class
         ];
