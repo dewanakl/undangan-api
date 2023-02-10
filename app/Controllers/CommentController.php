@@ -24,7 +24,7 @@ class CommentController extends Controller
         return json([
             'code' => 200,
             'data' => $data,
-            'error' => null
+            'error' => []
         ]);
     }
 
@@ -36,7 +36,7 @@ class CommentController extends Controller
             return json([
                 'code' => 404,
                 'data' => [],
-                'error' => 'not found'
+                'error' => ['not found']
             ], 404);
         }
 
@@ -47,7 +47,7 @@ class CommentController extends Controller
             'data' => [
                 'status' => $status
             ],
-            'error' => null
+            'error' => []
         ]);
     }
 
@@ -71,7 +71,7 @@ class CommentController extends Controller
             return json([
                 'code' => 400,
                 'data' => [],
-                'error' => $valid->failed()
+                'error' => $valid->messages()
             ], 400);
         }
 
@@ -84,7 +84,7 @@ class CommentController extends Controller
         return json([
             'code' => 201,
             'data' => $result,
-            'error' => null
+            'error' => []
         ], 201);
     }
 }

@@ -15,7 +15,7 @@ class AuthController extends Controller
             return json([
                 'code' => 401,
                 'data' => [],
-                'error' => 'unauthorized'
+                'error' => ['unauthorized']
             ], 401);
         }
 
@@ -27,7 +27,7 @@ class AuthController extends Controller
                 'token' => $token,
                 'user' => Auth::user()
             ],
-            'error' => null
+            'error' => []
         ]);
     }
 }

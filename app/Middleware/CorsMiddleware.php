@@ -10,16 +10,19 @@ final class CorsMiddleware implements MiddlewareInterface
 {
     public function handle(Request $request, Closure $next)
     {
-        header('X-Content-Type-Options: nosniff');
-        header('X-XSS-Protection: 1; mode=block');
-        header('X-Frame-Options: SAMEORIGIN');
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Credentials: true');
+        header('Access-Control-Allow-Methods: *');
+        header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization');
 
-        if (https()) {
-            header('Referrer-Policy: strict-origin-when-cross-origin');
-            header('Permissions-Policy: geolocation=()');
-            header('Content-Security-Policy: upgrade-insecure-requests');
+        header('Access-Control-Max-Age: 86400');
+        header('Vary: origin');
+
+        if ($request->method() != 'OPTIONS') {
+            return $next($request);
         }
 
-        return $next($request);
+        http_response_code(204);
+        header('HTTP/1.1 204 No Content', true, 204);
     }
 }

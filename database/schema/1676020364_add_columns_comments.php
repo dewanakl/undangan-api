@@ -30,7 +30,8 @@ return new class implements Migration
     public function down()
     {
         Schema::table('comments', function (Table $table) {
-            // $table->dropColumn('Columns Name');
+            $table->dropColumn('ip');
+            $table->dropColumn('user_agent');
         });
     }
 };

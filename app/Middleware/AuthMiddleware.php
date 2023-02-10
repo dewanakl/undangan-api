@@ -20,8 +20,8 @@ final class AuthMiddleware implements MiddlewareInterface
             return json([
                 'code' => 400,
                 'data' => [],
-                'error' => $e->getMessage()
-            ]);
+                'error' => [$e->getMessage()]
+            ], 400);
         }
 
         return $next($request);
