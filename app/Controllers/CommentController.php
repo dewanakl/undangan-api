@@ -11,9 +11,9 @@ use Ramsey\Uuid\Uuid;
 
 class CommentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = Comment::select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])->orderBy('id', 'DESC')->get();
+        $data = Comment::select($request->id === env('JWT_KEY') ? ['*'] : ['uuid', 'nama', 'hadir', 'komentar', 'created_at'])->orderBy('id', 'DESC')->get();
 
         foreach ($data as $key => $val) {
             $data->{$key}->created_at = Carbon::parse($val->created_at)->locale('id')->diffForHumans();
@@ -53,10 +53,18 @@ class CommentController extends Controller
 
     public function create(Request $request)
     {
-        $valid = Validator::make($request->only(['nama', 'hadir', 'komentar']), [
+        $valid = Validator::make(array_merge(
+            $request->only(['nama', 'hadir', 'komentar']),
+            [
+                'ip' => $request->ip(),
+                'user_agent' => $request->server('HTTP_USER_AGENT')
+            ]
+        ), [
             'nama' => ['required', 'str', 'max:50'],
             'hadir' => ['bool'],
-            'komentar' => ['required', 'str']
+            'komentar' => ['required', 'str'],
+            'user_agent' => ['str', 'trim'],
+            'ip' => ['str', 'trim', 'max:50']
         ]);
 
         if ($valid->fails()) {
@@ -71,7 +79,7 @@ class CommentController extends Controller
         $data['uuid'] = Uuid::uuid4()->toString();
         $data['user_id'] = context()->user->id;
 
-        $result = Comment::create($data)->except(['id', 'user_id', 'updated_at']);
+        $result = Comment::create($data)->except(['id', 'user_id', 'user_agent', 'ip', 'updated_at']);
 
         return json([
             'code' => 201,
