@@ -19,7 +19,17 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $token = JWT::encode(Auth::user()->only(['id', 'nama'])->toArray(), env('JWT_KEY'), 'HS256');
+        $token = JWT::encode(
+            array_merge(
+                [
+                    'iat' => time(),
+                    'exp' => time() + (60 * 30)
+                ],
+                Auth::user()->only(['nama'])->toArray()
+            ),
+            env('JWT_KEY'),
+            'HS256'
+        );
 
         return json([
             'code' => 200,
