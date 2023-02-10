@@ -23,7 +23,7 @@ class AuthController extends Controller
             array_merge(
                 [
                     'iat' => time(),
-                    'exp' => time() + (60 * 30)
+                    'exp' => time() + (60 * 60)
                 ],
                 Auth::user()->only(['id', 'nama'])->toArray()
             ),

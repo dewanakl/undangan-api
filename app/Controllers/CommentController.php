@@ -11,9 +11,37 @@ use Ramsey\Uuid\Uuid;
 
 class CommentController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $data = Comment::select($request->id === env('JWT_KEY') ? ['*'] : ['uuid', 'nama', 'hadir', 'komentar', 'created_at'])->orderBy('id', 'DESC')->get();
+        $data = Comment::select(['nama', 'hadir', 'komentar', 'created_at'])
+            ->where('user_id', context()->user->id)
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        foreach ($data as $key => $val) {
+            $data->{$key}->created_at = Carbon::parse($val->created_at)->locale('id')->diffForHumans();
+            $data->{$key}->nama = e($val->nama);
+            $data->{$key}->komentar = e($val->komentar);
+        }
+
+        return json([
+            'code' => 200,
+            'data' => $data,
+            'error' => []
+        ]);
+    }
+
+    public function all(Request $request)
+    {
+        if ($request->get('id', '') !== env('JWT_KEY')) {
+            return json([
+                'code' => 401,
+                'data' => [],
+                'error' => ['unauthorized']
+            ], 401);
+        }
+
+        $data = Comment::orderBy('id', 'DESC')->get();
 
         foreach ($data as $key => $val) {
             $data->{$key}->created_at = Carbon::parse($val->created_at)->locale('id')->diffForHumans();

@@ -15,9 +15,10 @@ Route::prefix('/api')->group(function () {
     Route::options('/login');
 
     Route::controller(CommentController::class)->prefix('/comment')->group(function () {
-        Route::get('/', 'index');
+        Route::get('/all', 'all');
 
         Route::middleware(AuthMiddleware::class)->group(function () {
+            Route::get('/', 'index');
             Route::post('/', 'create');
             Route::options('/');
 
