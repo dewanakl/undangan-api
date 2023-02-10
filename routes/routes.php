@@ -12,13 +12,17 @@ use Core\Routing\Route;
 
 Route::prefix('/api')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
+    Route::options('/login');
 
     Route::controller(CommentController::class)->prefix('/comment')->group(function () {
         Route::get('/', 'index');
 
         Route::middleware(AuthMiddleware::class)->group(function () {
             Route::post('/', 'create');
+            Route::options('/');
+
             Route::delete('/{id}', 'destroy');
+            Route::options('/{id}');
         });
     });
 });

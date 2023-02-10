@@ -12,6 +12,17 @@
   ),
   1 => 
   array (
+    'method' => 'OPTIONS',
+    'path' => '/api/login',
+    'controller' => NULL,
+    'function' => NULL,
+    'middleware' => 
+    array (
+    ),
+    'name' => NULL,
+  ),
+  2 => 
+  array (
     'method' => 'GET',
     'path' => '/api/comment',
     'controller' => 'App\\Controllers\\CommentController',
@@ -21,7 +32,7 @@
     ),
     'name' => NULL,
   ),
-  2 => 
+  3 => 
   array (
     'method' => 'POST',
     'path' => '/api/comment',
@@ -33,12 +44,36 @@
     ),
     'name' => NULL,
   ),
-  3 => 
+  4 => 
+  array (
+    'method' => 'OPTIONS',
+    'path' => '/api/comment',
+    'controller' => 'App\\Controllers\\CommentController',
+    'function' => NULL,
+    'middleware' => 
+    array (
+      0 => 'App\\Middleware\\AuthMiddleware',
+    ),
+    'name' => NULL,
+  ),
+  5 => 
   array (
     'method' => 'DELETE',
     'path' => '/api/comment/([\\w-]*)',
     'controller' => 'App\\Controllers\\CommentController',
     'function' => 'destroy',
+    'middleware' => 
+    array (
+      0 => 'App\\Middleware\\AuthMiddleware',
+    ),
+    'name' => NULL,
+  ),
+  6 => 
+  array (
+    'method' => 'OPTIONS',
+    'path' => '/api/comment/([\\w-]*)',
+    'controller' => 'App\\Controllers\\CommentController',
+    'function' => NULL,
     'middleware' => 
     array (
       0 => 'App\\Middleware\\AuthMiddleware',
