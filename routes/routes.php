@@ -14,7 +14,7 @@ Route::prefix('/api')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::options('/login');
 
-    Route::controller(CommentController::class)->prefix('/comment')->group(function () {
+    Route::prefix('/comment')->controller(CommentController::class)->group(function () {
         Route::get('/all', 'all');
 
         Route::middleware(AuthMiddleware::class)->group(function () {

@@ -81,19 +81,22 @@ class CommentController extends Controller
 
     public function create(Request $request)
     {
-        $valid = Validator::make(array_merge(
-            $request->only(['nama', 'hadir', 'komentar']),
+        $valid = Validator::make(
+            array_merge(
+                $request->only(['nama', 'hadir', 'komentar']),
+                [
+                    'ip' => $request->ip(),
+                    'user_agent' => $request->server('HTTP_USER_AGENT')
+                ]
+            ),
             [
-                'ip' => $request->ip(),
-                'user_agent' => $request->server('HTTP_USER_AGENT')
+                'nama' => ['required', 'str', 'max:50'],
+                'hadir' => ['bool'],
+                'komentar' => ['required', 'str'],
+                'user_agent' => ['str', 'trim'],
+                'ip' => ['str', 'trim', 'max:50']
             ]
-        ), [
-            'nama' => ['required', 'str', 'max:50'],
-            'hadir' => ['bool'],
-            'komentar' => ['required', 'str'],
-            'user_agent' => ['str', 'trim'],
-            'ip' => ['str', 'trim', 'max:50']
-        ]);
+        );
 
         if ($valid->fails()) {
             return json([
@@ -107,7 +110,7 @@ class CommentController extends Controller
         $data['uuid'] = Uuid::uuid4()->toString();
         $data['user_id'] = context()->user->id;
 
-        $result = Comment::create($data)->except(['id', 'user_id', 'user_agent', 'ip', 'updated_at']);
+        $result = Comment::create($data)->except(['uuid', 'id', 'user_id', 'user_agent', 'ip', 'updated_at']);
 
         return json([
             'code' => 201,
