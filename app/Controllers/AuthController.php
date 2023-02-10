@@ -25,7 +25,7 @@ class AuthController extends Controller
                     'iat' => time(),
                     'exp' => time() + (60 * 30)
                 ],
-                Auth::user()->only(['nama'])->toArray()
+                Auth::user()->only(['id', 'nama'])->toArray()
             ),
             env('JWT_KEY'),
             'HS256'
