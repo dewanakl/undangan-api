@@ -58,7 +58,7 @@ class CommentController extends Controller
 
     public function destroy(string $id)
     {
-        $data = Comment::find($id, 'uuid')->fail(fn () => false);
+        $data = Comment::where($id, 'uuid')->where('user_id', context()->user->id)->first()->fail(fn () => false);
 
         if ($data === false) {
             return json([
