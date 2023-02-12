@@ -1,6 +1,17 @@
 <?php return array (
   0 => 
   array (
+    'method' => 'GET',
+    'path' => '/',
+    'controller' => NULL,
+    'function' => 'App\\Controllers\\WelcomeController',
+    'middleware' => 
+    array (
+    ),
+    'name' => NULL,
+  ),
+  1 => 
+  array (
     'method' => 'POST',
     'path' => '/api/login',
     'controller' => 'App\\Controllers\\AuthController',
@@ -10,7 +21,7 @@
     ),
     'name' => NULL,
   ),
-  1 => 
+  2 => 
   array (
     'method' => 'OPTIONS',
     'path' => '/api/login',
@@ -21,7 +32,7 @@
     ),
     'name' => NULL,
   ),
-  2 => 
+  3 => 
   array (
     'method' => 'GET',
     'path' => '/api/comment/all',
@@ -32,7 +43,7 @@
     ),
     'name' => NULL,
   ),
-  3 => 
+  4 => 
   array (
     'method' => 'GET',
     'path' => '/api/comment',
@@ -44,7 +55,7 @@
     ),
     'name' => NULL,
   ),
-  4 => 
+  5 => 
   array (
     'method' => 'POST',
     'path' => '/api/comment',
@@ -56,7 +67,7 @@
     ),
     'name' => NULL,
   ),
-  5 => 
+  6 => 
   array (
     'method' => 'OPTIONS',
     'path' => '/api/comment',
@@ -68,7 +79,7 @@
     ),
     'name' => NULL,
   ),
-  6 => 
+  7 => 
   array (
     'method' => 'DELETE',
     'path' => '/api/comment/([\\w-]*)',
@@ -80,7 +91,7 @@
     ),
     'name' => NULL,
   ),
-  7 => 
+  8 => 
   array (
     'method' => 'OPTIONS',
     'path' => '/api/comment/([\\w-]*)',

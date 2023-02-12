@@ -2,6 +2,7 @@
 
 use App\Controllers\AuthController;
 use App\Controllers\CommentController;
+use App\Controllers\WelcomeController;
 use App\Middleware\AuthMiddleware;
 use Core\Routing\Route;
 
@@ -9,6 +10,8 @@ use Core\Routing\Route;
  * Make something great with this app
  * keep simple yahh
  */
+
+Route::get('/', WelcomeController::class);
 
 Route::prefix('/api')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
