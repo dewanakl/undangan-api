@@ -5,13 +5,27 @@ namespace App\Controllers;
 use Core\Auth\Auth;
 use Core\Routing\Controller;
 use Core\Http\Request;
+use Core\Valid\Validator;
 use Firebase\JWT\JWT;
 
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        if (!Auth::attempt($request->only(['email', 'password']))) {
+        $valid = Validator::make($request->only(['email', 'password']), [
+            'email' => ['required', 'str', 'trim', 'min:5', 'max:30'],
+            'password' => ['required', 'str', 'trim', 'min:8', 'max:20']
+        ]);
+
+        if ($valid->fails()) {
+            return json([
+                'code' => 400,
+                'data' => [],
+                'error' => $valid->messages()
+            ], 400);
+        }
+
+        if (!Auth::attempt($valid->only(['email', 'password']))) {
             return json([
                 'code' => 401,
                 'data' => [],

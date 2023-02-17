@@ -72,7 +72,7 @@ class CommentController extends Controller
             ], 404);
         }
 
-        $status = Comment::id($id, 'uuid')->delete();
+        $status = Comment::id($data->id)->delete();
 
         return json([
             'code' => 200,
@@ -96,7 +96,7 @@ class CommentController extends Controller
             [
                 'nama' => ['required', 'str', 'max:50'],
                 'hadir' => ['bool'],
-                'komentar' => ['required', 'str'],
+                'komentar' => ['required', 'str', 'max:1000'],
                 'user_agent' => ['str', 'trim'],
                 'ip' => ['str', 'trim', 'max:50']
             ]
