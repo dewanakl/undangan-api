@@ -25,6 +25,7 @@ Route::prefix('/api')->group(function () {
             Route::post('/', 'create');
             Route::options('/');
 
+            Route::get('/{id}', 'show');
             Route::delete('/{id}', 'destroy');
             Route::options('/{id}');
         });

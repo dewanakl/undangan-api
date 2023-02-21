@@ -76,6 +76,37 @@ class CommentController extends Controller
         ]);
     }
 
+    public function show(string $id)
+    {
+        $valid = Validator::make(
+            [
+                'id' => $id
+            ],
+            [
+                'id' => ['required', 'str', 'trim', 'max:37']
+            ]
+        );
+
+        if ($valid->fails()) {
+            return json([
+                'code' => 400,
+                'data' => [],
+                'error' => $valid->messages()
+            ], 400);
+        }
+
+        $data = Comment::where('uuid', $valid->id)
+            ->where('user_id', context()->user->id)
+            ->limit(1)
+            ->first();
+
+        return [
+            'code' => 200,
+            'data' => $data,
+            'error' => []
+        ];
+    }
+
     public function destroy(string $id, Request $request)
     {
         if ($request->get('id', '') !== env('JWT_KEY')) {

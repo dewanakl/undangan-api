@@ -81,6 +81,18 @@
   ),
   7 => 
   array (
+    'method' => 'GET',
+    'path' => '/api/comment/([\\w-]*)',
+    'controller' => 'App\\Controllers\\CommentController',
+    'function' => 'show',
+    'middleware' => 
+    array (
+      0 => 'App\\Middleware\\AuthMiddleware',
+    ),
+    'name' => NULL,
+  ),
+  8 => 
+  array (
     'method' => 'DELETE',
     'path' => '/api/comment/([\\w-]*)',
     'controller' => 'App\\Controllers\\CommentController',
@@ -91,7 +103,7 @@
     ),
     'name' => NULL,
   ),
-  8 => 
+  9 => 
   array (
     'method' => 'OPTIONS',
     'path' => '/api/comment/([\\w-]*)',
