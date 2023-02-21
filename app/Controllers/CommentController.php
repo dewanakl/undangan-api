@@ -26,7 +26,7 @@ class CommentController extends Controller
             $data->{$key}->comment = $this->getInnerComment($val->uuid);
         }
 
-        return $data;
+        return $data->toArray();
     }
 
     public function index()
