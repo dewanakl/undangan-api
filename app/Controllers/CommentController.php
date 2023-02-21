@@ -76,8 +76,16 @@ class CommentController extends Controller
         ]);
     }
 
-    public function destroy(string $id)
+    public function destroy(string $id, Request $request)
     {
+        if ($request->get('id', '') !== env('JWT_KEY')) {
+            return json([
+                'code' => 401,
+                'data' => [],
+                'error' => ['unauthorized']
+            ], 401);
+        }
+
         $data = Comment::where('uuid', $id)
             ->where('user_id', context()->user->id)
             ->limit(1)
