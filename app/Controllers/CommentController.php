@@ -11,10 +11,11 @@ use Ramsey\Uuid\Uuid;
 
 class CommentController extends Controller
 {
-    public function index()
+    private function getInnerComment(string $id)
     {
-        $data = Comment::select(['nama', 'hadir', 'komentar', 'created_at'])
+        $data = Comment::select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
             ->where('user_id', context()->user->id)
+            ->where('parent_id', $id)
             ->orderBy('id', 'DESC')
             ->get();
 
@@ -22,6 +23,25 @@ class CommentController extends Controller
             $data->{$key}->created_at = Carbon::parse($val->created_at)->locale('id')->diffForHumans();
             $data->{$key}->nama = e($val->nama);
             $data->{$key}->komentar = e($val->komentar);
+            $data->{$key}->comment = $this->getInnerComment($val->uuid);
+        }
+
+        return $data;
+    }
+
+    public function index()
+    {
+        $data = Comment::select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
+            ->where('user_id', context()->user->id)
+            ->whereNull('parent_id')
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        foreach ($data as $key => $val) {
+            $data->{$key}->created_at = Carbon::parse($val->created_at)->locale('id')->diffForHumans();
+            $data->{$key}->nama = e($val->nama);
+            $data->{$key}->komentar = e($val->komentar);
+            $data->{$key}->comment = $this->getInnerComment($val->uuid);
         }
 
         return json([
@@ -87,13 +107,14 @@ class CommentController extends Controller
     {
         $valid = Validator::make(
             array_merge(
-                $request->only(['nama', 'hadir', 'komentar']),
+                $request->only(['id', 'nama', 'hadir', 'komentar']),
                 [
                     'ip' => $request->ip(),
                     'user_agent' => $request->server('HTTP_USER_AGENT')
                 ]
             ),
             [
+                'id' => ['str', 'trim', 'max:37'],
                 'nama' => ['required', 'str', 'max:50'],
                 'hadir' => ['bool'],
                 'komentar' => ['required', 'str', 'max:1000'],
@@ -110,11 +131,12 @@ class CommentController extends Controller
             ], 400);
         }
 
-        $data = $valid->get();
+        $data = $valid->except(['id']);
+        $data['parent_id'] = empty($valid->id) ? null : $valid->id;
         $data['uuid'] = Uuid::uuid4()->toString();
         $data['user_id'] = context()->user->id;
 
-        $result = Comment::create($data)->except(['uuid', 'id', 'user_id', 'user_agent', 'ip', 'updated_at']);
+        $result = Comment::create($data)->except(['uuid', 'parent_id', 'id', 'user_id', 'user_agent', 'ip', 'updated_at']);
 
         return json([
             'code' => 201,
