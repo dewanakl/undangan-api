@@ -98,6 +98,7 @@ class CommentController extends Controller
         $data = Comment::where('uuid', $valid->id)
             ->where('user_id', context()->user->id)
             ->limit(1)
+            ->select([['uuid', 'nama', 'komentar', 'created_at']])
             ->first();
 
         return [
