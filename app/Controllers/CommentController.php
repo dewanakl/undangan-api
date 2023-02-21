@@ -101,6 +101,8 @@ class CommentController extends Controller
             ->select(['nama', 'komentar', 'created_at'])
             ->first();
 
+        $data->created_at = Carbon::parse($data->created_at)->locale('id')->diffForHumans();
+
         return [
             'code' => 200,
             'data' => $data,
