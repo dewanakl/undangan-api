@@ -46,42 +46,6 @@
   4 => 
   array (
     'method' => 'GET',
-    'path' => '/api/comment',
-    'controller' => 'App\\Controllers\\CommentController',
-    'function' => 'index',
-    'middleware' => 
-    array (
-      0 => 'App\\Middleware\\AuthMiddleware',
-    ),
-    'name' => NULL,
-  ),
-  5 => 
-  array (
-    'method' => 'POST',
-    'path' => '/api/comment',
-    'controller' => 'App\\Controllers\\CommentController',
-    'function' => 'create',
-    'middleware' => 
-    array (
-      0 => 'App\\Middleware\\AuthMiddleware',
-    ),
-    'name' => NULL,
-  ),
-  6 => 
-  array (
-    'method' => 'OPTIONS',
-    'path' => '/api/comment',
-    'controller' => 'App\\Controllers\\CommentController',
-    'function' => NULL,
-    'middleware' => 
-    array (
-      0 => 'App\\Middleware\\AuthMiddleware',
-    ),
-    'name' => NULL,
-  ),
-  7 => 
-  array (
-    'method' => 'GET',
     'path' => '/api/comment/([\\w-]*)',
     'controller' => 'App\\Controllers\\CommentController',
     'function' => 'show',
@@ -91,7 +55,7 @@
     ),
     'name' => NULL,
   ),
-  8 => 
+  5 => 
   array (
     'method' => 'DELETE',
     'path' => '/api/comment/([\\w-]*)',
@@ -103,10 +67,46 @@
     ),
     'name' => NULL,
   ),
-  9 => 
+  6 => 
   array (
     'method' => 'OPTIONS',
     'path' => '/api/comment/([\\w-]*)',
+    'controller' => 'App\\Controllers\\CommentController',
+    'function' => NULL,
+    'middleware' => 
+    array (
+      0 => 'App\\Middleware\\AuthMiddleware',
+    ),
+    'name' => NULL,
+  ),
+  7 => 
+  array (
+    'method' => 'GET',
+    'path' => '/api/comment',
+    'controller' => 'App\\Controllers\\CommentController',
+    'function' => 'index',
+    'middleware' => 
+    array (
+      0 => 'App\\Middleware\\AuthMiddleware',
+    ),
+    'name' => NULL,
+  ),
+  8 => 
+  array (
+    'method' => 'POST',
+    'path' => '/api/comment',
+    'controller' => 'App\\Controllers\\CommentController',
+    'function' => 'create',
+    'middleware' => 
+    array (
+      0 => 'App\\Middleware\\AuthMiddleware',
+    ),
+    'name' => NULL,
+  ),
+  9 => 
+  array (
+    'method' => 'OPTIONS',
+    'path' => '/api/comment',
     'controller' => 'App\\Controllers\\CommentController',
     'function' => NULL,
     'middleware' => 

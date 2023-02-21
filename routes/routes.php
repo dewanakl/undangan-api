@@ -21,13 +21,13 @@ Route::prefix('/api')->group(function () {
         Route::get('/all', 'all');
 
         Route::middleware(AuthMiddleware::class)->group(function () {
-            Route::get('/', 'index');
-            Route::post('/', 'create');
-            Route::options('/');
-
             Route::get('/{id}', 'show');
             Route::delete('/{id}', 'destroy');
             Route::options('/{id}');
+
+            Route::get('/', 'index');
+            Route::post('/', 'create');
+            Route::options('/');
         });
     });
 });
