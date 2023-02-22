@@ -102,6 +102,8 @@ class CommentController extends Controller
             ->first();
 
         $data->created_at = Carbon::parse($data->created_at)->locale('id')->diffForHumans();
+        $data->nama = e($data->nama);
+        $data->komentar = e($data->komentar);
 
         return [
             'code' => 200,
@@ -178,11 +180,14 @@ class CommentController extends Controller
         $data['uuid'] = Uuid::uuid4()->toString();
         $data['user_id'] = context()->user->id;
 
-        $result = Comment::create($data)->except(['uuid', 'parent_id', 'id', 'user_id', 'user_agent', 'ip', 'updated_at']);
+        $data = Comment::create($data)->except(['uuid', 'parent_id', 'id', 'user_id', 'user_agent', 'ip', 'updated_at']);
+        $data->created_at = Carbon::parse($data->created_at)->locale('id')->diffForHumans();
+        $data->nama = e($data->nama);
+        $data->komentar = e($data->komentar);
 
         return json([
             'code' => 201,
-            'data' => $result,
+            'data' => $data,
             'error' => []
         ], 201);
     }
