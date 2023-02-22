@@ -44,11 +44,11 @@ class CommentController extends Controller
             $data->{$key}->comment = $this->getInnerComment($val->uuid);
         }
 
-        return json([
+        return [
             'code' => 200,
-            'data' => $data,
+            'data' => $data->toArray(),
             'error' => []
-        ]);
+        ];
     }
 
     public function all(Request $request)
@@ -69,11 +69,11 @@ class CommentController extends Controller
             $data->{$key}->komentar = e($val->komentar);
         }
 
-        return json([
+        return [
             'code' => 200,
-            'data' => $data,
+            'data' => $data->toArray(),
             'error' => []
-        ]);
+        ];
     }
 
     public function show(string $id)
@@ -105,7 +105,7 @@ class CommentController extends Controller
 
         return [
             'code' => 200,
-            'data' => $data,
+            'data' => $data->toArray(),
             'error' => []
         ];
     }
@@ -136,13 +136,13 @@ class CommentController extends Controller
 
         $status = Comment::id($data->id)->delete();
 
-        return json([
+        return [
             'code' => 200,
             'data' => [
                 'status' => $status
             ],
             'error' => []
-        ]);
+        ];
     }
 
     public function create(Request $request)
