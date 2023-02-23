@@ -45,13 +45,13 @@ class AuthController extends Controller
             'HS256'
         );
 
-        return json([
+        return [
             'code' => 200,
             'data' => [
                 'token' => $token,
                 'user' => Auth::user()
             ],
             'error' => []
-        ]);
+        ];
     }
 }

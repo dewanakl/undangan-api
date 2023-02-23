@@ -161,7 +161,7 @@ class CommentController extends Controller
                 'id' => ['str', 'trim', 'max:37'],
                 'nama' => ['required', 'str', 'max:50'],
                 'hadir' => ['bool'],
-                'komentar' => ['required', 'str', 'max:1000'],
+                'komentar' => ['required', 'str', 'max:500'],
                 'user_agent' => ['str', 'trim'],
                 'ip' => ['str', 'trim', 'max:50']
             ]
