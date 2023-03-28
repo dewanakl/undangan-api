@@ -16,13 +16,13 @@ return new class implements Migration
         Schema::create('comments', function (Table $table) {
             $table->id();
 
-            $table->integer('user_id');
+            //$table->integer('user_id');
 
             $table->string('nama');
             $table->boolean('hadir')->default(false);
             $table->text('komentar')->nullable();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            //$table->foreign('user_id')->references('id')->on('users');
 
             $table->timeStamp();
         });

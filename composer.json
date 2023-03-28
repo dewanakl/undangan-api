@@ -10,7 +10,7 @@
     "require": {
         "php": "^8.1",
         "firebase/php-jwt": "^6.3",
-        "kamu/framework": "^1.1",
+        "kamu/framework": "main-dev",
         "nesbot/carbon": "^2.66",
         "ramsey/uuid": "^4.7"
     },
