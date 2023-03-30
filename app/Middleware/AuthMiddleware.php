@@ -13,6 +13,10 @@ final class AuthMiddleware implements MiddlewareInterface
 {
     public function handle(Request $request, Closure $next)
     {
+        if (!env('JWT_KEY')) {
+            throw new Exception('JWT Key tidak ada !, silahkan isi di env');
+        }
+
         try {
             $token = trim(substr($request->server('HTTP_AUTHORIZATION', ''), 6));
             context()->user = JWT::decode($token, new Key(env('JWT_KEY'), 'HS256'));
