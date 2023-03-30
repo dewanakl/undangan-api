@@ -22,7 +22,7 @@ return new class implements Migration
             $table->boolean('hadir')->default(false);
             $table->text('komentar')->nullable();
 
-            //$table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->timeStamp();
         });
