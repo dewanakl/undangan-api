@@ -1,3 +1,4 @@
+/cache/*.key
 /node_modules
 /shared/*.key
 /vendor
