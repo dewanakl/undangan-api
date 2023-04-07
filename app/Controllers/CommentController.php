@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\Comment;
-use Carbon\Carbon;
 use Core\Routing\Controller;
 use Core\Http\Request;
 use Core\Valid\Validator;
@@ -20,7 +19,7 @@ class CommentController extends Controller
             ->get();
 
         foreach ($data as $key => $val) {
-            $data->{$key}->created_at = Carbon::parse($val->created_at)->locale('id')->diffForHumans();
+            $data->{$key}->created_at = $val->created_at->diffForHuman();
             $data->{$key}->nama = e($val->nama);
             $data->{$key}->komentar = e($val->komentar);
             $data->{$key}->comment = $this->getInnerComment($val->uuid);
@@ -38,7 +37,7 @@ class CommentController extends Controller
             ->get();
 
         foreach ($data as $key => $val) {
-            $data->{$key}->created_at = Carbon::parse($val->created_at)->locale('id')->diffForHumans();
+            $data->{$key}->created_at = $val->created_at->diffForHuman();
             $data->{$key}->nama = e($val->nama);
             $data->{$key}->komentar = e($val->komentar);
             $data->{$key}->comment = $this->getInnerComment($val->uuid);
@@ -64,7 +63,7 @@ class CommentController extends Controller
         $data = Comment::orderBy('id', 'DESC')->get();
 
         foreach ($data as $key => $val) {
-            $data->{$key}->created_at = Carbon::parse($val->created_at)->locale('id')->diffForHumans();
+            $data->{$key}->created_at = $val->created_at->diffForHuman();
             $data->{$key}->nama = e($val->nama);
             $data->{$key}->komentar = e($val->komentar);
         }
@@ -99,9 +98,18 @@ class CommentController extends Controller
             ->where('user_id', context()->user->id)
             ->limit(1)
             ->select(['nama', 'komentar', 'created_at'])
-            ->first();
+            ->first()
+            ->fail();
 
-        $data->created_at = Carbon::parse($data->created_at)->locale('id')->diffForHumans();
+        if (!$data) {
+            return json([
+                'code' => 404,
+                'data' => [],
+                'error' => ['not found']
+            ], 404);
+        }
+
+        $data->created_at = $data->created_at->diffForHuman();
         $data->nama = e($data->nama);
         $data->komentar = e($data->komentar);
 
@@ -126,9 +134,9 @@ class CommentController extends Controller
             ->where('user_id', context()->user->id)
             ->limit(1)
             ->first()
-            ->fail(fn () => false);
+            ->fail();
 
-        if ($data === false) {
+        if (!$data) {
             return json([
                 'code' => 404,
                 'data' => [],
@@ -181,7 +189,7 @@ class CommentController extends Controller
         $data['user_id'] = context()->user->id;
 
         $data = Comment::create($data)->except(['uuid', 'parent_id', 'id', 'user_id', 'user_agent', 'ip', 'updated_at']);
-        $data->created_at = Carbon::parse($data->created_at)->locale('id')->diffForHumans();
+        $data->created_at = $data->created_at->diffForHuman();
         $data->nama = e($data->nama);
         $data->komentar = e($data->komentar);
 
