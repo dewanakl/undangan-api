@@ -19,7 +19,7 @@ class CommentController extends Controller
             ->get();
 
         foreach ($data as $key => $val) {
-            $data->{$key}->created_at = $val->created_at->diffForHuman();
+            $data->{$key}->created_at = $val->created_at->diffForHumans();
             $data->{$key}->nama = e($val->nama);
             $data->{$key}->komentar = e($val->komentar);
             $data->{$key}->comment = $this->getInnerComment($val->uuid);
@@ -37,7 +37,7 @@ class CommentController extends Controller
             ->get();
 
         foreach ($data as $key => $val) {
-            $data->{$key}->created_at = $val->created_at->diffForHuman();
+            $data->{$key}->created_at = $val->created_at->diffForHumans();
             $data->{$key}->nama = e($val->nama);
             $data->{$key}->komentar = e($val->komentar);
             $data->{$key}->comment = $this->getInnerComment($val->uuid);
@@ -63,7 +63,7 @@ class CommentController extends Controller
         $data = Comment::orderBy('id', 'DESC')->get();
 
         foreach ($data as $key => $val) {
-            $data->{$key}->created_at = $val->created_at->diffForHuman();
+            $data->{$key}->created_at = $val->created_at->diffForHumans();
             $data->{$key}->nama = e($val->nama);
             $data->{$key}->komentar = e($val->komentar);
         }
@@ -109,7 +109,7 @@ class CommentController extends Controller
             ], 404);
         }
 
-        $data->created_at = $data->created_at->diffForHuman();
+        $data->created_at = $data->created_at->diffForHumans();
         $data->nama = e($data->nama);
         $data->komentar = e($data->komentar);
 
@@ -189,7 +189,7 @@ class CommentController extends Controller
         $data['user_id'] = context()->user->id;
 
         $data = Comment::create($data)->except(['uuid', 'parent_id', 'id', 'user_id', 'user_agent', 'ip', 'updated_at']);
-        $data->created_at = $data->created_at->diffForHuman();
+        $data->created_at = $data->created_at->diffForHumans();
         $data->nama = e($data->nama);
         $data->komentar = e($data->komentar);
 
