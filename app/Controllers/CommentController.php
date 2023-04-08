@@ -28,13 +28,31 @@ class CommentController extends Controller
         return $data->toArray();
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $valid = $this->validate($request, [
+            'next' => ['max:3', 'int'],
+            'per' => ['max:3', 'int']
+        ]);
+
+        if ($valid->fails()) {
+            return json([
+                'code' => 400,
+                'data' => [],
+                'error' => $valid->messages()
+            ], 400);
+        }
+
         $data = Comment::select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
             ->where('user_id', context()->user->id)
             ->whereNull('parent_id')
-            ->orderBy('id', 'DESC')
-            ->get();
+            ->orderBy('id', 'DESC');
+
+        if ($valid->next >= 0 && $valid->per > 0) {
+            $data = $data->limit($valid->per)->offset($valid->next);
+        }
+
+        $data = $data->get();
 
         foreach ($data as $key => $val) {
             $data->{$key}->created_at = $val->created_at->diffForHumans();
@@ -149,7 +167,7 @@ class CommentController extends Controller
         return [
             'code' => 200,
             'data' => [
-                'status' => $status
+                'status' => $status == 1
             ],
             'error' => []
         ];
