@@ -31,8 +31,8 @@ class CommentController extends Controller
     public function index(Request $request)
     {
         $valid = $this->validate($request, [
-            'next' => ['max:3', 'int'],
-            'per' => ['max:3', 'int']
+            'next' => ['max:3'],
+            'per' => ['max:3']
         ]);
 
         if ($valid->fails()) {
@@ -42,6 +42,9 @@ class CommentController extends Controller
                 'error' => $valid->messages()
             ], 400);
         }
+
+        $valid->next = intval($valid->next);
+        $valid->per = intval($valid->per);
 
         $data = Comment::select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
             ->where('user_id', context()->user->id)
