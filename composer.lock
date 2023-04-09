@@ -127,16 +127,16 @@
         },
         {
             "name": "kamu/framework",
-            "version": "v1.2.4",
+            "version": "v1.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/framework.git",
-                "reference": "71782768d63a5f288f8e9134b95987ca2a5100b2"
+                "reference": "122071d85f1d73a8ab9d7ef5228921b6a19a056b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/framework/zipball/71782768d63a5f288f8e9134b95987ca2a5100b2",
-                "reference": "71782768d63a5f288f8e9134b95987ca2a5100b2",
+                "url": "https://api.github.com/repos/dewanakl/framework/zipball/122071d85f1d73a8ab9d7ef5228921b6a19a056b",
+                "reference": "122071d85f1d73a8ab9d7ef5228921b6a19a056b",
                 "shasum": ""
             },
             "require": {
@@ -175,7 +175,7 @@
                 "issues": "https://github.com/dewanakl/framework/issues",
                 "source": "https://github.com/dewanakl/framework"
             },
-            "time": "2023-04-09T14:00:15+00:00"
+            "time": "2023-04-09T15:15:28+00:00"
         },
         {
             "name": "ramsey/collection",
