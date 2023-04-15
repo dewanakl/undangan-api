@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d6257235daffdc5d82583331e19e99f9",
+    "content-hash": "b5ec02c7a9696d165dc904f8f28b6458",
     "packages": [
         {
             "name": "brick/math",
@@ -127,16 +127,16 @@
         },
         {
             "name": "kamu/framework",
-            "version": "1.x-dev",
+            "version": "v1.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/framework.git",
-                "reference": "2b59baa269d556aa3637338afcaf7043885782d9"
+                "reference": "67277d84314d0bab63f1c3d3b7fc41985fb5d2e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/framework/zipball/2b59baa269d556aa3637338afcaf7043885782d9",
-                "reference": "2b59baa269d556aa3637338afcaf7043885782d9",
+                "url": "https://api.github.com/repos/dewanakl/framework/zipball/67277d84314d0bab63f1c3d3b7fc41985fb5d2e6",
+                "reference": "67277d84314d0bab63f1c3d3b7fc41985fb5d2e6",
                 "shasum": ""
             },
             "require": {
@@ -146,7 +146,6 @@
             "require-dev": {
                 "phpunit/phpunit": "^9.5"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -176,7 +175,7 @@
                 "issues": "https://github.com/dewanakl/framework/issues",
                 "source": "https://github.com/dewanakl/framework"
             },
-            "time": "2023-04-15T10:14:32+00:00"
+            "time": "2023-04-10T14:47:09+00:00"
         },
         {
             "name": "ramsey/collection",
@@ -363,9 +362,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "kamu/framework": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
