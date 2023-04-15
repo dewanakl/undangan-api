@@ -131,12 +131,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/framework.git",
-                "reference": "a56e7e1250c08514187bac1c0c6b27fce82ab6c9"
+                "reference": "6c363c7fd6be84b0e47bce33bdd5cefb2f24b8f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/framework/zipball/a56e7e1250c08514187bac1c0c6b27fce82ab6c9",
-                "reference": "a56e7e1250c08514187bac1c0c6b27fce82ab6c9",
+                "url": "https://api.github.com/repos/dewanakl/framework/zipball/6c363c7fd6be84b0e47bce33bdd5cefb2f24b8f2",
+                "reference": "6c363c7fd6be84b0e47bce33bdd5cefb2f24b8f2",
                 "shasum": ""
             },
             "require": {
@@ -176,7 +176,7 @@
                 "issues": "https://github.com/dewanakl/framework/issues",
                 "source": "https://github.com/dewanakl/framework"
             },
-            "time": "2023-04-15T11:42:48+00:00"
+            "time": "2023-04-15T11:52:37+00:00"
         },
         {
             "name": "ramsey/collection",
