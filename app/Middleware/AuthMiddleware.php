@@ -2,6 +2,7 @@
 
 namespace App\Middleware;
 
+use App\Response\JsonResponse;
 use Closure;
 use Core\Http\Request;
 use Core\Middleware\MiddlewareInterface;
@@ -21,11 +22,7 @@ final class AuthMiddleware implements MiddlewareInterface
             $token = trim(substr($request->server('HTTP_AUTHORIZATION', ''), 6));
             context()->user = JWT::decode($token, new Key(env('JWT_KEY'), 'HS256'));
         } catch (Exception $e) {
-            return json([
-                'code' => 400,
-                'data' => [],
-                'error' => [$e->getMessage()]
-            ], 400);
+            return (new JsonResponse)->error([$e->getMessage()], 400);
         }
 
         return $next($request);

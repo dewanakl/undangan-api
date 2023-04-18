@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Response\JsonResponse;
 use Core\Auth\Auth;
 use Core\Routing\Controller;
 use Core\Http\Request;
@@ -10,7 +11,7 @@ use Firebase\JWT\JWT;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request, JsonResponse $json)
     {
         $valid = Validator::make($request->only(['email', 'password']), [
             'email' => ['required', 'str', 'trim', 'min:5', 'max:30'],
@@ -18,19 +19,11 @@ class AuthController extends Controller
         ]);
 
         if ($valid->fails()) {
-            return json([
-                'code' => 400,
-                'data' => [],
-                'error' => $valid->messages()
-            ], 400);
+            return $json->error($valid->messages(), 400);
         }
 
         if (!Auth::attempt($valid->only(['email', 'password']))) {
-            return json([
-                'code' => 401,
-                'data' => [],
-                'error' => ['unauthorized']
-            ], 401);
+            return $json->error(['unauthorized'], 401);
         }
 
         $token = JWT::encode(
@@ -45,13 +38,9 @@ class AuthController extends Controller
             'HS256'
         );
 
-        return [
-            'code' => 200,
-            'data' => [
-                'token' => $token,
-                'user' => Auth::user()
-            ],
-            'error' => []
-        ];
+        return $json->success([
+            'token' => $token,
+            'user' => Auth::user()
+        ], 200);
     }
 }

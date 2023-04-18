@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Comment;
+use App\Response\JsonResponse;
 use Core\Routing\Controller;
 use Core\Http\Request;
 use Core\Valid\Validator;
@@ -10,6 +11,13 @@ use Ramsey\Uuid\Uuid;
 
 class CommentController extends Controller
 {
+    private $json;
+
+    public function __construct(JsonResponse $json)
+    {
+        $this->json = $json;
+    }
+
     private function getInnerComment(string $id)
     {
         return Comment::select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
@@ -34,11 +42,7 @@ class CommentController extends Controller
         ]);
 
         if ($valid->fails()) {
-            return json([
-                'code' => 400,
-                'data' => [],
-                'error' => $valid->messages()
-            ], 400);
+            return $this->json->error($valid->messages(), 400);
         }
 
         $valid->next = intval($valid->next);
@@ -62,21 +66,13 @@ class CommentController extends Controller
                 }
             );
 
-        return [
-            'code' => 200,
-            'data' => $data,
-            'error' => []
-        ];
+        return $this->json->success($data, 200);
     }
 
     public function all(Request $request)
     {
         if ($request->get('id', '') !== env('JWT_KEY')) {
-            return json([
-                'code' => 401,
-                'data' => [],
-                'error' => ['unauthorized']
-            ], 401);
+            return $this->json->error(['unauthorized'], 401);
         }
 
         $data = Comment::orderBy('id', 'DESC')
@@ -86,13 +82,9 @@ class CommentController extends Controller
                     $val->created_at = $val->created_at->diffForHumans();
                     return $val;
                 }
-            );;
+            );
 
-        return [
-            'code' => 200,
-            'data' => $data,
-            'error' => []
-        ];
+        return $this->json->success($data, 200);
     }
 
     public function show(string $id)
@@ -107,11 +99,7 @@ class CommentController extends Controller
         );
 
         if ($valid->fails()) {
-            return json([
-                'code' => 400,
-                'data' => [],
-                'error' => $valid->messages()
-            ], 400);
+            return $this->json->error($valid->messages(), 400);
         }
 
         $data = Comment::where('uuid', $valid->id)
@@ -122,30 +110,18 @@ class CommentController extends Controller
             ->fail();
 
         if (!$data) {
-            return json([
-                'code' => 404,
-                'data' => [],
-                'error' => ['not found']
-            ], 404);
+            return $this->json->error(['not found'], 404);
         }
 
         $data->created_at = $data->created_at->diffForHumans();
 
-        return [
-            'code' => 200,
-            'data' => $data,
-            'error' => []
-        ];
+        return $this->json->success($data, 200);
     }
 
     public function destroy(string $id, Request $request)
     {
         if ($request->get('id', '') !== env('JWT_KEY')) {
-            return json([
-                'code' => 401,
-                'data' => [],
-                'error' => ['unauthorized']
-            ], 401);
+            return $this->json->error(['unauthorized'], 401);
         }
 
         $data = Comment::where('uuid', $id)
@@ -155,22 +131,14 @@ class CommentController extends Controller
             ->fail();
 
         if (!$data) {
-            return json([
-                'code' => 404,
-                'data' => [],
-                'error' => ['not found']
-            ], 404);
+            return $this->json->error(['not found'], 404);
         }
 
         $status = Comment::id($data->id)->delete();
 
-        return [
-            'code' => 200,
-            'data' => [
-                'status' => $status == 1
-            ],
-            'error' => []
-        ];
+        return $this->json->success([
+            'status' => $status == 1
+        ], 200);
     }
 
     public function create(Request $request)
@@ -194,11 +162,7 @@ class CommentController extends Controller
         );
 
         if ($valid->fails()) {
-            return json([
-                'code' => 400,
-                'data' => [],
-                'error' => $valid->messages()
-            ], 400);
+            return $this->json->error($valid->messages(), 400);
         }
 
         $data = $valid->except(['id']);
@@ -209,10 +173,6 @@ class CommentController extends Controller
         $data = Comment::create($data)->except(['uuid', 'parent_id', 'id', 'user_id', 'user_agent', 'ip', 'updated_at']);
         $data->created_at = $data->created_at->diffForHumans();
 
-        return json([
-            'code' => 201,
-            'data' => $data,
-            'error' => []
-        ], 201);
+        return $this->json->success($data, 201);
     }
 }
