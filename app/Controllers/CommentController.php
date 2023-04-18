@@ -12,20 +12,18 @@ class CommentController extends Controller
 {
     private function getInnerComment(string $id)
     {
-        $data = Comment::select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
+        return Comment::select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
             ->where('user_id', context()->user->id)
             ->where('parent_id', $id)
             ->orderBy('id', 'DESC')
-            ->get();
-
-        foreach ($data as $key => $val) {
-            $data->{$key}->created_at = $val->created_at->diffForHumans();
-            $data->{$key}->nama = e($val->nama);
-            $data->{$key}->komentar = e($val->komentar);
-            $data->{$key}->comment = $this->getInnerComment($val->uuid);
-        }
-
-        return $data->toArray();
+            ->get()
+            ->map(
+                function ($val) {
+                    $val->created_at = $val->created_at->diffForHumans();
+                    $val->comment = $this->getInnerComment($val->uuid);
+                    return $val;
+                }
+            );
     }
 
     public function index(Request $request)
@@ -55,18 +53,18 @@ class CommentController extends Controller
             $data = $data->limit($valid->per)->offset($valid->next);
         }
 
-        $data = $data->get();
-
-        foreach ($data as $key => $val) {
-            $data->{$key}->created_at = $val->created_at->diffForHumans();
-            $data->{$key}->nama = e($val->nama);
-            $data->{$key}->komentar = e($val->komentar);
-            $data->{$key}->comment = $this->getInnerComment($val->uuid);
-        }
+        $data = $data->get()
+            ->map(
+                function ($val) {
+                    $val->created_at = $val->created_at->diffForHumans();
+                    $val->comment = $this->getInnerComment($val->uuid);
+                    return $val;
+                }
+            );
 
         return [
             'code' => 200,
-            'data' => $data->toArray(),
+            'data' => $data,
             'error' => []
         ];
     }
@@ -81,17 +79,18 @@ class CommentController extends Controller
             ], 401);
         }
 
-        $data = Comment::orderBy('id', 'DESC')->get();
-
-        foreach ($data as $key => $val) {
-            $data->{$key}->created_at = $val->created_at->diffForHumans();
-            $data->{$key}->nama = e($val->nama);
-            $data->{$key}->komentar = e($val->komentar);
-        }
+        $data = Comment::orderBy('id', 'DESC')
+            ->get()
+            ->map(
+                function ($val) {
+                    $val->created_at = $val->created_at->diffForHumans();
+                    return $val;
+                }
+            );;
 
         return [
             'code' => 200,
-            'data' => $data->toArray(),
+            'data' => $data,
             'error' => []
         ];
     }
@@ -131,12 +130,10 @@ class CommentController extends Controller
         }
 
         $data->created_at = $data->created_at->diffForHumans();
-        $data->nama = e($data->nama);
-        $data->komentar = e($data->komentar);
 
         return [
             'code' => 200,
-            'data' => $data->toArray(),
+            'data' => $data,
             'error' => []
         ];
     }
@@ -211,8 +208,6 @@ class CommentController extends Controller
 
         $data = Comment::create($data)->except(['uuid', 'parent_id', 'id', 'user_id', 'user_agent', 'ip', 'updated_at']);
         $data->created_at = $data->created_at->diffForHumans();
-        $data->nama = e($data->nama);
-        $data->komentar = e($data->komentar);
 
         return json([
             'code' => 201,
