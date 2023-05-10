@@ -23,7 +23,7 @@ class CommentController extends Controller
         return Comment::select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
             ->where('user_id', context()->user->id)
             ->where('parent_id', $id)
-            ->orderBy('id', 'DESC')
+            ->orderBy('id')
             ->get()
             ->map(
                 function ($val) {
