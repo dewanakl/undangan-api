@@ -1,4 +1,4 @@
-/cache/*.key
+/cache/env.php
 /node_modules
 /shared/*.key
 /vendor
