@@ -148,7 +148,7 @@ class CommentController extends Controller
                 $request->only(['id', 'nama', 'hadir', 'komentar']),
                 [
                     'ip' => $request->ip(),
-                    'user_agent' => $request->server('HTTP_USER_AGENT')
+                    'user_agent' => $request->server->get('HTTP_USER_AGENT')
                 ]
             ),
             [
