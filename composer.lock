@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "126cc4e0f2a607697137ca7b9c978c15",
+    "content-hash": "845bdcc51b79598e750141e07cab3b67",
     "packages": [
         {
             "name": "brick/math",
@@ -63,16 +63,16 @@
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v6.5.0",
+            "version": "v6.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "e94e7353302b0c11ec3cfff7180cd0b1743975d2"
+                "reference": "5dbc8959427416b8ee09a100d7a8588c00fb2e26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/e94e7353302b0c11ec3cfff7180cd0b1743975d2",
-                "reference": "e94e7353302b0c11ec3cfff7180cd0b1743975d2",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/5dbc8959427416b8ee09a100d7a8588c00fb2e26",
+                "reference": "5dbc8959427416b8ee09a100d7a8588c00fb2e26",
                 "shasum": ""
             },
             "require": {
@@ -120,22 +120,22 @@
             ],
             "support": {
                 "issues": "https://github.com/firebase/php-jwt/issues",
-                "source": "https://github.com/firebase/php-jwt/tree/v6.5.0"
+                "source": "https://github.com/firebase/php-jwt/tree/v6.8.1"
             },
-            "time": "2023-05-12T15:47:07+00:00"
+            "time": "2023-07-14T18:33:00+00:00"
         },
         {
             "name": "kamu/framework",
-            "version": "v2.0.0",
+            "version": "3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/framework.git",
-                "reference": "c7c6ac26c68d6ebd630f8311d5ea9882ccc47e51"
+                "reference": "6f43551de2f2f5668f095d12af5e75cd14b5f81b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/framework/zipball/c7c6ac26c68d6ebd630f8311d5ea9882ccc47e51",
-                "reference": "c7c6ac26c68d6ebd630f8311d5ea9882ccc47e51",
+                "url": "https://api.github.com/repos/dewanakl/framework/zipball/6f43551de2f2f5668f095d12af5e75cd14b5f81b",
+                "reference": "6f43551de2f2f5668f095d12af5e75cd14b5f81b",
                 "shasum": ""
             },
             "require": {
@@ -174,7 +174,7 @@
                 "issues": "https://github.com/dewanakl/framework/issues",
                 "source": "https://github.com/dewanakl/framework"
             },
-            "time": "2023-06-02T03:56:00+00:00"
+            "time": "2023-09-11T17:13:49+00:00"
         },
         {
             "name": "ramsey/collection",
@@ -361,12 +361,14 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "kamu/framework": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }

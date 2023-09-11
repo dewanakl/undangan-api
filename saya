@@ -1,23 +1,23 @@
 #!/usr/bin/env php
 <?php
 
-define('SAYA_START', microtime(true));
-
-
 /**
  * Import semua class yang digunakan dalam framework ini.
- * Tenang, ini telah otomatis oleh composer.
+ * Tenang, ini telah dilakukan secara otomatis oleh composer.
  *
- * Sekarang, tinggal menjalankan aplikasi ini.
+ * Sekarang, tinggal menjalankan aplikasi ini saja.
  */
 
 require_once __DIR__ . '/vendor/autoload.php';
 
 /**
- * Okey, sekarang memanggil fungsi console secara static.
- * Setelah ini, hanya perlu menjalankannya.
+ * Okey, sekarang memanggil fungsi console secara static pada kernel.
+ * Bentar, fungsi console ini perlu app kernel sebagai penghubung aplikasi.
+ * Setelah itu, hanya perlu menjalankannya saja.
  *
- * Ini sangat mudah.
+ * Ini sangat simple.
  */
 
-exit(Core\Facades\Kernel::console()->run());
+exit(\Core\Kernel\Kernel::console(
+    new \App\Kernel()
+)->run());

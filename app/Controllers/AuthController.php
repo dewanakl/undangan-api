@@ -27,13 +27,11 @@ class AuthController extends Controller
         }
 
         $token = JWT::encode(
-            array_merge(
-                [
-                    'iat' => time(),
-                    'exp' => time() + (60 * 60)
-                ],
-                Auth::user()->only(['id', 'nama'])->toArray()
-            ),
+            [
+                'iat' => time(),
+                'exp' => time() + (60 * 60),
+                ...Auth::user()->only(['id', 'nama'])->toArray()
+            ],
             env('JWT_KEY'),
             'HS256'
         );

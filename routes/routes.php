@@ -8,7 +8,7 @@ use Core\Routing\Route;
 
 /**
  * Make something great with this app
- * keep simple yahh
+ * keep simple yeah.
  */
 
 Route::get('/', WelcomeController::class);

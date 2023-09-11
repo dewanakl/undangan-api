@@ -10,7 +10,7 @@
     "require": {
         "php": "^8.1",
         "firebase/php-jwt": "^6.3",
-        "kamu/framework": "^2.0.0",
+        "kamu/framework": "3.x-dev",
         "ramsey/uuid": "^4.7"
     },
     "autoload": {

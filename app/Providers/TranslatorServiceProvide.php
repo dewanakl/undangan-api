@@ -3,10 +3,9 @@
 namespace App\Providers;
 
 use Core\Facades\Provider;
-use Core\Routing\Route;
-use Core\Routing\Router;
+use Core\Valid\Trans;
 
-class RouteServiceProvider extends Provider
+class TranslatorServiceProvide extends Provider
 {
     /**
      * Jalankan sewaktu aplikasi dinyalakan.
@@ -15,7 +14,6 @@ class RouteServiceProvider extends Provider
      */
     public function booting()
     {
-        $this->app->singleton(Router::class);
-        Route::setRouteFromCacheIfExist();
+        Trans::setLanguage('id');
     }
 }

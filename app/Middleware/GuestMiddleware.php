@@ -14,6 +14,6 @@ final class GuestMiddleware implements MiddlewareInterface
             return $next($request);
         }
 
-        respond()->redirect('/');
+        return respond()->to('/');
     }
 }

@@ -10,6 +10,8 @@ final class User extends Model
 
     protected $primaryKey = 'id';
 
+    protected $typeKey = 'int';
+
     protected $dates = [
         'created_at',
         'updated_at',

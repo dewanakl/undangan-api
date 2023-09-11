@@ -12,12 +12,7 @@ Kamu adalah PHP framework yang sangat sederhana. Saking sederhananya, serasa di 
 <br>
 Dibantu dengan saya console untuk mempermudah dalam development aplikasi Anda.
 
-<hr>
-
-##### Deployment API Vercel: [https://dikit.my.id/DeploymentApiVercel](https://dikit.my.id/DeploymentApiVercel)
-##### Deployment API Hosting: [https://dikit.my.id/DeploymentApiHosting](https://dikit.my.id/DeploymentApiHosting)
-
-<hr>
+### Deployment API: https://youtu.be/WOVyAw1UAtI
 
 ## Deployment on vercel
 - Clone or download this repository
