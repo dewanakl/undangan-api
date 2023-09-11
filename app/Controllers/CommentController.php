@@ -107,7 +107,7 @@ class CommentController extends Controller
             ->limit(1)
             ->select(['nama', 'komentar', 'created_at'])
             ->first()
-            ->fail();
+            ->exist();
 
         if (!$data) {
             return $this->json->error(['not found'], 404);
