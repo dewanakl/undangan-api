@@ -128,7 +128,7 @@ class CommentController extends Controller
             ->where('user_id', context()->user->id)
             ->limit(1)
             ->first()
-            ->fail();
+            ->exist();
 
         if (!$data) {
             return $this->json->error(['not found'], 404);
