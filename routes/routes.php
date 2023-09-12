@@ -44,8 +44,9 @@ Route::prefix('/api')->group(function () {
 
                 // Delete
                 Route::delete('/', 'destroy');
-                Route::options('/');
             });
+
+            Route::options('/{id}');
         });
     });
 });
