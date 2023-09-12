@@ -19,7 +19,7 @@ final class AuthMiddleware implements MiddlewareInterface
         }
 
         try {
-            context()->user = JWT::decode($request->bearerToken(), new Key(env('JWT_KEY'), 'HS256'));
+            context()->user = JWT::decode($request->bearerToken() ?? '', new Key(env('JWT_KEY'), 'HS256'));
         } catch (Exception $e) {
             return (new JsonResponse)->error([$e->getMessage()], 400);
         }

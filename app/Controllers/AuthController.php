@@ -11,7 +11,7 @@ use Firebase\JWT\JWT;
 
 class AuthController extends Controller
 {
-    public function login(Request $request, JsonResponse $json)
+    public function login(Request $request, JsonResponse $json): JsonResponse
     {
         $valid = Validator::make($request->only(['email', 'password']), [
             'email' => ['required', 'str', 'trim', 'min:5', 'max:30'],

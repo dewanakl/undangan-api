@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Comment;
+use App\Models\Like;
 use App\Response\JsonResponse;
 use Core\Routing\Controller;
 use Core\Http\Request;
@@ -18,23 +19,7 @@ class CommentController extends Controller
         $this->json = $json;
     }
 
-    private function getInnerComment(string $id)
-    {
-        return Comment::select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
-            ->where('user_id', context()->user->id)
-            ->where('parent_id', $id)
-            ->orderBy('id')
-            ->get()
-            ->map(
-                function ($val) {
-                    $val->created_at = $val->created_at->diffForHumans();
-                    $val->comment = $this->getInnerComment($val->uuid);
-                    return $val;
-                }
-            );
-    }
-
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $valid = $this->validate($request, [
             'next' => ['max:3'],
@@ -48,7 +33,8 @@ class CommentController extends Controller
         $valid->next = intval($valid->next);
         $valid->per = intval($valid->per);
 
-        $data = Comment::select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
+        $data = Comment::with('comments')
+            ->select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
             ->where('user_id', context()->user->id)
             ->whereNull('parent_id')
             ->orderBy('id', 'DESC');
@@ -57,37 +43,19 @@ class CommentController extends Controller
             $data = $data->limit($valid->per)->offset($valid->next);
         }
 
-        $data = $data->get()
-            ->map(
-                function ($val) {
-                    $val->created_at = $val->created_at->diffForHumans();
-                    $val->comment = $this->getInnerComment($val->uuid);
-                    return $val;
-                }
-            );
-
-        return $this->json->success($data, 200);
+        return $this->json->success($data->get(), 200);
     }
 
-    public function all(Request $request)
+    public function all(Request $request): JsonResponse
     {
         if ($request->get('id', '') !== env('JWT_KEY')) {
             return $this->json->error(['unauthorized'], 401);
         }
 
-        $data = Comment::orderBy('id', 'DESC')
-            ->get()
-            ->map(
-                function ($val) {
-                    $val->created_at = $val->created_at->diffForHumans();
-                    return $val;
-                }
-            );
-
-        return $this->json->success($data, 200);
+        return $this->json->success(Comment::orderBy('id', 'DESC')->get(), 200);
     }
 
-    public function show(string $id)
+    public function show(string $id): JsonResponse
     {
         $valid = Validator::make(
             [
@@ -113,12 +81,80 @@ class CommentController extends Controller
             return $this->json->error(['not found'], 404);
         }
 
-        $data->created_at = $data->created_at->diffForHumans();
-
         return $this->json->success($data, 200);
     }
 
-    public function destroy(string $id, Request $request)
+    public function like(string $id): JsonResponse
+    {
+        $valid = Validator::make(
+            [
+                'id' => $id
+            ],
+            [
+                'id' => ['required', 'str', 'trim', 'max:37']
+            ]
+        );
+
+        if ($valid->fails()) {
+            return $this->json->error($valid->messages(), 400);
+        }
+
+        $data = Comment::where('uuid', $valid->id)
+            ->where('user_id', context()->user->id)
+            ->limit(1)
+            ->select('uuid')
+            ->first()
+            ->exist();
+
+        if (!$data) {
+            return $this->json->error(['not found'], 404);
+        }
+
+        return $this->json->success(Like::create([
+            'uuid' => Uuid::uuid4()->toString(),
+            'comment_id' => $data->uuid
+        ])->only('uuid'), 201);
+    }
+
+    public function unlike(string $id): JsonResponse
+    {
+        $valid = Validator::make(
+            [
+                'id' => $id
+            ],
+            [
+                'id' => ['required', 'str', 'trim', 'max:37']
+            ]
+        );
+
+        if ($valid->fails()) {
+            return $this->json->error($valid->messages(), 400);
+        }
+
+        $data = Like::where('uuid', $valid->id)
+            ->select('id')
+            ->limit(1)
+            ->first()
+            ->exist();
+
+        if (!$data) {
+            return $this->json->error(['not found'], 404);
+        }
+
+        $status = Like::where('id', $data->id)->delete() == 1;
+
+        if ($status) {
+            return $this->json->success([
+                'status' => $status
+            ], 200);
+        }
+
+        return $this->json->error([
+            ['server error']
+        ], 500);
+    }
+
+    public function destroy(string $id, Request $request): JsonResponse
     {
         if ($request->get('id', '') !== env('JWT_KEY')) {
             return $this->json->error(['unauthorized'], 401);
@@ -134,23 +170,27 @@ class CommentController extends Controller
             return $this->json->error(['not found'], 404);
         }
 
-        $status = Comment::id($data->id)->delete();
+        $status = Comment::id($data->id)->delete() == 1;
 
-        return $this->json->success([
-            'status' => $status == 1
-        ], 200);
+        if ($status) {
+            return $this->json->success([
+                'status' => $status
+            ], 200);
+        }
+
+        return $this->json->error([
+            ['server error']
+        ], 500);
     }
 
-    public function create(Request $request)
+    public function create(Request $request): JsonResponse
     {
         $valid = Validator::make(
-            array_merge(
-                $request->only(['id', 'nama', 'hadir', 'komentar']),
-                [
-                    'ip' => $request->ip(),
-                    'user_agent' => $request->server->get('HTTP_USER_AGENT')
-                ]
-            ),
+            [
+                ...$request->only(['id', 'nama', 'hadir', 'komentar']),
+                'ip' => $request->ip(),
+                'user_agent' => $request->server->get('HTTP_USER_AGENT')
+            ],
             [
                 'id' => ['str', 'trim', 'max:37'],
                 'nama' => ['required', 'str', 'max:50'],
@@ -170,9 +210,6 @@ class CommentController extends Controller
         $data['uuid'] = Uuid::uuid4()->toString();
         $data['user_id'] = context()->user->id;
 
-        $data = Comment::create($data)->except(['uuid', 'parent_id', 'id', 'user_id', 'user_agent', 'ip', 'updated_at']);
-        $data->created_at = $data->created_at->diffForHumans();
-
-        return $this->json->success($data, 201);
+        return $this->json->success(Comment::create($data)->except(['uuid', 'parent_id', 'id', 'user_id', 'user_agent', 'ip', 'updated_at']), 201);
     }
 }

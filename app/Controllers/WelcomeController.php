@@ -7,7 +7,7 @@ use Core\Http\Request;
 
 class WelcomeController extends Controller
 {
-    public function __invoke()
+    public function __invoke(): \Core\View\View
     {
         return $this->view('welcome', [
             'data' => 'PHP Framework'

@@ -14,20 +14,38 @@ use Core\Routing\Route;
 Route::get('/', WelcomeController::class);
 
 Route::prefix('/api')->group(function () {
+
+    // Login
     Route::post('/login', [AuthController::class, 'login']);
     Route::options('/login');
 
+    // Comment
     Route::prefix('/comment')->controller(CommentController::class)->group(function () {
+
+        // Get all
         Route::get('/all', 'all');
 
+        // Must be login
         Route::middleware(AuthMiddleware::class)->group(function () {
+
+            // Get and create comment
             Route::get('/', 'index');
             Route::post('/', 'create');
             Route::options('/');
 
-            Route::get('/{id}', 'show');
-            Route::delete('/{id}', 'destroy');
-            Route::options('/{id}');
+            Route::prefix('/{id}')->group(function () {
+
+                // Get one
+                Route::get('/', 'show');
+
+                // Like comment
+                Route::post('/', 'like');
+                Route::patch('/', 'unlike');
+
+                // Delete
+                Route::delete('/', 'destroy');
+                Route::options('/');
+            });
         });
     });
 });
