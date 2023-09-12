@@ -23,7 +23,8 @@ final class Comment extends Model
             }
         )
             ->recursive()
-            ->with($this->likes());
+            ->with($this->likes())
+            ->as('comment');
     }
 
     public function likes(): \Core\Model\Relational
