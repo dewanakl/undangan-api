@@ -16,7 +16,7 @@ final class CorsMiddleware implements MiddlewareInterface
 
         respond()->getHeader()->set('Access-Control-Allow-Origin', '*')
             ->set('Access-Control-Allow-Credentials', 'true')
-            ->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            ->set('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
             ->set('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Authorization, Token')
             ->set('Vary', 'Accept-Encoding, Origin, User-Agent');
 
