@@ -12,7 +12,9 @@ Kamu adalah PHP framework yang sangat sederhana. Saking sederhananya, serasa di 
 <br>
 Dibantu dengan saya console untuk mempermudah dalam development aplikasi Anda.
 
-### Deployment API: https://youtu.be/WOVyAw1UAtI
+## Api Spec
+
+See in file /routes/routes.php
 
 ## Deployment on vercel
 - Clone or download this repository
@@ -36,7 +38,7 @@ Dibantu dengan saya console untuk mempermudah dalam development aplikasi Anda.
 - Import from your repository.
 - Change environment variables in your project on vercel.
 - Add this :
-  - DB_HOST (your host cloud dbms) 
+  - DB_HOST (your host cloud dbms)
   - DB_PASS (your password cloud dbms)
   - DB_USER (your username cloud dbms)
   - DB_NAME (your name of database cloud dbms)

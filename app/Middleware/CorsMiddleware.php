@@ -14,14 +14,27 @@ final class CorsMiddleware implements MiddlewareInterface
             return $next($request);
         }
 
-        respond()->getHeader()->set('Access-Control-Allow-Origin', '*')
-            ->set('Access-Control-Allow-Credentials', 'true')
-            ->set('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
-            ->set('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Authorization, Token')
-            ->set('Vary', 'Accept-Encoding, Origin, User-Agent');
+        $header = respond()->getHeader();
+        $header->set('Access-Control-Allow-Origin', '*');
 
         if (!$request->method(Request::OPTIONS)) {
             return $next($request);
+        }
+
+        if ($request->server->has('HTTP_ACCESS_CONTROL_REQUEST_METHOD')) {
+            if (https()) {
+                $header->set('Access-Control-Allow-Credentials', 'true');
+            }
+
+            $header->set('Vary', 'Origin, User-Agent, Access-Control-Request-Method, Access-Control-Request-Headers')
+                ->set(
+                    'Access-Control-Allow-Methods',
+                    strtoupper($request->server->get('HTTP_ACCESS_CONTROL_REQUEST_METHOD', $request->method()))
+                )
+                ->set(
+                    'Access-Control-Allow-Headers',
+                    $request->server->get('HTTP_ACCESS_CONTROL_REQUEST_HEADERS', 'Origin, Content-Type, Accept, Authorization, Token')
+                );
         }
 
         return respond()->setCode(204);

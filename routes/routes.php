@@ -16,29 +16,29 @@ Route::get('/', WelcomeController::class);
 Route::prefix('/api')->group(function () {
 
     // Login
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::options('/login');
+    Route::prefix('/session')->group(function () {
+        Route::post('/', [AuthController::class, 'login']);
+        Route::options('/'); // Preflight request [/api/session]
+    });
 
     // Comment
-    Route::prefix('/comment')->controller(CommentController::class)->group(function () {
+    Route::prefix('/comment')->middleware(AuthMiddleware::class)->group(function () {
 
-        // Get all
-        Route::get('/all', 'all');
-
-        // Must be login
-        Route::middleware(AuthMiddleware::class)->group(function () {
-
-            // Get and create comment
-            Route::get('/', 'index');
+        // Get and create comment
+        Route::controller(CommentController::class)->group(function () {
+            Route::get('/', 'get');
             Route::post('/', 'create');
-            Route::options('/');
+        });
 
-            Route::prefix('/{id}')->group(function () {
+        Route::options('/'); // Preflight request [/api/comment]
+
+        Route::prefix('/{id}')->group(function () {
+            Route::controller(CommentController::class)->group(function () {
 
                 // Get one
                 Route::get('/', 'show');
 
-                // Like comment
+                // Like or unlike comment
                 Route::post('/', 'like');
                 Route::patch('/', 'unlike');
 
@@ -46,7 +46,7 @@ Route::prefix('/api')->group(function () {
                 Route::delete('/', 'destroy');
             });
 
-            Route::options('/{id}');
+            Route::options('/'); // Preflight request [/api/comment/{id}]
         });
     });
 });

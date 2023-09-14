@@ -19,6 +19,8 @@ return new class implements Migration
             $table->string('uuid');
             $table->string('comment_id');
 
+            $table->foreign('comment_id')->references('uuid')->on('comments');
+
             $table->timeStamp();
         });
     }

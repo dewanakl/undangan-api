@@ -14,8 +14,8 @@ return new class implements Migration
     public function up()
     {
         Schema::table('comments', function (Table $table) {
-            $table->addColumn(function ($table) {
-                $table->string('uuid')->nullable();
+            $table->addColumn(function (Table $table) {
+                $table->string('uuid')->nullable()->unique();
             });
         });
     }

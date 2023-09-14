@@ -24,13 +24,13 @@ final class Comment extends Model
         )
             ->recursive()
             ->with($this->likes())
-            ->as('comment');
+            ->as('comments');
     }
 
     public function likes(): \Core\Model\Relational
     {
-        return $this->hasMany(Like::class, 'comment_id', 'uuid', function (\Core\Model\Query $query): \Core\Model\Query {
-            return $query->select('created_at')->orderBy('created_at', 'DESC');
-        })->as('likes');
+        return $this->belongsTo(Like::class, 'uuid', 'comment_id', function (\Core\Model\Query $query): \Core\Model\Query {
+            return $query->count('uuid', 'love');
+        })->as('like');
     }
 }

@@ -38,7 +38,7 @@ class AuthController extends Controller
 
         return $json->success([
             'token' => $token,
-            'user' => Auth::user()
+            'user' => Auth::user()->only('nama')
         ], 200);
     }
 }
