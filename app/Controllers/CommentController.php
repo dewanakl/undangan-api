@@ -19,7 +19,7 @@ class CommentController extends Controller
         $this->json = $json;
     }
 
-    public function index(Request $request): JsonResponse
+    public function get(Request $request): JsonResponse
     {
         $valid = $this->validate($request, [
             'next' => ['max:3'],
@@ -33,7 +33,9 @@ class CommentController extends Controller
         $valid->next = intval($valid->next);
         $valid->per = intval($valid->per);
 
-        $data = Comment::with('comments')
+        $data = $request->get('key') === env('JWT_KEY')
+            ? Comment::orderBy('id', 'DESC')
+            : Comment::with('comments')
             ->select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
             ->where('user_id', context()->user->id)
             ->whereNull('parent_id')
@@ -44,15 +46,6 @@ class CommentController extends Controller
         }
 
         return $this->json->success($data->get(), 200);
-    }
-
-    public function all(Request $request): JsonResponse
-    {
-        if ($request->get('id', '') !== env('JWT_KEY')) {
-            return $this->json->error(['unauthorized'], 401);
-        }
-
-        return $this->json->success(Comment::orderBy('id', 'DESC')->get(), 200);
     }
 
     public function show(string $id): JsonResponse
@@ -156,7 +149,7 @@ class CommentController extends Controller
 
     public function destroy(string $id, Request $request): JsonResponse
     {
-        if ($request->get('id', '') !== env('JWT_KEY')) {
+        if ($request->get('id') !== env('JWT_KEY')) {
             return $this->json->error(['unauthorized'], 401);
         }
 
@@ -196,7 +189,7 @@ class CommentController extends Controller
                 'nama' => ['required', 'str', 'max:50'],
                 'hadir' => ['bool'],
                 'komentar' => ['required', 'str', 'max:500'],
-                'user_agent' => ['str', 'trim'],
+                'user_agent' => ['str', 'trim', 'max:500'],
                 'ip' => ['str', 'trim', 'max:50']
             ]
         );
@@ -210,6 +203,6 @@ class CommentController extends Controller
         $data['uuid'] = Uuid::uuid4()->toString();
         $data['user_id'] = context()->user->id;
 
-        return $this->json->success(Comment::create($data)->except(['uuid', 'parent_id', 'id', 'user_id', 'user_agent', 'ip', 'updated_at']), 201);
+        return $this->json->success(Comment::create($data)->only(['nama', 'hadir', 'komentar', 'created_at']), 201);
     }
 }
