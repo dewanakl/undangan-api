@@ -130,12 +130,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/framework.git",
-                "reference": "33dad3ff224fa882372556082963a9437e0303a3"
+                "reference": "98ed250c522d5dc77414db371e43783afa931850"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/framework/zipball/33dad3ff224fa882372556082963a9437e0303a3",
-                "reference": "33dad3ff224fa882372556082963a9437e0303a3",
+                "url": "https://api.github.com/repos/dewanakl/framework/zipball/98ed250c522d5dc77414db371e43783afa931850",
+                "reference": "98ed250c522d5dc77414db371e43783afa931850",
                 "shasum": ""
             },
             "require": {
@@ -145,6 +145,7 @@
                 "psr/container": "^2.0"
             },
             "require-dev": {
+                "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^10"
             },
             "default-branch": true,
@@ -177,7 +178,7 @@
                 "issues": "https://github.com/dewanakl/framework/issues",
                 "source": "https://github.com/dewanakl/framework"
             },
-            "time": "2023-09-14T15:21:05+00:00"
+            "time": "2023-09-15T08:39:16+00:00"
         },
         {
             "name": "psr/clock",
