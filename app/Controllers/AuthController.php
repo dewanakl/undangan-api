@@ -33,7 +33,7 @@ class AuthController extends Controller
                 ...Auth::user()->only(['id', 'nama'])->toArray()
             ],
             env('JWT_KEY'),
-            'HS256'
+            env('JWT_ALGO', 'HS256')
         );
 
         return $json->success([

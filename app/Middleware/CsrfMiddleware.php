@@ -17,7 +17,7 @@ final class CsrfMiddleware implements MiddlewareInterface
     {
         $result = null;
 
-        if ((!$request->method(Request::GET)) && (!$request->ajax())) {
+        if (!$request->method(Request::GET) && !$request->ajax()) {
             $result = $this->checkToken($request->get(Session::TOKEN, Hash::rand(10)));
         } else if ($request->ajax()) {
             $result = $this->checkToken($request->ajax(), true);

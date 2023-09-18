@@ -22,7 +22,7 @@ class CommentController extends Controller
     public function get(Request $request): JsonResponse
     {
         $valid = $this->validate($request, [
-            'next' => ['max:3'],
+            'next' => ['max:5'],
             'per' => ['max:3']
         ]);
 
@@ -103,10 +103,12 @@ class CommentController extends Controller
             return $this->json->error(['not found'], 404);
         }
 
-        return $this->json->success(Like::create([
+        $like = Like::create([
             'uuid' => Uuid::uuid4()->toString(),
             'comment_id' => $data->uuid
-        ])->only('uuid'), 201);
+        ]);
+
+        return $this->json->success($like->only('uuid'), 201);
     }
 
     public function unlike(string $id): JsonResponse
