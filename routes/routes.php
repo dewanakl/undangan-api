@@ -38,6 +38,9 @@ Route::prefix('/api')->group(function () {
                 // Get one
                 Route::get('/', 'show');
 
+                // Update comment
+                Route::put('/', 'update');
+
                 // Like or unlike comment
                 Route::post('/', 'like');
                 Route::patch('/', 'unlike');

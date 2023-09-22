@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "845bdcc51b79598e750141e07cab3b67",
+    "content-hash": "b0a9a33510d280fadf7edfb6cb7a7dd4",
     "packages": [
         {
             "name": "brick/math",
@@ -126,16 +126,16 @@
         },
         {
             "name": "kamu/framework",
-            "version": "3.x-dev",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/framework.git",
-                "reference": "e15b1eec5a2a7addc47c3b3a443bd23b95c2d7b5"
+                "reference": "470125e505f00b93480af370c6f38d6f3f2d43f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/framework/zipball/e15b1eec5a2a7addc47c3b3a443bd23b95c2d7b5",
-                "reference": "e15b1eec5a2a7addc47c3b3a443bd23b95c2d7b5",
+                "url": "https://api.github.com/repos/dewanakl/framework/zipball/470125e505f00b93480af370c6f38d6f3f2d43f0",
+                "reference": "470125e505f00b93480af370c6f38d6f3f2d43f0",
                 "shasum": ""
             },
             "require": {
@@ -148,7 +148,6 @@
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^10"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -178,7 +177,7 @@
                 "issues": "https://github.com/dewanakl/framework/issues",
                 "source": "https://github.com/dewanakl/framework"
             },
-            "time": "2023-09-18T06:30:45+00:00"
+            "time": "2023-09-22T16:42:38+00:00"
         },
         {
             "name": "psr/clock",
@@ -466,9 +465,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "kamu/framework": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
