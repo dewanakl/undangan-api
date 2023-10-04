@@ -38,7 +38,7 @@ class CommentController extends Controller
             ->whereNull('parent_id')
             ->orderBy('id', 'DESC');
 
-        if ($valid->per > 0 && $valid->next ?? 0 >= 0) {
+        if ($valid->per > 0 && ($valid->next ?? 0) >= 0) {
             $data = $data->limit($valid->per)->offset($valid->next ?? 0);
         }
 
