@@ -13,4 +13,13 @@ class WelcomeController extends Controller
             'data' => 'PHP Framework'
         ]);
     }
+
+    public function debug()
+    {
+        if (request()->get('key') !== env('JWT_KEY')) {
+            return;
+        }
+
+        dd(request());
+    }
 }

@@ -12,6 +12,7 @@ use Core\Routing\Route;
  */
 
 Route::get('/', WelcomeController::class);
+Route::get('/debug', [WelcomeController::class, 'debug']);
 
 Route::prefix('/api')->group(function () {
 
