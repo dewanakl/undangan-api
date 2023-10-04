@@ -240,7 +240,7 @@ class CommentController extends Controller
         $valid = Validator::make(
             [
                 ...$request->only(['id', 'nama', 'hadir', 'komentar']),
-                'ip' => $request->ip(),
+                'ip' => env('HTTP_CF_CONNECTING_IP') ? $request->server->get('HTTP_CF_CONNECTING_IP') : $request->ip(),
                 'user_agent' => $request->server->get('HTTP_USER_AGENT')
             ],
             [
