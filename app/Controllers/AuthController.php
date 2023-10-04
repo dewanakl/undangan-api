@@ -6,6 +6,7 @@ use App\Response\JsonResponse;
 use Core\Auth\Auth;
 use Core\Routing\Controller;
 use Core\Http\Request;
+use Core\Support\Time;
 use Core\Valid\Validator;
 use Firebase\JWT\JWT;
 
@@ -26,10 +27,12 @@ class AuthController extends Controller
             return $json->error(['unauthorized'], 401);
         }
 
+        $time = Time::factory()->getTimestamp();
         $token = JWT::encode(
             [
-                'iat' => time(),
-                'exp' => time() + (60 * 60),
+                'iat' => $time,
+                'exp' => $time + (60 * 60),
+                'iss' => env('APP_NAME'),
                 ...Auth::user()->only(['id', 'nama'])->toArray()
             ],
             env('JWT_KEY'),

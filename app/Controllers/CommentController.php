@@ -22,16 +22,13 @@ class CommentController extends Controller
     public function get(Request $request): JsonResponse
     {
         $valid = $this->validate($request, [
-            'next' => ['max:5'],
-            'per' => ['max:3']
+            'next' => ['nullable', 'int'],
+            'per' => ['required', 'int', 'max:50']
         ]);
 
         if ($valid->fails()) {
             return $this->json->error($valid->messages(), 400);
         }
-
-        $valid->next = intval($valid->next);
-        $valid->per = intval($valid->per);
 
         $data = $request->get('key') === env('JWT_KEY')
             ? Comment::orderBy('id', 'DESC')
@@ -41,8 +38,8 @@ class CommentController extends Controller
             ->whereNull('parent_id')
             ->orderBy('id', 'DESC');
 
-        if ($valid->next >= 0 && $valid->per > 0) {
-            $data = $data->limit($valid->per)->offset($valid->next);
+        if ($valid->per > 0 && $valid->next ?? 0 >= 0) {
+            $data = $data->limit($valid->per)->offset($valid->next ?? 0);
         }
 
         return $this->json->success($data->get(), 200);
@@ -251,8 +248,8 @@ class CommentController extends Controller
                 'nama' => ['required', 'str', 'max:50'],
                 'hadir' => ['bool'],
                 'komentar' => ['required', 'str', 'max:500'],
-                'user_agent' => ['str', 'trim', 'max:500'],
-                'ip' => ['str', 'trim', 'max:50']
+                'user_agent' => ['nullable', 'str', 'trim', 'max:500'],
+                'ip' => ['nullable', 'str', 'trim', 'max:50']
             ]
         );
 
