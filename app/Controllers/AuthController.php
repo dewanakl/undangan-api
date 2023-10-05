@@ -32,7 +32,7 @@ class AuthController extends Controller
             [
                 'iat' => $time,
                 'exp' => $time + (60 * 60),
-                'iss' => env('APP_NAME'),
+                'iss' => base_url(),
                 ...Auth::user()->only(['id', 'nama'])->toArray()
             ],
             env('JWT_KEY'),

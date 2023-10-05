@@ -163,8 +163,8 @@ class CommentController extends Controller
 
         $data = ($request->get('id') === env('JWT_KEY')
             ? Comment::where('uuid', $id)
-            : Comment::where('own', $id))
-            ->where('user_id', context()->user->id)
+            : Comment::where('own', $id)
+            ->where('user_id', context()->user->id))
             ->limit(1)
             ->first()
             ->exist();
