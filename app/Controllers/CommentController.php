@@ -5,10 +5,12 @@ namespace App\Controllers;
 use App\Models\Comment;
 use App\Models\Like;
 use App\Response\JsonResponse;
+use Core\Database\DB;
 use Core\Routing\Controller;
 use Core\Http\Request;
 use Core\Valid\Validator;
 use Ramsey\Uuid\Uuid;
+use Throwable;
 
 class CommentController extends Controller
 {
@@ -141,9 +143,7 @@ class CommentController extends Controller
             ], 200);
         }
 
-        return $this->json->error([
-            ['server error']
-        ], 500);
+        return $this->json->error(['server error'], 500);
     }
 
     public function destroy(string $id, Request $request): JsonResponse
@@ -173,9 +173,16 @@ class CommentController extends Controller
             return $this->json->error(['not found'], 404);
         }
 
-        if ($request->get('id') !== env('JWT_KEY')) {
+        try {
+            DB::beginTransaction();
+
             Like::where('comment_id', $data->uuid)->delete();
             Comment::where('parent_id', $data->uuid)->delete();
+
+            DB::commit();
+        } catch (Throwable) {
+            DB::rollBack();
+            return $this->json->error(['server error'], 500);
         }
 
         $status = $data->destroy() == 1;
@@ -186,9 +193,7 @@ class CommentController extends Controller
             ], 200);
         }
 
-        return $this->json->error([
-            ['server error']
-        ], 500);
+        return $this->json->error(['server error'], 500);
     }
 
     public function update(string $id, Request $request): JsonResponse
@@ -230,9 +235,7 @@ class CommentController extends Controller
             ], 200);
         }
 
-        return $this->json->error([
-            ['server error']
-        ], 500);
+        return $this->json->error(['server error'], 500);
     }
 
     public function create(Request $request): JsonResponse

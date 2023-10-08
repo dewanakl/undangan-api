@@ -6,6 +6,9 @@ use Stringable;
 
 class JsonResponse implements Stringable
 {
+    private $code;
+    private $data;
+    private $error;
     private $response;
 
     public function __toString(): string
@@ -13,25 +16,30 @@ class JsonResponse implements Stringable
         return $this->response;
     }
 
-    public function success(array|object $data, int $code): JsonResponse
+    private function transform(): JsonResponse
     {
         $this->response = json([
-            'code' => $code,
-            'data' => $data,
-            'error' => []
-        ], $code);
+            'code' => $this->code,
+            'data' => $this->data ?? [],
+            'error' => $this->error ?? []
+        ], $this->code);
 
         return $this;
     }
 
+    public function success(array|object $data, int $code): JsonResponse
+    {
+        $this->code = $code;
+        $this->data = $data;
+
+        return $this->transform();
+    }
+
     public function error(array|object $error, int $code): JsonResponse
     {
-        $this->response = json([
-            'code' => $code,
-            'data' => [],
-            'error' => $error
-        ], $code);
+        $this->code = $code;
+        $this->error = $error;
 
-        return $this;
+        return $this->transform();
     }
 }
