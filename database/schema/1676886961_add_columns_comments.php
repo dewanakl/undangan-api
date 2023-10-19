@@ -18,6 +18,8 @@ return new class implements Migration
 
                 $table->string('parent_id')->nullable();
             });
+
+            $table->foreign('parent_id')->references('uuid')->on('comments')->cascadeOnDelete();
         });
     }
 
@@ -29,6 +31,7 @@ return new class implements Migration
     public function down()
     {
         Schema::table('comments', function (Table $table) {
+            $table->dropForeign('parent_id');
             $table->dropColumn('parent_id');
         });
     }

@@ -104,7 +104,8 @@ class CommentController extends Controller
 
         $like = Like::create([
             'uuid' => Uuid::uuid4()->toString(),
-            'comment_id' => $data->uuid
+            'comment_id' => $data->uuid,
+            'user_id' => context()->user->id
         ]);
 
         return $this->json->success($like->only('uuid'), 201);
@@ -126,6 +127,7 @@ class CommentController extends Controller
         }
 
         $data = Like::where('uuid', $valid->id)
+            ->where('user_id', context()->user->id)
             ->select('id')
             ->limit(1)
             ->first()
@@ -225,8 +227,7 @@ class CommentController extends Controller
             return $this->json->error(['not found'], 404);
         }
 
-        $data->hadir = $valid->hadir;
-        $data->komentar = $valid->komentar;
+        $data->fill($valid->only(['hadir', 'komentar']));
         $status = $data->save() == 1;
 
         if ($status) {
