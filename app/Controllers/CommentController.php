@@ -32,9 +32,7 @@ class CommentController extends Controller
             return $this->json->error($valid->messages(), 400);
         }
 
-        $data = $request->get('key') === env('JWT_KEY')
-            ? Comment::orderBy('id', 'DESC')
-            : Comment::with('comments')
+        $data = Comment::with('comments')
             ->select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
             ->where('user_id', context()->user->id)
             ->whereNull('parent_id')
@@ -94,7 +92,6 @@ class CommentController extends Controller
         $data = Comment::where('uuid', $valid->id)
             ->where('user_id', context()->user->id)
             ->limit(1)
-            ->select('uuid')
             ->first()
             ->exist();
 
@@ -128,7 +125,6 @@ class CommentController extends Controller
 
         $data = Like::where('uuid', $valid->id)
             ->where('user_id', context()->user->id)
-            ->select('id')
             ->limit(1)
             ->first()
             ->exist();
@@ -137,18 +133,18 @@ class CommentController extends Controller
             return $this->json->error(['not found'], 404);
         }
 
-        $status = $data->destroy() == 1;
+        $status = $data->destroy();
 
-        if ($status) {
+        if ($status == 1) {
             return $this->json->success([
-                'status' => $status
+                'status' => true
             ], 200);
         }
 
         return $this->json->error(['server error'], 500);
     }
 
-    public function destroy(string $id, Request $request): JsonResponse
+    public function destroy(string $id): JsonResponse
     {
         $valid = Validator::make(
             [
@@ -163,10 +159,8 @@ class CommentController extends Controller
             return $this->json->error($valid->messages(), 400);
         }
 
-        $data = ($request->get('id') === env('JWT_KEY')
-            ? Comment::where('uuid', $id)
-            : Comment::where('own', $id)
-            ->where('user_id', context()->user->id))
+        $data = Comment::where('own', $valid->id)
+            ->where('user_id', context()->user->id)
             ->limit(1)
             ->first()
             ->exist();
@@ -187,11 +181,11 @@ class CommentController extends Controller
             return $this->json->error(['server error'], 500);
         }
 
-        $status = $data->destroy() == 1;
+        $status = $data->destroy();
 
-        if ($status) {
+        if ($status == 1) {
             return $this->json->success([
-                'status' => $status
+                'status' => true
             ], 200);
         }
 
@@ -227,12 +221,11 @@ class CommentController extends Controller
             return $this->json->error(['not found'], 404);
         }
 
-        $data->fill($valid->only(['hadir', 'komentar']));
-        $status = $data->save() == 1;
+        $status = $data->fill($valid->only(['hadir', 'komentar']))->save();
 
-        if ($status) {
+        if ($status == 1) {
             return $this->json->success([
-                'status' => $status
+                'status' => true
             ], 200);
         }
 

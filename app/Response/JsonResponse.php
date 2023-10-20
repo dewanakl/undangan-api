@@ -2,44 +2,21 @@
 
 namespace App\Response;
 
-use Stringable;
+use Core\Http\Respond;
 
-class JsonResponse implements Stringable
+class JsonResponse extends Respond
 {
-    private $code;
-    private $data;
-    private $error;
-    private $response;
-
-    public function __toString(): string
+    public function success(array|object $data, int $code): JsonResponse
     {
-        return $this->response;
-    }
-
-    private function transform(): JsonResponse
-    {
-        $this->response = json([
-            'code' => $this->code,
-            'data' => $this->data ?? [],
-            'error' => $this->error ?? []
-        ], $this->code);
+        $this->setContent($this->formatJson($data, [], $code));
 
         return $this;
     }
 
-    public function success(array|object $data, int $code): JsonResponse
-    {
-        $this->code = $code;
-        $this->data = $data;
-
-        return $this->transform();
-    }
-
     public function error(array|object $error, int $code): JsonResponse
     {
-        $this->code = $code;
-        $this->error = $error;
+        $this->setContent($this->formatJson([], $error, $code));
 
-        return $this->transform();
+        return $this;
     }
 }
