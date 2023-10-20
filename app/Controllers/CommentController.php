@@ -196,8 +196,8 @@ class CommentController extends Controller
     {
         $valid = Validator::make(
             [
-                ...$request->only(['hadir', 'komentar']),
-                'id' => $id
+                'id' => $id,
+                ...$request->only(['hadir', 'komentar'])
             ],
             [
                 'id' => ['required', 'str', 'trim', 'uuid', 'max:37'],
@@ -242,11 +242,11 @@ class CommentController extends Controller
             ],
             [
                 'id' => ['nullable', 'str', 'trim', 'uuid', 'max:37'],
-                'nama' => ['required', 'str', 'max:50'],
+                'nama' => ['required', 'str', 'trim', 'max:50'],
                 'hadir' => ['bool'],
                 'komentar' => ['required', 'str', 'max:500'],
-                'user_agent' => ['nullable', 'str', 'trim', 'max:500'],
-                'ip' => ['nullable', 'str', 'trim', 'max:50']
+                'ip' => ['nullable', 'str', 'trim', 'max:50'],
+                'user_agent' => ['nullable', 'str', 'trim', 'max:500']
             ]
         );
 
@@ -260,8 +260,10 @@ class CommentController extends Controller
         $data['own'] = Uuid::uuid4()->toString();
         $data['user_id'] = context()->user->id;
 
+        $comment = Comment::create($data);
+
         return $this->json->success(
-            Comment::create($data)->only(['nama', 'hadir', 'komentar', 'uuid', 'own', 'created_at']),
+            $comment->only(['nama', 'hadir', 'komentar', 'uuid', 'own', 'created_at']),
             201
         );
     }
