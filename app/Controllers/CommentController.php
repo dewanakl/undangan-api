@@ -36,13 +36,12 @@ class CommentController extends Controller
             ->select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
             ->where('user_id', context()->user->id)
             ->whereNull('parent_id')
-            ->orderBy('id', 'DESC');
+            ->orderBy('id', 'DESC')
+            ->limit(abs($valid->per))
+            ->offset($valid->next ?? 0)
+            ->get();
 
-        if ($valid->per > 0 && ($valid->next ?? 0) >= 0) {
-            $data = $data->limit($valid->per)->offset($valid->next ?? 0);
-        }
-
-        return $this->json->success($data->get(), 200);
+        return $this->json->success($data, 200);
     }
 
     public function show(string $id): JsonResponse

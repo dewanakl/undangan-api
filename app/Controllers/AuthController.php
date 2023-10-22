@@ -31,7 +31,7 @@ class AuthController extends Controller
         $token = JWT::encode(
             [
                 'iat' => $time,
-                'exp' => $time + (60 * 60 * 24),
+                'exp' => $time + (60 * 60),
                 'iss' => base_url(),
                 ...Auth::user()->only(['id', 'nama'])->toArray()
             ],
