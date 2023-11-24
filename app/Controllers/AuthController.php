@@ -6,6 +6,7 @@ use App\Response\JsonResponse;
 use Core\Auth\Auth;
 use Core\Routing\Controller;
 use Core\Http\Request;
+use Core\Http\Respond;
 use Core\Support\Time;
 use Core\Valid\Validator;
 use Firebase\JWT\JWT;
@@ -20,11 +21,11 @@ class AuthController extends Controller
         ]);
 
         if ($valid->fails()) {
-            return $json->error($valid->messages(), 400);
+            return $json->error($valid->messages(), Respond::HTTP_BAD_REQUEST);
         }
 
         if (!Auth::attempt($valid->only(['email', 'password']))) {
-            return $json->error(['unauthorized'], 401);
+            return $json->error(['unauthorized'], Respond::HTTP_UNAUTHORIZED);
         }
 
         $time = Time::factory()->getTimestamp();
@@ -42,6 +43,6 @@ class AuthController extends Controller
         return $json->success([
             'token' => $token,
             'user' => Auth::user()->only('nama')
-        ], 200);
+        ], Respond::HTTP_OK);
     }
 }

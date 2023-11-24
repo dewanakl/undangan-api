@@ -8,6 +8,7 @@ use App\Response\JsonResponse;
 use Core\Database\DB;
 use Core\Routing\Controller;
 use Core\Http\Request;
+use Core\Http\Respond;
 use Core\Valid\Validator;
 use Ramsey\Uuid\Uuid;
 use Throwable;
@@ -29,19 +30,19 @@ class CommentController extends Controller
         ]);
 
         if ($valid->fails()) {
-            return $this->json->error($valid->messages(), 400);
+            return $this->json->error($valid->messages(), Respond::HTTP_BAD_REQUEST);
         }
 
         $data = Comment::with('comments')
             ->select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
-            ->where('user_id', context()->user->id)
+            ->where('user_id', context('user')->id)
             ->whereNull('parent_id')
             ->orderBy('id', 'DESC')
             ->limit(abs($valid->per))
             ->offset($valid->next ?? 0)
             ->get();
 
-        return $this->json->success($data, 200);
+        return $this->json->success($data, Respond::HTTP_OK);
     }
 
     public function show(string $id): JsonResponse
@@ -56,21 +57,21 @@ class CommentController extends Controller
         );
 
         if ($valid->fails()) {
-            return $this->json->error($valid->messages(), 400);
+            return $this->json->error($valid->messages(), Respond::HTTP_BAD_REQUEST);
         }
 
         $data = Comment::where('uuid', $valid->id)
-            ->where('user_id', context()->user->id)
+            ->where('user_id', context('user')->id)
             ->limit(1)
             ->select(['nama', 'hadir', 'komentar', 'created_at'])
             ->first()
             ->exist();
 
         if (!$data) {
-            return $this->json->error(['not found'], 404);
+            return $this->json->error(['not found'], Respond::HTTP_NOT_FOUND);
         }
 
-        return $this->json->success($data, 200);
+        return $this->json->success($data, Respond::HTTP_OK);
     }
 
     public function like(string $id): JsonResponse
@@ -85,26 +86,26 @@ class CommentController extends Controller
         );
 
         if ($valid->fails()) {
-            return $this->json->error($valid->messages(), 400);
+            return $this->json->error($valid->messages(), Respond::HTTP_BAD_REQUEST);
         }
 
         $data = Comment::where('uuid', $valid->id)
-            ->where('user_id', context()->user->id)
+            ->where('user_id', context('user')->id)
             ->limit(1)
             ->first()
             ->exist();
 
         if (!$data) {
-            return $this->json->error(['not found'], 404);
+            return $this->json->error(['not found'], Respond::HTTP_NOT_FOUND);
         }
 
         $like = Like::create([
             'uuid' => Uuid::uuid4()->toString(),
             'comment_id' => $data->uuid,
-            'user_id' => context()->user->id
+            'user_id' => context('user')->id
         ]);
 
-        return $this->json->success($like->only('uuid'), 201);
+        return $this->json->success($like->only('uuid'), Respond::HTTP_CREATED);
     }
 
     public function unlike(string $id): JsonResponse
@@ -119,17 +120,17 @@ class CommentController extends Controller
         );
 
         if ($valid->fails()) {
-            return $this->json->error($valid->messages(), 400);
+            return $this->json->error($valid->messages(), Respond::HTTP_BAD_REQUEST);
         }
 
         $data = Like::where('uuid', $valid->id)
-            ->where('user_id', context()->user->id)
+            ->where('user_id', context('user')->id)
             ->limit(1)
             ->first()
             ->exist();
 
         if (!$data) {
-            return $this->json->error(['not found'], 404);
+            return $this->json->error(['not found'], Respond::HTTP_NOT_FOUND);
         }
 
         $status = $data->destroy();
@@ -137,10 +138,10 @@ class CommentController extends Controller
         if ($status == 1) {
             return $this->json->success([
                 'status' => true
-            ], 200);
+            ], Respond::HTTP_OK);
         }
 
-        return $this->json->error(['server error'], 500);
+        return $this->json->error(['server error'], Respond::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     public function destroy(string $id): JsonResponse
@@ -155,17 +156,17 @@ class CommentController extends Controller
         );
 
         if ($valid->fails()) {
-            return $this->json->error($valid->messages(), 400);
+            return $this->json->error($valid->messages(), Respond::HTTP_BAD_REQUEST);
         }
 
         $data = Comment::where('own', $valid->id)
-            ->where('user_id', context()->user->id)
+            ->where('user_id', context('user')->id)
             ->limit(1)
             ->first()
             ->exist();
 
         if (!$data) {
-            return $this->json->error(['not found'], 404);
+            return $this->json->error(['not found'], Respond::HTTP_NOT_FOUND);
         }
 
         try {
@@ -177,7 +178,7 @@ class CommentController extends Controller
             DB::commit();
         } catch (Throwable) {
             DB::rollBack();
-            return $this->json->error(['server error'], 500);
+            return $this->json->error(['server error'], Respond::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         $status = $data->destroy();
@@ -185,10 +186,10 @@ class CommentController extends Controller
         if ($status == 1) {
             return $this->json->success([
                 'status' => true
-            ], 200);
+            ], Respond::HTTP_OK);
         }
 
-        return $this->json->error(['server error'], 500);
+        return $this->json->error(['server error'], Respond::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     public function update(string $id, Request $request): JsonResponse
@@ -206,18 +207,18 @@ class CommentController extends Controller
         );
 
         if ($valid->fails()) {
-            return $this->json->error($valid->messages(), 400);
+            return $this->json->error($valid->messages(), Respond::HTTP_BAD_REQUEST);
         }
 
         $data = Comment::where('own', $valid->id)
-            ->where('user_id', context()->user->id)
+            ->where('user_id', context('user')->id)
             ->limit(1)
             ->select(['id', 'hadir', 'komentar'])
             ->first()
             ->exist();
 
         if (!$data) {
-            return $this->json->error(['not found'], 404);
+            return $this->json->error(['not found'], Respond::HTTP_NOT_FOUND);
         }
 
         $status = $data->fill($valid->only(['hadir', 'komentar']))->save();
@@ -225,10 +226,10 @@ class CommentController extends Controller
         if ($status == 1) {
             return $this->json->success([
                 'status' => true
-            ], 200);
+            ], Respond::HTTP_OK);
         }
 
-        return $this->json->error(['server error'], 500);
+        return $this->json->error(['server error'], Respond::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     public function create(Request $request): JsonResponse
@@ -250,20 +251,20 @@ class CommentController extends Controller
         );
 
         if ($valid->fails()) {
-            return $this->json->error($valid->messages(), 400);
+            return $this->json->error($valid->messages(), Respond::HTTP_BAD_REQUEST);
         }
 
         $data = $valid->except(['id']);
         $data['parent_id'] = $valid->id;
         $data['uuid'] = Uuid::uuid4()->toString();
         $data['own'] = Uuid::uuid4()->toString();
-        $data['user_id'] = context()->user->id;
+        $data['user_id'] = context('user')->id;
 
         $comment = Comment::create($data);
 
         return $this->json->success(
             $comment->only(['nama', 'hadir', 'komentar', 'uuid', 'own', 'created_at']),
-            201
+            Respond::HTTP_CREATED
         );
     }
 }
