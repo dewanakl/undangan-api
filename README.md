@@ -16,10 +16,20 @@ Dibantu dengan saya console untuk mempermudah dalam development aplikasi Anda.
 
 See in file /routes/routes.php
 
+## Play with this application
+
+Here are the commands to play with this application like tinker in laravel.
+```bash
+php saya play
+```
+For example you can get data from a database or insert, update, delete, etc.
+This feature in development stage if you find any bugs, please open an issue in this repository.
+Thank you.
+
 ## Deployment on vercel
 - Clone or download this repository
     ```bash
-    git clone https://github.com/dewanakl/DikitLink.git
+    git clone https://github.com/dewanakl/undangan-api.git
     ```
 - Install package
     ```bash
@@ -46,6 +56,8 @@ See in file /routes/routes.php
   - DB_DRIV (type cloud dbms [ex. mysql or pgsql])
   - JWT_KEY [ex. 123]
   - HTTPS [true]
+  - DEBUG [false]
+  - LOG [false]
   - COOKIE [false]
   - APP_KEY [copy from your local env]
 - Click deployments tab in vercel project.
