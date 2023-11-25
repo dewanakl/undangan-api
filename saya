@@ -18,6 +18,6 @@ require_once __DIR__ . '/vendor/autoload.php';
  * Ini sangat simple.
  */
 
-exit(\Core\Kernel\Kernel::console(
+exit(\Core\Kernel\Kernel::cli(
     new \App\Kernel()
 )->run());
