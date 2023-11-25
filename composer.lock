@@ -130,12 +130,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/framework.git",
-                "reference": "1b770af7ef84ee48c1140aef549fa6a309f3a6df"
+                "reference": "fda68f9b20759377d1a6eb8bb33a93627de92b82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/framework/zipball/1b770af7ef84ee48c1140aef549fa6a309f3a6df",
-                "reference": "1b770af7ef84ee48c1140aef549fa6a309f3a6df",
+                "url": "https://api.github.com/repos/dewanakl/framework/zipball/fda68f9b20759377d1a6eb8bb33a93627de92b82",
+                "reference": "fda68f9b20759377d1a6eb8bb33a93627de92b82",
                 "shasum": ""
             },
             "require": {
@@ -180,7 +180,7 @@
                 "issues": "https://github.com/dewanakl/framework/issues",
                 "source": "https://github.com/dewanakl/framework"
             },
-            "time": "2023-11-25T07:07:23+00:00"
+            "time": "2023-11-25T07:38:33+00:00"
         },
         {
             "name": "psr/clock",
