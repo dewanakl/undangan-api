@@ -16,7 +16,7 @@ class JsonResponse extends Respond
             ],
             $code
         ));
-
+        $this->headers->set('Content-Type', 'application/json');
         $this->setCode($code);
 
         return $this;
@@ -32,7 +32,7 @@ class JsonResponse extends Respond
             ],
             $code
         ));
-
+        $this->headers->set('Content-Type', 'application/json');
         $this->setCode($code);
 
         return $this;
