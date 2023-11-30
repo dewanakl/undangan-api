@@ -19,30 +19,38 @@ See in file /routes/routes.php
 ## Play with this application
 
 Here are the commands to play with this application like tinker in laravel.
+For example you can get data from a database or insert, update, delete, etc.
+
 ```bash
 php saya play
 ```
-For example you can get data from a database or insert, update, delete, etc.
-This feature in development stage if you find any bugs, please open an issue in this repository.
-Thank you.
 
 ## Deployment on vercel
+
 - Clone or download this repository
+
     ```bash
     git clone https://github.com/dewanakl/undangan-api.git
     ```
+
 - Install package
+
     ```bash
     composer install
     ```
+
 - Create .env file
+
     ```bash
     cp .env.example .env
     ```
+
 - Create key application
+
     ```bash
     php saya key
     ```
+
 - Push on your github.
 - Create new project in vercel.
 - Import from your repository.
@@ -66,15 +74,21 @@ Thank you.
 - Finish.
 
 ## Get Started Project
+
 - Create a project with composer
+
     ```bash
     composer create-project kamu/kamu coba-app
     ```
+
 - Move the folder
+
     ```bash
     cd coba-app
     ```
+
 - Run in development server
+
     ```bash
     php saya coba
     ```
