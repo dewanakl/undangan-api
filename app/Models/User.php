@@ -18,6 +18,11 @@ final class User extends Model
         'updated_at',
     ];
 
+    public function __construct(array $data = [])
+    {
+        $this->fill($data);
+    }
+
     protected function fakes(): array
     {
         return [

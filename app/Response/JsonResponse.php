@@ -33,4 +33,24 @@ class JsonResponse extends Respond
 
         return $this;
     }
+
+    public function successOK(array|object $data): JsonResponse
+    {
+        return $this->success($data, Respond::HTTP_OK);
+    }
+
+    public function errorBadRequest(array|object $error): JsonResponse
+    {
+        return $this->error($error, Respond::HTTP_BAD_REQUEST);
+    }
+
+    public function errorNotFound(): JsonResponse
+    {
+        return $this->error([$this->codeHttpMessage(Respond::HTTP_NOT_FOUND)], Respond::HTTP_NOT_FOUND);
+    }
+
+    public function errorServer(): JsonResponse
+    {
+        return $this->error([$this->codeHttpMessage(Respond::HTTP_INTERNAL_SERVER_ERROR)], Respond::HTTP_INTERNAL_SERVER_ERROR);
+    }
 }

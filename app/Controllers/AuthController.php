@@ -21,11 +21,11 @@ class AuthController extends Controller
         ]);
 
         if ($valid->fails()) {
-            return $json->error($valid->messages(), Respond::HTTP_BAD_REQUEST);
+            return $json->errorBadRequest($valid->messages());
         }
 
         if (!Auth::attempt($valid->only(['email', 'password']))) {
-            return $json->error(['unauthorized'], Respond::HTTP_UNAUTHORIZED);
+            return $json->error([respond()->codeHttpMessage(Respond::HTTP_UNAUTHORIZED)], Respond::HTTP_UNAUTHORIZED);
         }
 
         $time = Time::factory()->getTimestamp();
@@ -34,15 +34,15 @@ class AuthController extends Controller
                 'iat' => $time,
                 'exp' => $time + (60 * 60),
                 'iss' => base_url(),
-                ...Auth::user()->only(['id', 'nama'])->toArray()
+                ...Auth::user()->only(['id', 'nama', 'email'])->toArray()
             ],
             env('JWT_KEY'),
             env('JWT_ALGO', 'HS256')
         );
 
-        return $json->success([
+        return $json->successOK([
             'token' => $token,
-            'user' => Auth::user()->only('nama')
-        ], Respond::HTTP_OK);
+            'user' => Auth::user()->only(['nama', 'email'])
+        ]);
     }
 }
