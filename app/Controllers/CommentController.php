@@ -225,6 +225,9 @@ class CommentController extends Controller
             'parent_id' => $valid->id
         ]);
 
-        return $this->json->successOK($comment->only(['nama', 'hadir', 'komentar', 'uuid', 'own', 'created_at']));
+        return $this->json->success(
+            $comment->only(['nama', 'hadir', 'komentar', 'uuid', 'own', 'created_at']),
+            Respond::HTTP_CREATED
+        );
     }
 }
