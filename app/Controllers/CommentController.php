@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Middleware\UuidMiddleware;
 use App\Repositories\CommentContract;
 use App\Repositories\LikeContract;
 use App\Response\JsonResponse;
@@ -42,22 +43,10 @@ class CommentController extends Controller
         ));
     }
 
+    #[UuidMiddleware]
     public function show(string $id): JsonResponse
     {
-        $valid = Validator::make(
-            [
-                'id' => $id
-            ],
-            [
-                'id' => ['required', 'str', 'trim', 'uuid', 'max:37']
-            ]
-        );
-
-        if ($valid->fails()) {
-            return $this->json->errorBadRequest($valid->messages());
-        }
-
-        $comment = $this->comment->getByUuid(Auth::id(), $valid->id);
+        $comment = $this->comment->getByUuid(Auth::id(), $id);
 
         if (!$comment->exist()) {
             return $this->json->errorNotFound();
@@ -66,22 +55,10 @@ class CommentController extends Controller
         return $this->json->successOK($comment->only(['nama', 'hadir', 'komentar', 'created_at']));
     }
 
+    #[UuidMiddleware]
     public function like(string $id, LikeContract $like): JsonResponse
     {
-        $valid = Validator::make(
-            [
-                'id' => $id
-            ],
-            [
-                'id' => ['required', 'str', 'trim', 'uuid', 'max:37']
-            ]
-        );
-
-        if ($valid->fails()) {
-            return $this->json->errorBadRequest($valid->messages());
-        }
-
-        $comment = $this->comment->getByUuid(Auth::id(), $valid->id);
+        $comment = $this->comment->getByUuid(Auth::id(), $id);
 
         if (!$comment->exist()) {
             return $this->json->errorNotFound();
@@ -93,52 +70,26 @@ class CommentController extends Controller
         );
     }
 
+    #[UuidMiddleware]
     public function unlike(string $id, LikeContract $like): JsonResponse
     {
-        $valid = Validator::make(
-            [
-                'id' => $id
-            ],
-            [
-                'id' => ['required', 'str', 'trim', 'uuid', 'max:37']
-            ]
-        );
-
-        if ($valid->fails()) {
-            return $this->json->errorBadRequest($valid->messages());
-        }
-
-        $like = $like->getByUuid(Auth::id(), $valid->id);
+        $like = $like->getByUuid(Auth::id(), $id);
 
         if (!$like->exist()) {
             return $this->json->errorNotFound();
         }
 
-        $status = $like->destroy();
-
-        if ($status == 1) {
+        if ($like->destroy() == 1) {
             return $this->json->successOK(['status' => true]);
         }
 
         return $this->json->errorServer();
     }
 
+    #[UuidMiddleware]
     public function destroy(string $id): JsonResponse
     {
-        $valid = Validator::make(
-            [
-                'id' => $id
-            ],
-            [
-                'id' => ['required', 'str', 'trim', 'uuid', 'max:37']
-            ]
-        );
-
-        if ($valid->fails()) {
-            return $this->json->errorBadRequest($valid->messages());
-        }
-
-        $comment = $this->comment->getByOwnid(Auth::id(), $valid->id);
+        $comment = $this->comment->getByOwnid(Auth::id(), $id);
 
         if (!$comment->exist()) {
             return $this->json->errorNotFound();
@@ -162,25 +113,19 @@ class CommentController extends Controller
         }
     }
 
+    #[UuidMiddleware]
     public function update(string $id, Request $request): JsonResponse
     {
-        $valid = Validator::make(
-            [
-                'id' => $id,
-                ...$request->only(['hadir', 'komentar'])
-            ],
-            [
-                'id' => ['required', 'str', 'trim', 'uuid', 'max:37'],
-                'hadir' => ['bool'],
-                'komentar' => ['required', 'str', 'max:500'],
-            ]
-        );
+        $valid = $this->validate($request, [
+            'hadir' => ['bool'],
+            'komentar' => ['required', 'str', 'max:500'],
+        ]);
 
         if ($valid->fails()) {
             return $this->json->errorBadRequest($valid->messages());
         }
 
-        $comment = $this->comment->getByOwnid(Auth::id(), $valid->id);
+        $comment = $this->comment->getByOwnid(Auth::id(), $id);
 
         if (!$comment->exist()) {
             return $this->json->errorNotFound();
