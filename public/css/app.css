@@ -1,4 +1,4 @@
-/*! tailwindcss v3.2.7 | MIT License | https://tailwindcss.com*/
+/*!tailwindcss v3.2.7 | MIT License | https://tailwindcss.com*/
 *,
 :after,
 :before {
@@ -288,8 +288,8 @@ video {
     margin: 0
 }
 
-.ml-2 {
-    margin-left: .5rem
+.mr-1 {
+    margin-right: .25rem
 }
 
 .mt-4 {
