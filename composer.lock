@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "370c9aef6ced1c352536c4c200e1dbe8",
+    "content-hash": "f1546739bfe72b9aa127418541723d00",
     "packages": [
         {
             "name": "brick/math",
@@ -126,16 +126,16 @@
         },
         {
             "name": "kamu/framework",
-            "version": "v3.1.5",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/framework.git",
-                "reference": "fe5d97e618a1f68055f7db14a7e1fa7423f527bb"
+                "reference": "aa91f88898bb0e92eae5160a76976d20c0a30ee0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/framework/zipball/fe5d97e618a1f68055f7db14a7e1fa7423f527bb",
-                "reference": "fe5d97e618a1f68055f7db14a7e1fa7423f527bb",
+                "url": "https://api.github.com/repos/dewanakl/framework/zipball/aa91f88898bb0e92eae5160a76976d20c0a30ee0",
+                "reference": "aa91f88898bb0e92eae5160a76976d20c0a30ee0",
                 "shasum": ""
             },
             "require": {
@@ -179,7 +179,7 @@
                 "issues": "https://github.com/dewanakl/framework/issues",
                 "source": "https://github.com/dewanakl/framework"
             },
-            "time": "2023-12-12T05:54:59+00:00"
+            "time": "2023-12-21T17:17:37+00:00"
         },
         {
             "name": "psr/clock",
