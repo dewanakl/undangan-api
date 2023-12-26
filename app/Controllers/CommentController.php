@@ -12,6 +12,7 @@ use Core\Routing\Controller;
 use Core\Http\Request;
 use Core\Http\Respond;
 use Core\Valid\Validator;
+use Kamu\Aman;
 use Throwable;
 
 class CommentController extends Controller
@@ -131,6 +132,8 @@ class CommentController extends Controller
             return $this->json->errorNotFound();
         }
 
+        $valid->komentar = Aman::factory()->masking($valid->komentar, ' * ');
+
         $status = $comment->only(['id', 'hadir', 'komentar'])
             ->fill($valid->only(['hadir', 'komentar']))
             ->save();
@@ -163,6 +166,8 @@ class CommentController extends Controller
         if ($valid->fails()) {
             return $this->json->errorBadRequest($valid->messages());
         }
+
+        $valid->komentar = Aman::factory()->masking($valid->komentar, ' * ');
 
         $comment = $this->comment->create([
             ...$valid->except(['id']),
