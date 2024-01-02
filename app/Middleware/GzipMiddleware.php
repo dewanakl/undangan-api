@@ -18,17 +18,17 @@ final class GzipMiddleware implements MiddlewareInterface
             return $response;
         }
 
-        $response = respond()->transform($response);
-
         if ($response instanceof Respond && $response->getCode() < 400 && $response->getCode() >= 300) {
             return $response;
         }
+
+        $response = respond()->transform($response);
 
         if (env('GZIP', 'true') != 'true') {
             return $response;
         }
 
-        if (!in_array('gzip', explode(', ', $request->server->get('HTTP_ACCEPT_ENCODING')))) {
+        if (!str_contains($request->server->get('HTTP_ACCEPT_ENCODING'), 'gzip')) {
             return $response;
         }
 
@@ -40,15 +40,11 @@ final class GzipMiddleware implements MiddlewareInterface
 
         $response->setContent($compressed);
 
-        if ($response->headers->has('Vary')) {
-            $vary = explode(', ', $response->headers->get('Vary'));
-            $vary = array_unique([...$vary, 'Accept-Encoding']);
-            $response->headers->set('Vary', join(', ', $vary));
-        } else {
-            $response->headers->set('Vary', 'Accept-Encoding');
-        }
+        $vary = (!$response->headers->has('Vary')) ? [] : explode(', ', $response->headers->get('Vary'));
+        $vary = array_unique([...$vary, 'Accept-Encoding']);
 
         $response->headers
+            ->set('Vary', join(', ', $vary))
             ->set('Content-Encoding', 'gzip')
             ->set('Content-Length', strlen($compressed));
 
