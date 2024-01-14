@@ -25,7 +25,7 @@ class AuthController extends Controller
         }
 
         if (!Auth::attempt($valid->only(['email', 'password']))) {
-            return $json->error([respond()->codeHttpMessage(Respond::HTTP_UNAUTHORIZED)], Respond::HTTP_UNAUTHORIZED);
+            return $json->error(Respond::HTTP_UNAUTHORIZED);
         }
 
         $time = Time::factory()->getTimestamp();

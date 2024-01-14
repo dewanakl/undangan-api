@@ -81,7 +81,7 @@ class CommentController extends Controller
         }
 
         if ($like->destroy() == 1) {
-            return $this->json->successOK(['status' => true]);
+            return $this->json->successStatusTrue();
         }
 
         return $this->json->errorServer();
@@ -105,7 +105,7 @@ class CommentController extends Controller
             });
 
             if ($status == 1) {
-                return $this->json->successOK(['status' => true]);
+                return $this->json->successStatusTrue();
             }
 
             return $this->json->errorServer();
@@ -139,7 +139,7 @@ class CommentController extends Controller
             ->save();
 
         if ($status == 1) {
-            return $this->json->successOK(['status' => true]);
+            return $this->json->successStatusTrue();
         }
 
         return $this->json->errorServer();
