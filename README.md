@@ -14,7 +14,10 @@ Dibantu dengan saya console untuk mempermudah dalam development aplikasi Anda.
 
 ## Api Spec
 
-See in file /routes/routes.php
+See in postman collection
+```url
+https://www.postman.com/dewanakl/workspace/undangan
+```
 
 ## Play with this application
 
