@@ -33,7 +33,7 @@ final class AuthMiddleware implements MiddlewareInterface
                 new Key(env('JWT_KEY'), env('JWT_ALGO', 'HS256'))
             )));
         } catch (Exception $e) {
-            return (new JsonResponse)->error([$e->getMessage()], Respond::HTTP_BAD_REQUEST);
+            return (new JsonResponse)->errorBadRequest([$e->getMessage()]);
         }
 
         return $next($request);
