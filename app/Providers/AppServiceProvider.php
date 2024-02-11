@@ -7,6 +7,7 @@ use App\Repositories\CommentRepositories;
 use App\Repositories\LikeContract;
 use App\Repositories\LikeRepositories;
 use Core\Facades\Provider;
+use Core\Http\Request;
 
 class AppServiceProvider extends Provider
 {
@@ -28,6 +29,8 @@ class AppServiceProvider extends Provider
      */
     public function booting()
     {
-        //
+        $request = $this->app->singleton(Request::class);
+        $request->ip = env('HTTP_CF_CONNECTING_IP') ? $request->server->get('HTTP_CF_CONNECTING_IP') : $request->ip();
+        $request->user_agent = $request->server->get('HTTP_USER_AGENT');
     }
 }

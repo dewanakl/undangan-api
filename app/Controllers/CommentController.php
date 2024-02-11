@@ -5,13 +5,13 @@ namespace App\Controllers;
 use App\Middleware\UuidMiddleware;
 use App\Repositories\CommentContract;
 use App\Repositories\LikeContract;
+use App\Request\InsertCommentRequest;
 use App\Response\JsonResponse;
 use Core\Auth\Auth;
 use Core\Database\DB;
 use Core\Routing\Controller;
 use Core\Http\Request;
 use Core\Http\Respond;
-use Core\Valid\Validator;
 use Kamu\Aman;
 use Throwable;
 
@@ -145,23 +145,9 @@ class CommentController extends Controller
         return $this->json->errorServer();
     }
 
-    public function create(Request $request): JsonResponse
+    public function create(InsertCommentRequest $request): JsonResponse
     {
-        $valid = Validator::make(
-            [
-                ...$request->only(['id', 'nama', 'hadir', 'komentar']),
-                'ip' => env('HTTP_CF_CONNECTING_IP') ? $request->server->get('HTTP_CF_CONNECTING_IP') : $request->ip(),
-                'user_agent' => $request->server->get('HTTP_USER_AGENT')
-            ],
-            [
-                'id' => ['nullable', 'str', 'trim', 'uuid', 'max:37'],
-                'nama' => ['required', 'str', 'trim', 'max:50'],
-                'hadir' => ['bool'],
-                'komentar' => ['required', 'str', 'max:500'],
-                'ip' => ['nullable', 'str', 'trim', 'max:50'],
-                'user_agent' => ['nullable', 'str', 'trim', 'max:500']
-            ]
-        );
+        $valid = $request->validated();
 
         if ($valid->fails()) {
             return $this->json->errorBadRequest($valid->messages());

@@ -2,23 +2,19 @@
 
 namespace App\Controllers;
 
+use App\Request\AuthRequest;
 use App\Response\JsonResponse;
 use Core\Auth\Auth;
 use Core\Routing\Controller;
-use Core\Http\Request;
 use Core\Http\Respond;
 use Core\Support\Time;
-use Core\Valid\Validator;
 use Firebase\JWT\JWT;
 
 class AuthController extends Controller
 {
-    public function login(Request $request, JsonResponse $json): JsonResponse
+    public function login(AuthRequest $request, JsonResponse $json): JsonResponse
     {
-        $valid = Validator::make($request->only(['email', 'password']), [
-            'email' => ['required', 'str', 'trim', 'min:5', 'max:30'],
-            'password' => ['required', 'str', 'trim', 'min:8', 'max:20']
-        ]);
+        $valid = $request->validated();
 
         if ($valid->fails()) {
             return $json->errorBadRequest($valid->messages());
