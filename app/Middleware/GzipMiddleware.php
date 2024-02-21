@@ -28,7 +28,7 @@ final class GzipMiddleware implements MiddlewareInterface
             return $response;
         }
 
-        if (!str_contains($request->server->get('HTTP_ACCEPT_ENCODING'), 'gzip')) {
+        if (!str_contains($request->server->get('HTTP_ACCEPT_ENCODING', ''), 'gzip')) {
             return $response;
         }
 
