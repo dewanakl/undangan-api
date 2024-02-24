@@ -32,6 +32,6 @@ class LikeRepositories implements LikeContract
 
     public function countLikeByUserID(int $id): int
     {
-        return Like::where('user_id', $id)->select('id')->count('id', 'likes')->first()->likes;
+        return Like::where('user_id', $id)->count('id', 'likes')->first()->likes;
     }
 }
