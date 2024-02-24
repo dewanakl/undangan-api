@@ -49,4 +49,9 @@ class CommentRepositories implements CommentContract
     {
         return Comment::where('parent_id', $uuid)->delete();
     }
+
+    public function countPresenceByUserID(int $id): Model
+    {
+        return Comment::where('user_id', $id)->select('hadir')->get();
+    }
 }

@@ -1,9 +1,12 @@
 <?php
 
-use App\Controllers\AuthController;
-use App\Controllers\CommentController;
+use App\Controllers\Api\AuthController;
+use App\Controllers\Api\CommentController;
+use App\Controllers\Api\DashboardController as ApiDashboardController;
+use App\Controllers\DashboardController;
 use App\Controllers\WelcomeController;
 use App\Middleware\AuthMiddleware;
+use App\Middleware\DashboardMiddleware;
 use Core\Routing\Route;
 
 /**
@@ -12,13 +15,26 @@ use Core\Routing\Route;
  */
 
 Route::get('/', WelcomeController::class);
+Route::get('/dashboard', DashboardController::class);
 
 Route::prefix('/api')->group(function () {
 
-    // Login
-    Route::prefix('/session')->group(function () {
-        Route::post('/', [AuthController::class, 'login']);
-        Route::options('/'); // Preflight request [/api/session]
+    // Dashboard
+    Route::prefix('/dashboard')->group(function () {
+        Route::prefix('/session')->group(function () {
+            Route::post('/', [AuthController::class, 'login']);
+            Route::options('/'); // Preflight request [/api/session]
+        });
+
+        Route::middleware([AuthMiddleware::class, DashboardMiddleware::class])->group(function () {
+            Route::get('/stats', [ApiDashboardController::class, 'stats']);
+            Route::options('/stats');
+            Route::get('/download', [ApiDashboardController::class, 'download']);
+
+            Route::get('/key', [ApiDashboardController::class, 'key']);
+            Route::put('/key', [ApiDashboardController::class, 'update']);
+            Route::options('/key');
+        });
     });
 
     // Comment

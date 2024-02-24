@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Api;
 
 use App\Request\AuthRequest;
 use App\Response\JsonResponse;
@@ -30,6 +30,7 @@ class AuthController extends Controller
                 'iat' => $time,
                 'exp' => $time + (60 * 60),
                 'iss' => base_url(),
+                'is_admin' => true,
                 ...Auth::user()->only(['id', 'nama', 'email'])->toArray()
             ],
             env('JWT_KEY'),

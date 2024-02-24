@@ -29,4 +29,9 @@ class LikeRepositories implements LikeContract
     {
         return Like::where('comment_id', $uuid)->delete();
     }
+
+    public function countLikeByUserID(int $id): int
+    {
+        return Like::where('user_id', $id)->select('id')->count('id', 'likes')->first()->likes;
+    }
 }
