@@ -20,21 +20,16 @@ class DashboardController extends Controller
 
     function stats(CommentContract $comment, LikeContract $like)
     {
-        $present = 0;
-        $absent = 0;
-
         $likes = $like->countLikeByUserID(Auth::id());
         $comments = $comment->countPresenceByUserID(Auth::id());
 
+        $present = 0;
+        $absent = 0;
         foreach ($comments as $presence) {
-            switch ($presence) {
-                case true:
-                    $present++;
-                    break;
-
-                case false:
-                    $absent++;
-                    break;
+            if ($presence->hadir) {
+                $present++;
+            } else {
+                $absent++;
             }
         }
 
