@@ -52,7 +52,13 @@ class CommentRepositories implements CommentContract
 
     public function countPresenceByUserID(int $id): Model
     {
-        return Comment::where('user_id', $id)->select('presence')->get();
+        return Comment::where('user_id', $id)
+            ->groupBy('user_id')
+            ->select([
+                'CAST(SUM(CASE WHEN presence = 1 THEN 1 ELSE 0 END) AS SIGNED) AS present_count',
+                'CAST(SUM(CASE WHEN presence = 0 THEN 1 ELSE 0 END) AS SIGNED) AS absent_count'
+            ])
+            ->first();
     }
 
     public function downloadCommentByUserID(int $id): Model

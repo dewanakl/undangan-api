@@ -27,19 +27,9 @@ class DashboardController extends Controller
         $likes = $like->countLikeByUserID(Auth::id());
         $comments = $comment->countPresenceByUserID(Auth::id());
 
-        $present = 0;
-        $absent = 0;
-        foreach ($comments as $presence) {
-            if ($presence->presence) {
-                $present++;
-            } else {
-                $absent++;
-            }
-        }
-
         return $this->json->successOK([
-            'present' => $present,
-            'absent' => $absent,
+            'present' => $comments->present_count,
+            'absent' => $comments->absent_count,
             'likes' => $likes,
         ]);
     }
