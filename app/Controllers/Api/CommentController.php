@@ -132,7 +132,7 @@ class CommentController extends Controller
             return $this->json->errorNotFound();
         }
 
-        if (Auth::user()->is_filter) {
+        if (!empty(Auth::user()->is_filter)) {
             $valid->comment = Aman::factory()->masking($valid->comment, ' * ');
         }
 
@@ -155,7 +155,7 @@ class CommentController extends Controller
             return $this->json->errorBadRequest($valid->messages());
         }
 
-        if (Auth::user()->is_filter) {
+        if (!empty(Auth::user()->is_filter)) {
             $valid->comment = Aman::factory()->masking($valid->comment, ' * ');
         }
 
