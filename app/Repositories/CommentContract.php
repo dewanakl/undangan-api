@@ -12,4 +12,5 @@ interface CommentContract
     public function getByOwnid(int $userid, string $ownid): Model;
     public function deleteByParrentID(string $uuid): int;
     public function countPresenceByUserID(int $id): Model;
+    public function downloadCommentByUserID(int $id): Model;
 }

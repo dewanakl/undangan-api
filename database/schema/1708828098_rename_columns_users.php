@@ -14,11 +14,9 @@ return new class implements Migration
     public function up()
     {
         Schema::table('users', function (Table $table) {
-            $table->addColumn(function ($table) {
-
-                $table->string('access_key', 50)->nullable()->unique();
-                $table->boolean('is_filter')->nullable()->default(true);
-            });
+            if ($table->checkColumn('nama')) {
+                $table->renameColumn('nama', 'name');
+            }
         });
     }
 
@@ -30,8 +28,9 @@ return new class implements Migration
     public function down()
     {
         Schema::table('users', function (Table $table) {
-            $table->dropColumn('access_key');
-            $table->dropColumn('is_filter');
+            if ($table->checkColumn('name')) {
+                $table->renameColumn('name', 'nama');
+            }
         });
     }
 };

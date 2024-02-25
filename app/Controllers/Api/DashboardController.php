@@ -3,11 +3,15 @@
 namespace App\Controllers\Api;
 
 use App\Repositories\CommentContract;
+use App\Repositories\CommentRepositories;
 use App\Repositories\LikeContract;
+use App\Request\UpdateUserRequest;
 use App\Response\JsonResponse;
 use Core\Auth\Auth;
 use Core\Routing\Controller;
 use Core\Http\Request;
+use Core\Http\Stream;
+use Core\Valid\Hash;
 
 class DashboardController extends Controller
 {
@@ -18,7 +22,7 @@ class DashboardController extends Controller
         $this->json = $json;
     }
 
-    function stats(CommentContract $comment, LikeContract $like)
+    function stats(CommentContract $comment, LikeContract $like): JsonResponse
     {
         $likes = $like->countLikeByUserID(Auth::id());
         $comments = $comment->countPresenceByUserID(Auth::id());
@@ -40,5 +44,93 @@ class DashboardController extends Controller
                 'likes' => $likes
             ]
         ]);
+    }
+
+    public function key(): JsonResponse
+    {
+        return $this->json->successOK([
+            'key' => Auth::user()->refresh()->access_key
+        ]);
+    }
+
+    public function rotate(): JsonResponse
+    {
+        $status = Auth::user()
+            ->only('id')
+            ->fill([
+                'access_key' => Hash::rand(25)
+            ])
+            ->save();
+
+        if ($status == 1) {
+            return $this->json->successStatusTrue();
+        }
+
+        return $this->json->errorServer();
+    }
+
+    public function user(): JsonResponse
+    {
+        return $this->json->successOK([
+            'user' => Auth::user()->refresh()
+        ]);
+    }
+
+    public function update(UpdateUserRequest $request): JsonResponse
+    {
+        $valid = $request->validated();
+
+        if ($valid->fails()) {
+            return $this->json->errorBadRequest($valid->messages());
+        }
+
+        $user = Auth::user()->only('id');
+
+        if (!empty($valid->name)) {
+            $user->name = $valid->name;
+        }
+
+        if (!empty($valid->filter)) {
+            $user->is_filter = $valid->filter;
+        }
+
+        if ($valid->get('old_password') && $valid->get('new_password')) {
+            if (!Hash::check($valid->get('old_password'), Auth::user()->refresh()->password)) {
+                return $this->json->errorBadRequest(['password not match.']);
+            }
+
+            $user->password = Hash::make($valid->get('new_password'));
+        }
+
+        $status = $user->save();
+        if ($status == 1) {
+            return $this->json->successStatusTrue();
+        }
+
+        return $this->json->errorServer();
+    }
+
+    public function download(Stream $stream, CommentRepositories $comment): Stream
+    {
+        fputcsv($stream->getStream(), [
+            'uuid',
+            'suka',
+            'nama',
+            'hadir',
+            'komentar',
+            'ip_address',
+            'user_agent',
+            'created_at',
+            'parent_id'
+        ]);
+
+        foreach ($comment->downloadCommentByUserID(Auth::id()) as $value) {
+            fputcsv(
+                $stream->getStream(),
+                array_values(get_object_vars($value))
+            );
+        }
+
+        return $stream->create(sprintf('backup_comments_%s.csv', now('y-m-d_H:i:s')))->download();
     }
 }

@@ -36,7 +36,7 @@ final class AuthMiddleware implements MiddlewareInterface
 
         $valid = Validator::make(
             [
-                'key' => $request->server->get('HTTP_ACCESS_KEY')
+                'key' => $request->server->get('HTTP_X_ACCESS_KEY')
             ],
             [
                 'key' => ['required', 'str', 'trim', 'alpha_num', 'min:45', 'max:50']
@@ -47,7 +47,7 @@ final class AuthMiddleware implements MiddlewareInterface
             return (new JsonResponse)->errorBadRequest($valid->messages());
         }
 
-        $user = User::where('key', $valid->key)->limit(1)->first();
+        $user = User::where('access_key', $valid->key)->limit(1)->first();
         if ($user) {
             Auth::login($user);
             return $next($request);

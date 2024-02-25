@@ -132,7 +132,9 @@ class CommentController extends Controller
             return $this->json->errorNotFound();
         }
 
-        $valid->komentar = Aman::factory()->masking($valid->komentar, ' * ');
+        if (Auth::user()->is_filter) {
+            $valid->komentar = Aman::factory()->masking($valid->komentar, ' * ');
+        }
 
         $status = $comment->only(['id', 'hadir', 'komentar'])
             ->fill($valid->only(['hadir', 'komentar']))
@@ -153,12 +155,15 @@ class CommentController extends Controller
             return $this->json->errorBadRequest($valid->messages());
         }
 
-        $valid->komentar = Aman::factory()->masking($valid->komentar, ' * ');
+        if (Auth::user()->is_filter) {
+            $valid->komentar = Aman::factory()->masking($valid->komentar, ' * ');
+        }
 
         $comment = $this->comment->create([
             ...$valid->except(['id']),
             'user_id' => Auth::id(),
-            'parent_id' => $valid->id
+            'parent_id' => $valid->id,
+            'is_admin' => !empty(auth()->user()->is_admin)
         ]);
 
         return $this->json->success(

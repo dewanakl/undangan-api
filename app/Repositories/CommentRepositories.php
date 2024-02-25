@@ -20,7 +20,7 @@ class CommentRepositories implements CommentContract
     public function getAll(int $userid, int $limit, int $offset): Model
     {
         return Comment::with('comments')
-            ->select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
+            ->select(['uuid', 'nama', 'hadir', 'komentar', 'is_admin', 'created_at'])
             ->where('user_id', $userid)
             ->whereNull('parent_id')
             ->orderBy('id', 'DESC')
@@ -53,5 +53,33 @@ class CommentRepositories implements CommentContract
     public function countPresenceByUserID(int $id): Model
     {
         return Comment::where('user_id', $id)->select('hadir')->get();
+    }
+
+    public function downloadCommentByUserID(int $id): Model
+    {
+        return Comment::leftJoin('likes', 'comments.uuid', 'likes.comment_id')
+            ->where('comments.user_id', $id)
+            ->groupBy([
+                'comments.uuid',
+                'comments.nama',
+                'comments.hadir',
+                'comments.komentar',
+                'comments.ip',
+                'comments.user_agent',
+                'comments.created_at',
+                'comments.parent_id'
+            ])
+            ->select([
+                'comments.uuid',
+                'count(likes.id) as suka',
+                'comments.nama',
+                'comments.hadir',
+                'comments.komentar',
+                'comments.ip',
+                'comments.user_agent',
+                'comments.created_at as dibuat',
+                'comments.parent_id'
+            ])
+            ->get();
     }
 }

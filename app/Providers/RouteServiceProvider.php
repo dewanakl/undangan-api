@@ -2,12 +2,21 @@
 
 namespace App\Providers;
 
+use App\Middleware\CookieMiddleware;
+use App\Middleware\CsrfMiddleware;
 use Core\Facades\Provider;
 use Core\Routing\Route;
 use Core\Routing\Router;
 
 class RouteServiceProvider extends Provider
 {
+    /**
+     * Prefix api.
+     *
+     * @var static $API_PREFIX
+     */
+    public static $API_PREFIX = '/api';
+
     /**
      * Jalankan sewaktu aplikasi dinyalakan.
      *
@@ -16,6 +25,14 @@ class RouteServiceProvider extends Provider
     public function booting()
     {
         $this->app->singleton(Router::class);
-        Route::setRouteFromCacheIfExist();
+        if (!Route::setRouteFromCacheIfExist()) {
+            Route::middleware(CsrfMiddleware::class)->group(function () {
+                Route::setRouteFromFile();
+            });
+
+            Route::prefix(static::$API_PREFIX)->middleware(CookieMiddleware::class)->group(function () {
+                require_once base_path('/routes/api.php');
+            });
+        }
     }
 }

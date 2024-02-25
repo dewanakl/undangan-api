@@ -21,7 +21,7 @@ final class Comment extends Model
             'parent_id',
             'uuid',
             function (Query $query): Query {
-                return $query->select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])->orderBy('id');
+                return $query->select(['uuid', 'nama', 'hadir', 'komentar', 'is_admin', 'created_at'])->orderBy('id');
             }
         )->as('comments')->with($this->likes())->recursive();
     }

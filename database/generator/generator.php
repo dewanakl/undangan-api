@@ -14,8 +14,10 @@ return new class implements Generator
     public function run()
     {
         User::create([
-            'nama' => 'User',
+            'name' => 'User',
             'email' => 'user@example.com',
+            'is_filter' => true,
+            'access_key' => Hash::rand(25),
             'password' => Hash::make('12345678')
         ]);
     }
