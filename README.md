@@ -71,6 +71,7 @@ php saya play
   - HTTPS [true]
   - DEBUG [false]
   - LOG [false]
+  - COOKIE [false]
   - APP_KEY [copy from your local env]
 - Click deployments tab in vercel project.
 - Click the most recent deploy.
