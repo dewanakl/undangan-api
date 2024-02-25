@@ -17,6 +17,6 @@ final class DashboardMiddleware implements MiddlewareInterface
         }
 
         NotFoundException::json();
-        not_found();
+        throw new NotFoundException;
     }
 }

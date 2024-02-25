@@ -20,7 +20,7 @@ class CommentRepositories implements CommentContract
     public function getAll(int $userid, int $limit, int $offset): Model
     {
         return Comment::with('comments')
-            ->select(['uuid', 'name', 'presence', 'comment', 'is_admin', 'created_at'])
+            ->select(['uuid', 'name', 'presence', 'comment', 'is_admin', 'created_at', ...(!empty(auth()->user()->is_admin) ? ['ip', 'user_agent'] : [])])
             ->where('user_id', $userid)
             ->whereNull('parent_id')
             ->orderBy('id', 'DESC')
@@ -45,7 +45,7 @@ class CommentRepositories implements CommentContract
             ->first();
     }
 
-    public function deleteByParrentID(string $uuid): int
+    public function deleteByParentID(string $uuid): int
     {
         return Comment::where('parent_id', $uuid)->delete();
     }

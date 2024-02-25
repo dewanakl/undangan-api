@@ -13,7 +13,7 @@ class RouteServiceProvider extends Provider
     /**
      * Prefix api.
      *
-     * @var static $API_PREFIX
+     * @var string $API_PREFIX
      */
     public static $API_PREFIX = '/api';
 

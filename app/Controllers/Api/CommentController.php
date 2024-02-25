@@ -99,7 +99,7 @@ class CommentController extends Controller
         try {
             $status = DB::transaction(function (LikeContract $like) use ($comment): int {
                 $like->deleteByCommentID($comment->uuid);
-                $this->comment->deleteByParrentID($comment->uuid);
+                $this->comment->deleteByParentID($comment->uuid);
 
                 return $comment->destroy();
             });
