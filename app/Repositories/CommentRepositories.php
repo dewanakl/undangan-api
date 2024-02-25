@@ -20,7 +20,7 @@ class CommentRepositories implements CommentContract
     public function getAll(int $userid, int $limit, int $offset): Model
     {
         return Comment::with('comments')
-            ->select(['uuid', 'nama', 'hadir', 'komentar', 'is_admin', 'created_at'])
+            ->select(['uuid', 'name', 'presence', 'comment', 'is_admin', 'created_at'])
             ->where('user_id', $userid)
             ->whereNull('parent_id')
             ->orderBy('id', 'DESC')
@@ -52,7 +52,7 @@ class CommentRepositories implements CommentContract
 
     public function countPresenceByUserID(int $id): Model
     {
-        return Comment::where('user_id', $id)->select('hadir')->get();
+        return Comment::where('user_id', $id)->select('presence')->get();
     }
 
     public function downloadCommentByUserID(int $id): Model
@@ -61,9 +61,9 @@ class CommentRepositories implements CommentContract
             ->where('comments.user_id', $id)
             ->groupBy([
                 'comments.uuid',
-                'comments.nama',
-                'comments.hadir',
-                'comments.komentar',
+                'comments.name',
+                'comments.presence',
+                'comments.comment',
                 'comments.ip',
                 'comments.user_agent',
                 'comments.created_at',
@@ -71,13 +71,13 @@ class CommentRepositories implements CommentContract
             ])
             ->select([
                 'comments.uuid',
-                'count(likes.id) as suka',
-                'comments.nama',
-                'comments.hadir',
-                'comments.komentar',
+                'count(likes.id) as is_like',
+                'comments.name',
+                'comments.presence',
+                'comments.comment',
                 'comments.ip',
                 'comments.user_agent',
-                'comments.created_at as dibuat',
+                'comments.created_at as is_created',
                 'comments.parent_id'
             ])
             ->get();

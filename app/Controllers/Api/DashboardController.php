@@ -30,7 +30,7 @@ class DashboardController extends Controller
         $present = 0;
         $absent = 0;
         foreach ($comments as $presence) {
-            if ($presence->hadir) {
+            if ($presence->presence) {
                 $present++;
             } else {
                 $absent++;
@@ -38,18 +38,9 @@ class DashboardController extends Controller
         }
 
         return $this->json->successOK([
-            'stats' => [
-                'present' => $present,
-                'absent' => $absent,
-                'likes' => $likes
-            ]
-        ]);
-    }
-
-    public function key(): JsonResponse
-    {
-        return $this->json->successOK([
-            'key' => Auth::user()->refresh()->access_key
+            'present' => $present,
+            'absent' => $absent,
+            'likes' => $likes,
         ]);
     }
 
@@ -71,9 +62,7 @@ class DashboardController extends Controller
 
     public function user(): JsonResponse
     {
-        return $this->json->successOK([
-            'user' => Auth::user()->refresh()
-        ]);
+        return $this->json->successOK(Auth::user()->refresh()->except('password'));
     }
 
     public function update(UpdateUserRequest $request): JsonResponse
@@ -94,7 +83,7 @@ class DashboardController extends Controller
             $user->is_filter = $valid->filter;
         }
 
-        if ($valid->get('old_password') && $valid->get('new_password')) {
+        if (!empty($valid->get('old_password')) && !empty($valid->get('new_password'))) {
             if (!Hash::check($valid->get('old_password'), Auth::user()->refresh()->password)) {
                 return $this->json->errorBadRequest(['password not match.']);
             }
@@ -103,7 +92,7 @@ class DashboardController extends Controller
         }
 
         $status = $user->save();
-        if ($status == 1) {
+        if ($status <= 1) {
             return $this->json->successStatusTrue();
         }
 
@@ -114,14 +103,14 @@ class DashboardController extends Controller
     {
         fputcsv($stream->getStream(), [
             'uuid',
-            'suka',
-            'nama',
-            'hadir',
-            'komentar',
+            'like',
+            'name',
+            'presence',
+            'comment',
             'ip_address',
             'user_agent',
             'created_at',
-            'parent_id'
+            'parent_id',
         ]);
 
         foreach ($comment->downloadCommentByUserID(Auth::id()) as $value) {

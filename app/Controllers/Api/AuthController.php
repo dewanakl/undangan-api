@@ -31,7 +31,7 @@ class AuthController extends Controller
                 'exp' => $time + (60 * 60),
                 'iss' => base_url(),
                 'is_admin' => true,
-                ...Auth::user()->only(['id', 'nama', 'email'])->toArray()
+                ...Auth::user()->only(['id', 'name', 'email'])->toArray()
             ],
             env('JWT_KEY'),
             env('JWT_ALGO', 'HS256')
@@ -39,7 +39,7 @@ class AuthController extends Controller
 
         return $json->successOK([
             'token' => $token,
-            'user' => Auth::user()->only(['nama', 'email'])
+            'user' => Auth::user()->only(['name', 'email'])
         ]);
     }
 }

@@ -25,7 +25,6 @@ Route::prefix('/dashboard')->group(function () {
         Route::get('/stats', [ApiDashboardController::class, 'stats']);
         Route::options('/stats');
 
-        Route::get('/key', [ApiDashboardController::class, 'key']);
         Route::put('/key', [ApiDashboardController::class, 'rotate']);
         Route::options('/key');
 

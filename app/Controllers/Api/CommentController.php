@@ -53,7 +53,7 @@ class CommentController extends Controller
             return $this->json->errorNotFound();
         }
 
-        return $this->json->successOK($comment->only(['nama', 'hadir', 'komentar', 'created_at']));
+        return $this->json->successOK($comment->only(['name', 'presence', 'comment', 'created_at']));
     }
 
     #[UuidMiddleware]
@@ -118,8 +118,8 @@ class CommentController extends Controller
     public function update(string $id, Request $request): JsonResponse
     {
         $valid = $this->validate($request, [
-            'hadir' => ['bool'],
-            'komentar' => ['required', 'str', 'max:500'],
+            'presence' => ['bool'],
+            'comment' => ['required', 'str', 'max:500'],
         ]);
 
         if ($valid->fails()) {
@@ -133,11 +133,11 @@ class CommentController extends Controller
         }
 
         if (Auth::user()->is_filter) {
-            $valid->komentar = Aman::factory()->masking($valid->komentar, ' * ');
+            $valid->comment = Aman::factory()->masking($valid->comment, ' * ');
         }
 
-        $status = $comment->only(['id', 'hadir', 'komentar'])
-            ->fill($valid->only(['hadir', 'komentar']))
+        $status = $comment->only(['id', 'presence', 'comment'])
+            ->fill($valid->only(['presence', 'comment']))
             ->save();
 
         if ($status == 1) {
@@ -156,7 +156,7 @@ class CommentController extends Controller
         }
 
         if (Auth::user()->is_filter) {
-            $valid->komentar = Aman::factory()->masking($valid->komentar, ' * ');
+            $valid->comment = Aman::factory()->masking($valid->comment, ' * ');
         }
 
         $comment = $this->comment->create([
@@ -167,7 +167,7 @@ class CommentController extends Controller
         ]);
 
         return $this->json->success(
-            $comment->only(['nama', 'hadir', 'komentar', 'uuid', 'own', 'created_at']),
+            $comment->only(['name', 'presence', 'comment', 'uuid', 'own', 'created_at']),
             Respond::HTTP_CREATED
         );
     }
