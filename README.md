@@ -1,7 +1,9 @@
 <p align="center"><img src="https://raw.githubusercontent.com/dewanakl/Kamu/main/public/kamu.png" width="200" alt="kamu"></p>
 
 <p align="center">
+<a href="https://php.net"><img src="https://img.shields.io/packagist/dependency-v/kamu/framework/php.svg" alt="PHP Programming Language"></a>
 <a href="https://packagist.org/packages/kamu/framework"><img src="https://img.shields.io/packagist/dt/kamu/framework" alt="Total Downloads"></a>
+<a href="https://github.com/dewanakl/framework"><img src="https://img.shields.io/github/repo-size/dewanakl/framework" alt="repo size"></a>
 <a href="https://packagist.org/packages/kamu/framework"><img src="https://img.shields.io/packagist/v/kamu/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/kamu/framework"><img src="https://img.shields.io/packagist/l/kamu/framework" alt="License"></a>
 </p>
@@ -69,12 +71,11 @@ php saya play
   - HTTPS [true]
   - DEBUG [false]
   - LOG [false]
-  - COOKIE [false]
   - APP_KEY [copy from your local env]
 - Click deployments tab in vercel project.
 - Click the most recent deploy.
 - Click dot three and redeploy.
-- Finish.
+- Done.
 
 ## Get Started Project
 
