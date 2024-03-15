@@ -10,24 +10,13 @@
 
 ## About Kamu
 
-Kamu adalah PHP framework yang sangat sederhana. Saking sederhananya, serasa di localhost!!.
-<br>
-Dibantu dengan saya console untuk mempermudah dalam development aplikasi Anda.
+"Kamu" merupakan PHP framework yang sangat simpel, memberikan pengalaman seolah-olah berada di localhost meskipun dalam mode production. Dibantu dengan "Saya" konsol yang membantu pengembangan aplikasi secara menarik dan efisien.
 
 ## Api Spec
 
 See in postman collection
 ```url
 https://www.postman.com/dewanakl/workspace/undangan/folder/20716209-d9635b26-4e88-4fc9-bd7c-7de3da986556?ctx=documentation
-```
-
-## Play with this application
-
-Here are the commands to play with this application like tinker in laravel.
-For example you can get data from a database or insert, update, delete, etc.
-
-```bash
-php saya play
 ```
 
 ## Deployment on vercel
