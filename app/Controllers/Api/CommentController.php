@@ -53,7 +53,7 @@ class CommentController extends Controller
             return $this->json->errorNotFound();
         }
 
-        return $this->json->successOK($comment->only(['name', 'presence', 'comment', 'created_at']));
+        return $this->json->successOK($comment->only(['name', 'presence', 'comment', 'is_admin', 'created_at']));
     }
 
     #[UuidMiddleware]
@@ -90,7 +90,7 @@ class CommentController extends Controller
     #[UuidMiddleware]
     public function destroy(string $id): JsonResponse
     {
-        $comment = $this->comment->getByOwnid(Auth::id(), $id);
+        $comment = $this->comment->getByOwnId(Auth::id(), $id);
 
         if (!$comment->exist()) {
             return $this->json->errorNotFound();
@@ -126,7 +126,7 @@ class CommentController extends Controller
             return $this->json->errorBadRequest($valid->messages());
         }
 
-        $comment = $this->comment->getByOwnid(Auth::id(), $id);
+        $comment = $this->comment->getByOwnId(Auth::id(), $id);
 
         if (!$comment->exist()) {
             return $this->json->errorNotFound();

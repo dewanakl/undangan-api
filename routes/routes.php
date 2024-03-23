@@ -1,6 +1,5 @@
 <?php
 
-use App\Controllers\DashboardController;
 use App\Controllers\WelcomeController;
 use Core\Routing\Route;
 
@@ -10,4 +9,3 @@ use Core\Routing\Route;
  */
 
 Route::get('/', WelcomeController::class);
-Route::get('/dashboard', DashboardController::class);

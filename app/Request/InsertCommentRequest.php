@@ -15,7 +15,7 @@ class InsertCommentRequest extends Form
     {
         return [
             'id' => ['nullable', 'str', 'trim', 'uuid', 'max:37'],
-            'name' => ['required', 'str', 'trim', 'max:50'],
+            'name' => ['required', 'str', 'trim', 'max:40'],
             'presence' => ['bool'],
             'comment' => ['required', 'str', 'max:500'],
             'ip' => ['nullable', 'str', 'trim', 'max:50'],

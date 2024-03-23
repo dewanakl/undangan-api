@@ -48,11 +48,11 @@ final class AuthMiddleware implements MiddlewareInterface
         }
 
         $user = User::where('access_key', $valid->key)->limit(1)->first();
-        if ($user->exist()) {
-            Auth::login($user);
-            return $next($request);
+        if (!$user->exist()) {
+            return (new JsonResponse)->errorBadRequest(['user not found.']);
         }
 
-        return (new JsonResponse)->errorBadRequest(['user not found.']);
+        Auth::login($user);
+        return $next($request);
     }
 }

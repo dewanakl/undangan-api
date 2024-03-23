@@ -17,11 +17,15 @@ return new class implements Migration
             if ($table->checkColumn('nama')) {
                 $table->renameColumn('nama', 'name');
             }
-            
+        });
+
+        Schema::table('comments', function (Table $table) {
             if ($table->checkColumn('hadir')) {
                 $table->renameColumn('hadir', 'presence');
             }
+        });
 
+        Schema::table('comments', function (Table $table) {
             if ($table->checkColumn('komentar')) {
                 $table->renameColumn('komentar', 'comment');
             }
@@ -39,11 +43,15 @@ return new class implements Migration
             if ($table->checkColumn('name')) {
                 $table->renameColumn('name', 'nama');
             }
+        });
 
+        Schema::table('comments', function (Table $table) {
             if ($table->checkColumn('presence')) {
                 $table->renameColumn('presence', 'hadir');
             }
+        });
 
+        Schema::table('comments', function (Table $table) {
             if ($table->checkColumn('comment')) {
                 $table->renameColumn('comment', 'komentar');
             }
