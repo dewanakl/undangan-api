@@ -90,6 +90,10 @@ class CommentController extends Controller
     #[UuidMiddleware]
     public function destroy(string $id): JsonResponse
     {
+        if (!boolval(Auth::user()->can_delete) && !boolval(Auth::user()->is_admin)) {
+            return $this->json->errorBadRequest(['permission is not allowed']);
+        }
+
         $comment = $this->comment->getByOwnId(Auth::id(), $id);
 
         if (!$comment->exist()) {
@@ -117,9 +121,13 @@ class CommentController extends Controller
     #[UuidMiddleware]
     public function update(string $id, Request $request): JsonResponse
     {
+        if (!boolval(Auth::user()->can_edit) && !boolval(Auth::user()->is_admin)) {
+            return $this->json->errorBadRequest(['permission is not allowed']);
+        }
+
         $valid = $this->validate($request, [
             'presence' => ['bool'],
-            'comment' => ['required', 'str', 'max:500'],
+            'comment' => ['required', 'str', 'min:3', 'max:500'],
         ]);
 
         if ($valid->fails()) {
@@ -150,6 +158,10 @@ class CommentController extends Controller
     public function create(InsertCommentRequest $request): JsonResponse
     {
         $valid = $request->validated();
+
+        if (!boolval(Auth::user()->can_reply) && $valid->get('id') !== null && !boolval(Auth::user()->is_admin)) {
+            return $this->json->errorBadRequest(['permission is not allowed']);
+        }
 
         if ($valid->fails()) {
             return $this->json->errorBadRequest($valid->messages());

@@ -14,9 +14,9 @@ class UpdateUserRequest extends Form
     public function rules(): array
     {
         return [
-            'name' => ['nullable', 'str', 'trim', 'max:50'],
-            'old_password' => ['nullable', 'str', 'trim', 'max:50'],
-            'new_password' => ['nullable', 'str', 'trim', 'max:50']
+            'name' => ['nullable', 'str', 'trim', 'min:5', 'max:40'],
+            'old_password' => ['nullable', 'str', 'trim', 'min:8', 'max:20'],
+            'new_password' => ['nullable', 'str', 'trim', 'min:8', 'max:20']
         ];
     }
 }

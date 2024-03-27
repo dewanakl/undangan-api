@@ -57,12 +57,7 @@ class DashboardController extends Controller
 
     public function config(): JsonResponse
     {
-        return $this->json->successOK([
-            ...Auth::user()->only('name'),
-            'can_edit' => true,
-            'can_delete' => true,
-            'can_reply' => true,
-        ]);
+        return $this->json->successOK(Auth::user()->refresh()->only(['name', 'can_edit', 'can_delete', 'can_reply']));
     }
 
     public function update(UpdateUserRequest $request): JsonResponse
@@ -81,6 +76,18 @@ class DashboardController extends Controller
 
         if ($valid->get('filter') !== null) {
             $user->is_filter = boolval($valid->filter);
+        }
+
+        if ($valid->get('can_edit') !== null) {
+            $user->can_edit = boolval($valid->can_edit);
+        }
+
+        if ($valid->get('can_delete') !== null) {
+            $user->can_delete = boolval($valid->can_delete);
+        }
+
+        if ($valid->get('can_reply') !== null) {
+            $user->can_reply = boolval($valid->can_reply);
         }
 
         if (!empty($valid->get('old_password')) && !empty($valid->get('new_password'))) {
