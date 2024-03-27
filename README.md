@@ -16,7 +16,7 @@
 
 See in postman collection
 ```url
-https://www.postman.com/dewanakl/workspace/undangan/folder/20716209-16aabb2e-2200-45c6-9cb9-8f7433d529a4?ctx=documentation
+https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362-b4dc-4c02-8904-d90749a40842?action=share
 ```
 
 ## Run without docker
