@@ -16,7 +16,7 @@
 
 See in postman collection
 ```url
-https://www.postman.com/dewanakl/workspace/undangan/folder/20716209-d9635b26-4e88-4fc9-bd7c-7de3da986556?ctx=documentation
+https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-910c50b5-6c97-40bd-a67d-16336734370f?action=share
 ```
 
 ## Deployment on vercel
