@@ -17,9 +17,10 @@ final class CorsMiddleware implements MiddlewareInterface
 
         $header = respond()->getHeader();
         $header->set('Access-Control-Allow-Origin', '*');
+        $header->set('Access-Control-Expose-Headers', 'Authorization, Content-Type, Cache-Control, Content-Disposition');
 
-        $vary = (!$header->has('Vary')) ? [] : explode(', ', $header->get('Vary'));
-        $vary = array_unique([...$vary, 'Accept', 'Access-Control-Request-Method', 'Access-Control-Request-Headers', 'Origin', 'User-Agent']);
+        $vary = $header->has('Vary') ? explode(', ', $header->get('Vary')) : [];
+        $vary = array_unique([...$vary, 'Accept', 'Origin', 'User-Agent', 'Access-Control-Request-Method', 'Access-Control-Request-Headers']);
         $header->set('Vary', join(', ', $vary));
 
         if (!$request->method(Request::OPTIONS)) {
@@ -39,7 +40,7 @@ final class CorsMiddleware implements MiddlewareInterface
 
         $header->set(
             'Access-Control-Allow-Headers',
-            $request->server->get('HTTP_ACCESS_CONTROL_REQUEST_HEADERS', 'Accept, Authorization, Content-Type, Origin, Token, User-Agent')
+            $request->server->get('HTTP_ACCESS_CONTROL_REQUEST_HEADERS', 'Origin, Content-Type, Accept, Authorization, Accept-Language')
         );
 
         return respond()->setCode(Respond::HTTP_NO_CONTENT);

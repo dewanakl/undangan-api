@@ -15,7 +15,6 @@ class UpdateUserRequest extends Form
     {
         return [
             'name' => ['nullable', 'str', 'trim', 'max:50'],
-            'filter' => ['nullable', 'bool'],
             'old_password' => ['nullable', 'str', 'trim', 'max:50'],
             'new_password' => ['nullable', 'str', 'trim', 'max:50']
         ];

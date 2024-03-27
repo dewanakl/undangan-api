@@ -19,6 +19,72 @@ See in postman collection
 https://www.postman.com/dewanakl/workspace/undangan/folder/20716209-16aabb2e-2200-45c6-9cb9-8f7433d529a4?ctx=documentation
 ```
 
+## Run without docker
+
+- Create file env
+
+    ```bash
+    cp .env.example .env
+    ```
+
+- Install package
+
+    ```bash
+    composer install
+    ```
+
+- Create key application
+
+    ```bash
+    php saya key
+    ```
+
+- Run in development server
+
+    ```bash
+    php saya coba
+    ```
+
+## Run with docker
+
+- Create file env
+
+    ```bash
+    cp .env.example .env
+    ```
+
+- Change and customize env file
+
+    ```text
+    BASEURL=https://yourdomain:8000/
+
+    DB_DRIV=pgsql
+    DB_HOST=db
+    DB_PORT=5432
+    DB_NAME=undangan
+    DB_USER=root
+    DB_PASS=12345678
+
+    JWT_KEY=12345678
+    ```
+
+- Build and run image
+
+    ```bash
+    docker compose up --build -d
+    ```
+
+- Execute migration
+
+    ```bash
+    docker exec -ti container-id /bin/bash
+    ```
+
+    ```bash
+    php saya migrasi --gen
+    ```
+
+
 ## Deployment on vercel
 
 - Clone or download this repository

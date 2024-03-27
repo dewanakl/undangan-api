@@ -55,6 +55,16 @@ class DashboardController extends Controller
         return $this->json->successOK(Auth::user()->refresh()->except('password'));
     }
 
+    public function config(): JsonResponse
+    {
+        return $this->json->successOK([
+            ...Auth::user()->only('name'),
+            'can_edit' => true,
+            'can_delete' => true,
+            'can_reply' => true,
+        ]);
+    }
+
     public function update(UpdateUserRequest $request): JsonResponse
     {
         $valid = $request->validated();
@@ -69,8 +79,8 @@ class DashboardController extends Controller
             $user->name = $valid->name;
         }
 
-        if (!empty($valid->filter)) {
-            $user->is_filter = $valid->filter;
+        if ($valid->get('filter') !== null) {
+            $user->is_filter = boolval($valid->filter);
         }
 
         if (!empty($valid->get('old_password')) && !empty($valid->get('new_password'))) {

@@ -1,0 +1,42 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        depends_on:
+            - db
+        volumes:
+            - ./:/var/www
+        networks:
+            - undangan
+
+    db:
+        image: postgres:latest
+        environment:
+            POSTGRES_DB: undangan
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: 12345678
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        networks:
+            - undangan
+
+    nginx:
+        image: nginx:alpine
+        ports:
+            - 8000:80
+        volumes:
+            - ./:/var/www
+            - ./:/etc/nginx/conf.d
+        networks:
+            - undangan
+        depends_on:
+            - app
+
+volumes:
+    postgres_data:
+
+
+networks:
+    undangan:
+        driver: bridge
