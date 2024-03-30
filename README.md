@@ -77,11 +77,7 @@ https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362
 - Execute migration
 
     ```bash
-    docker exec -ti container-id /bin/bash
-    ```
-
-    ```bash
-    php saya migrasi --gen
+    docker exec undangan-app php saya migrasi --gen
     ```
 
 

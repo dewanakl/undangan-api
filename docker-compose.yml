@@ -2,16 +2,16 @@ services:
     app:
         build:
             context: .
-            dockerfile: Dockerfile
+            dockerfile: docker/php/Dockerfile
+        container_name: undangan-app
         depends_on:
             - db
-        volumes:
-            - ./:/var/www
         networks:
             - undangan
 
     db:
         image: postgres:latest
+        container_name: undangan-db
         environment:
             POSTGRES_DB: undangan
             POSTGRES_USER: root
@@ -22,12 +22,12 @@ services:
             - undangan
 
     nginx:
-        image: nginx:alpine
+        build:
+            context: .
+            dockerfile: docker/nginx/Dockerfile
+        container_name: undangan-nginx
         ports:
-            - 8000:80
-        volumes:
-            - ./:/var/www
-            - ./:/etc/nginx/conf.d
+            - 8080:80
         networks:
             - undangan
         depends_on:
