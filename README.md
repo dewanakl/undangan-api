@@ -56,7 +56,7 @@ https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362
 - Change and customize env file
 
     ```text
-    BASEURL=https://yourdomain:8000/
+    BASEURL=https://your.domain.or.ipaddress:8080/
 
     DB_DRIV=pgsql
     DB_HOST=db
@@ -65,7 +65,7 @@ https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362
     DB_USER=root
     DB_PASS=12345678
 
-    JWT_KEY=12345678
+    JWT_KEY=valueIsSecure
     ```
 
 - Build and run image
@@ -75,6 +75,8 @@ https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362
     ```
 
 - Execute migration
+
+    > **_NOTE:_** Wait until the database is ready.
 
     ```bash
     docker exec undangan-app php saya migrasi --gen
