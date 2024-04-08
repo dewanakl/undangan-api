@@ -82,7 +82,6 @@ https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362
     docker exec undangan-app php saya migrasi --gen
     ```
 
-
 ## Deployment on vercel
 
 - Clone or download this repository
