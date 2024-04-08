@@ -26,7 +26,7 @@ final class User extends Model
     protected function fakes(): array
     {
         return [
-            'nama' => fake()->name(),
+            'name' => fake()->name(),
             'email' => fake()->email(),
             'password' => Hash::make(fake()->text(8)),
         ];

@@ -16,8 +16,71 @@
 
 See in postman collection
 ```url
-https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-910c50b5-6c97-40bd-a67d-16336734370f?action=share
+https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362-b4dc-4c02-8904-d90749a40842?action=share
 ```
+
+## Run without docker
+
+- Create file env
+
+    ```bash
+    cp .env.example .env
+    ```
+
+- Install package
+
+    ```bash
+    composer install
+    ```
+
+- Create key application
+
+    ```bash
+    php saya key
+    ```
+
+- Run in development server
+
+    ```bash
+    php saya coba
+    ```
+
+## Run with docker
+
+- Create file env
+
+    ```bash
+    cp .env.example .env
+    ```
+
+- Change and customize env file
+
+    ```text
+    BASEURL=https://your.domain.or.ipaddress:8080/
+
+    DB_DRIV=pgsql
+    DB_HOST=db
+    DB_PORT=5432
+    DB_NAME=undangan
+    DB_USER=root
+    DB_PASS=12345678
+
+    JWT_KEY=valueIsSecure
+    ```
+
+- Build and run image
+
+    ```bash
+    docker compose up --build -d
+    ```
+
+- Execute migration
+
+    > **_NOTE:_** Wait until the database is ready.
+
+    ```bash
+    docker exec undangan-app php saya migrasi --gen
+    ```
 
 ## Deployment on vercel
 
@@ -60,7 +123,6 @@ https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-910c50b5
   - HTTPS [true]
   - DEBUG [false]
   - LOG [false]
-  - COOKIE [false]
   - APP_KEY [copy from your local env]
 - Click deployments tab in vercel project.
 - Click the most recent deploy.

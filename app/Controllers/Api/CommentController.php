@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Api;
 
 use App\Middleware\UuidMiddleware;
 use App\Repositories\CommentContract;
@@ -53,7 +53,7 @@ class CommentController extends Controller
             return $this->json->errorNotFound();
         }
 
-        return $this->json->successOK($comment->only(['nama', 'hadir', 'komentar', 'created_at']));
+        return $this->json->successOK($comment->only(['name', 'presence', 'comment', 'is_admin', 'created_at']));
     }
 
     #[UuidMiddleware]
@@ -90,7 +90,11 @@ class CommentController extends Controller
     #[UuidMiddleware]
     public function destroy(string $id): JsonResponse
     {
-        $comment = $this->comment->getByOwnid(Auth::id(), $id);
+        if (!boolval(Auth::user()->can_delete) && !boolval(Auth::user()->is_admin)) {
+            return $this->json->errorBadRequest(['permission is not allowed']);
+        }
+
+        $comment = $this->comment->getByOwnId(Auth::id(), $id);
 
         if (!$comment->exist()) {
             return $this->json->errorNotFound();
@@ -99,7 +103,7 @@ class CommentController extends Controller
         try {
             $status = DB::transaction(function (LikeContract $like) use ($comment): int {
                 $like->deleteByCommentID($comment->uuid);
-                $this->comment->deleteByParrentID($comment->uuid);
+                $this->comment->deleteByParentID($comment->uuid);
 
                 return $comment->destroy();
             });
@@ -117,25 +121,31 @@ class CommentController extends Controller
     #[UuidMiddleware]
     public function update(string $id, Request $request): JsonResponse
     {
+        if (!boolval(Auth::user()->can_edit) && !boolval(Auth::user()->is_admin)) {
+            return $this->json->errorBadRequest(['permission is not allowed']);
+        }
+
         $valid = $this->validate($request, [
-            'hadir' => ['bool'],
-            'komentar' => ['required', 'str', 'max:500'],
+            'presence' => ['bool'],
+            'comment' => ['required', 'str', 'min:3', 'max:500'],
         ]);
 
         if ($valid->fails()) {
             return $this->json->errorBadRequest($valid->messages());
         }
 
-        $comment = $this->comment->getByOwnid(Auth::id(), $id);
+        $comment = $this->comment->getByOwnId(Auth::id(), $id);
 
         if (!$comment->exist()) {
             return $this->json->errorNotFound();
         }
 
-        $valid->komentar = Aman::factory()->masking($valid->komentar, ' * ');
+        if (!empty(Auth::user()->is_filter)) {
+            $valid->comment = Aman::factory()->masking($valid->comment, ' * ');
+        }
 
-        $status = $comment->only(['id', 'hadir', 'komentar'])
-            ->fill($valid->only(['hadir', 'komentar']))
+        $status = $comment->only(['id', 'presence', 'comment'])
+            ->fill($valid->only(['presence', 'comment']))
             ->save();
 
         if ($status == 1) {
@@ -149,20 +159,27 @@ class CommentController extends Controller
     {
         $valid = $request->validated();
 
+        if (!boolval(Auth::user()->can_reply) && $valid->get('id') !== null && !boolval(Auth::user()->is_admin)) {
+            return $this->json->errorBadRequest(['permission is not allowed']);
+        }
+
         if ($valid->fails()) {
             return $this->json->errorBadRequest($valid->messages());
         }
 
-        $valid->komentar = Aman::factory()->masking($valid->komentar, ' * ');
+        if (!empty(Auth::user()->is_filter)) {
+            $valid->comment = Aman::factory()->masking($valid->comment, ' * ');
+        }
 
         $comment = $this->comment->create([
             ...$valid->except(['id']),
             'user_id' => Auth::id(),
-            'parent_id' => $valid->id
+            'parent_id' => $valid->id,
+            'is_admin' => !empty(auth()->user()->is_admin)
         ]);
 
         return $this->json->success(
-            $comment->only(['nama', 'hadir', 'komentar', 'uuid', 'own', 'created_at']),
+            $comment->only(['name', 'presence', 'comment', 'uuid', 'own', 'created_at']),
             Respond::HTTP_CREATED
         );
     }

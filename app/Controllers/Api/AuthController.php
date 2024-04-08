@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Api;
 
 use App\Request\AuthRequest;
 use App\Response\JsonResponse;
@@ -30,7 +30,8 @@ class AuthController extends Controller
                 'iat' => $time,
                 'exp' => $time + (60 * 60),
                 'iss' => base_url(),
-                ...Auth::user()->only(['id', 'nama', 'email'])->toArray()
+                'is_admin' => true,
+                ...Auth::user()->only(['id', 'name', 'email'])->toArray()
             ],
             env('JWT_KEY'),
             env('JWT_ALGO', 'HS256')
@@ -38,7 +39,7 @@ class AuthController extends Controller
 
         return $json->successOK([
             'token' => $token,
-            'user' => Auth::user()->only(['nama', 'email'])
+            'user' => Auth::user()->only(['name', 'email'])
         ]);
     }
 }

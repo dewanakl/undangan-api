@@ -17,11 +17,11 @@ class CommentRepositories implements CommentContract
         ]);
     }
 
-    public function getAll(int $userid, int $limit, int $offset): Model
+    public function getAll(int $user_id, int $limit, int $offset): Model
     {
         return Comment::with('comments')
-            ->select(['uuid', 'nama', 'hadir', 'komentar', 'created_at'])
-            ->where('user_id', $userid)
+            ->select(['uuid', 'name', 'presence', 'comment', 'is_admin', 'created_at', ...(!empty(auth()->user()->is_admin) ? ['ip', 'own', 'user_agent'] : [])])
+            ->where('user_id', $user_id)
             ->whereNull('parent_id')
             ->orderBy('id', 'DESC')
             ->limit(abs($limit))
@@ -29,24 +29,70 @@ class CommentRepositories implements CommentContract
             ->get();
     }
 
-    public function getByUuid(int $userid, string $uuid): Model
+    public function getByUuid(int $user_id, string $uuid): Model
     {
         return Comment::where('uuid', $uuid)
-            ->where('user_id', $userid)
+            ->where('user_id', $user_id)
             ->limit(1)
             ->first();
     }
 
-    public function getByOwnid(int $userid, string $ownid): Model
+    public function getByOwnId(int $user_id, string $own_id): Model
     {
-        return Comment::where('own', $ownid)
-            ->where('user_id', $userid)
+        return Comment::where('own', $own_id)
+            ->where('user_id', $user_id)
             ->limit(1)
             ->first();
     }
 
-    public function deleteByParrentID(string $uuid): int
+    public function deleteByParentID(string $uuid): int
     {
         return Comment::where('parent_id', $uuid)->delete();
+    }
+
+    public function countCommentByUserID(int $id): int
+    {
+        return Comment::where('user_id', $id)->count('id', 'comments')->first()->comments;
+    }
+
+    public function countPresenceByUserID(int $id): Model
+    {
+        return Comment::where('user_id', $id)
+            ->whereNull('parent_id')
+            ->where('is_admin', false)
+            ->groupBy('user_id')
+            ->select([
+                'SUM(CASE WHEN presence = TRUE THEN 1 ELSE 0 END) AS present_count',
+                'SUM(CASE WHEN presence = FALSE THEN 1 ELSE 0 END) AS absent_count'
+            ])
+            ->first();
+    }
+
+    public function downloadCommentByUserID(int $id): Model
+    {
+        return Comment::leftJoin('likes', 'comments.uuid', 'likes.comment_id')
+            ->where('comments.user_id', $id)
+            ->groupBy([
+                'comments.uuid',
+                'comments.name',
+                'comments.presence',
+                'comments.comment',
+                'comments.ip',
+                'comments.user_agent',
+                'comments.created_at',
+                'comments.parent_id'
+            ])
+            ->select([
+                'comments.uuid',
+                'count(likes.id) as is_like',
+                'comments.name',
+                'comments.presence',
+                'comments.comment',
+                'comments.ip',
+                'comments.user_agent',
+                'comments.created_at as is_created',
+                'comments.parent_id'
+            ])
+            ->get();
     }
 }

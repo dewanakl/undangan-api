@@ -1,0 +1,42 @@
+services:
+    app:
+        build:
+            context: .
+            dockerfile: docker/php/Dockerfile
+        container_name: undangan-app
+        depends_on:
+            - db
+        networks:
+            - undangan
+
+    db:
+        image: postgres:latest
+        container_name: undangan-db
+        environment:
+            POSTGRES_DB: undangan
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: 12345678
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        networks:
+            - undangan
+
+    nginx:
+        build:
+            context: .
+            dockerfile: docker/nginx/Dockerfile
+        container_name: undangan-nginx
+        ports:
+            - 8080:80
+        networks:
+            - undangan
+        depends_on:
+            - app
+
+volumes:
+    postgres_data:
+
+
+networks:
+    undangan:
+        driver: bridge
