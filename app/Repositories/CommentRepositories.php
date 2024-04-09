@@ -60,6 +60,7 @@ class CommentRepositories implements CommentContract
         return Comment::where('user_id', $id)
             ->whereNull('parent_id')
             ->where('is_admin', false)
+            ->whereNull('is_admin')
             ->groupBy('user_id')
             ->select([
                 'SUM(CASE WHEN presence = TRUE THEN 1 ELSE 0 END) AS present_count',
