@@ -96,6 +96,7 @@ class CommentRepositories implements CommentContract
                 'comments.created_at as is_created',
                 'comments.parent_id'
             ])
+            ->orderBy('id')
             ->get();
     }
 }
