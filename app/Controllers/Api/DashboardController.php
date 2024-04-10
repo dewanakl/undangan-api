@@ -113,6 +113,7 @@ class DashboardController extends Controller
             'like',
             'name',
             'presence',
+            'is_admin',
             'comment',
             'ip_address',
             'user_agent',

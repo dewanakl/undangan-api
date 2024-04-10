@@ -39,6 +39,12 @@ https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362
     php saya key
     ```
 
+- Execute migration database
+
+    ```bash
+    php saya migrasi --gen
+    ```
+
 - Run in development server
 
     ```bash
@@ -100,6 +106,12 @@ https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362
 
     ```bash
     cp .env.example .env
+    ```
+
+- Execute migration database
+
+    ```bash
+    php saya migrasi --gen
     ```
 
 - Create key application
