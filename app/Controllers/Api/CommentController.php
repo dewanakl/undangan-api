@@ -127,7 +127,7 @@ class CommentController extends Controller
 
         $valid = $this->validate($request, [
             'presence' => ['bool'],
-            'comment' => ['required', 'str', 'min:3', 'max:500'],
+            'comment' => ['required', 'str', 'min:1', 'max:1000'],
         ]);
 
         if ($valid->fails()) {
