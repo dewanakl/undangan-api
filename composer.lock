@@ -176,16 +176,16 @@
         },
         {
             "name": "kamu/framework",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/framework.git",
-                "reference": "ccb857f8ff597ee3fe3a4bec45159f3faecf1e90"
+                "reference": "14f8d2b06405e85ce62f817d4781cc90a2cc2cea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/framework/zipball/ccb857f8ff597ee3fe3a4bec45159f3faecf1e90",
-                "reference": "ccb857f8ff597ee3fe3a4bec45159f3faecf1e90",
+                "url": "https://api.github.com/repos/dewanakl/framework/zipball/14f8d2b06405e85ce62f817d4781cc90a2cc2cea",
+                "reference": "14f8d2b06405e85ce62f817d4781cc90a2cc2cea",
                 "shasum": ""
             },
             "require": {
@@ -230,7 +230,7 @@
                 "issues": "https://github.com/dewanakl/framework/issues",
                 "source": "https://github.com/dewanakl/framework"
             },
-            "time": "2024-05-20T04:23:48+00:00"
+            "time": "2024-05-29T02:37:07+00:00"
         },
         {
             "name": "psr/clock",
