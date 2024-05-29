@@ -61,19 +61,27 @@ class RouteServiceProvider extends Provider
         ];
 
         $data['system']['opcache'] = [
-            'jit_enabled' => false,
             'opcache_enabled' => false,
             'opcache_used_memory' => format_bytes(0),
             'opcache_free_memory' => format_bytes(0),
+            'jit' => [
+                'enabled' => false,
+                'buffer_size' => format_bytes(0),
+                'buffer_free' => format_bytes(0),
+            ]
         ];
 
         if (function_exists('opcache_get_status')) {
             $opcache = opcache_get_status();
             $data['system']['opcache'] = [
-                'jit_enabled' => $opcache['jit']['enabled'],
                 'opcache_enabled' => $opcache['opcache_enabled'],
                 'opcache_used_memory' => format_bytes($opcache['memory_usage']['used_memory']),
                 'opcache_free_memory' => format_bytes($opcache['memory_usage']['free_memory']),
+                'jit' => [
+                    'enabled' => $opcache['jit']['enabled'],
+                    'buffer_size' => format_bytes($opcache['jit']['buffer_size']),
+                    'buffer_free' => format_bytes($opcache['jit']['buffer_free']),
+                ],
             ];
         }
 
