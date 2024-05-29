@@ -77,6 +77,14 @@ class RouteServiceProvider extends Provider
             ];
         }
 
+        $data['database'] = [
+            'server_version' => null,
+            'client_version' => null,
+            'connection_status' => null,
+            'server_info' => null,
+            'error' => null,
+        ];
+
         if (
             env('DB_DRIV') &&
             env('DB_HOST') &&
