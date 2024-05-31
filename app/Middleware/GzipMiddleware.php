@@ -45,8 +45,7 @@ final class GzipMiddleware implements MiddlewareInterface
 
         $response->headers
             ->set('Vary', join(', ', $vary))
-            ->set('Content-Encoding', 'gzip')
-            ->set('Content-Length', strlen($compressed));
+            ->set('Content-Encoding', 'gzip');
 
         return $response;
     }

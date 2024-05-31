@@ -180,12 +180,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/framework.git",
-                "reference": "ace87910c1185eab10b142bb51c26b217ccde2b7"
+                "reference": "402ebb955b92e7b2088a319744e29b884b1ca57b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/framework/zipball/ace87910c1185eab10b142bb51c26b217ccde2b7",
-                "reference": "ace87910c1185eab10b142bb51c26b217ccde2b7",
+                "url": "https://api.github.com/repos/dewanakl/framework/zipball/402ebb955b92e7b2088a319744e29b884b1ca57b",
+                "reference": "402ebb955b92e7b2088a319744e29b884b1ca57b",
                 "shasum": ""
             },
             "require": {
@@ -230,7 +230,7 @@
                 "issues": "https://github.com/dewanakl/framework/issues",
                 "source": "https://github.com/dewanakl/framework"
             },
-            "time": "2024-05-31T04:34:22+00:00"
+            "time": "2024-05-31T06:25:55+00:00"
         },
         {
             "name": "psr/clock",
