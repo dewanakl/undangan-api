@@ -32,7 +32,7 @@ final class GzipMiddleware implements MiddlewareInterface
             return $response;
         }
 
-        $compressed = gzencode($response->getContent(false), 1);
+        $compressed = gzencode($response->getContent(false), 3);
 
         if ($compressed === false) {
             return $response;
