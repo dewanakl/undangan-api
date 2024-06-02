@@ -23,10 +23,13 @@ final class AuthMiddleware implements MiddlewareInterface
                     throw new Exception('JWT Key not found!.');
                 }
 
-                Auth::login(new User((array) JWT::decode(
+                $user = new User();
+                $user->setAttribute((array) JWT::decode(
                     $request->bearerToken(),
                     new Key(env('JWT_KEY'), env('JWT_ALGO', 'HS256'))
-                )));
+                ));
+
+                Auth::login($user);
             } catch (Exception $e) {
                 return (new JsonResponse)->errorBadRequest([$e->getMessage()]);
             }
