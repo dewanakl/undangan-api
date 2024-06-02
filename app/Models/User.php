@@ -18,6 +18,24 @@ final class User extends Model
         'updated_at',
     ];
 
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'access_key',
+        'is_filter',
+        'can_edit',
+        'can_delete',
+        'can_reply',
+    ];
+
+    protected $casts = [
+        'is_filter' => 'bool',
+        'can_edit' => 'bool',
+        'can_delete' => 'bool',
+        'can_reply' => 'bool',
+    ];
+
     public function __construct(array $data = [])
     {
         $this->fill($data);
