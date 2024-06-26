@@ -88,7 +88,7 @@ class CommentRepositories implements CommentContract
             ])
             ->select([
                 'comments.uuid',
-                'count(likes.id) as is_like',
+                'count(likes.id) as count_like',
                 'comments.name',
                 'comments.presence',
                 'comments.is_admin',

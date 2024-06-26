@@ -108,7 +108,9 @@ class DashboardController extends Controller
 
     public function download(Stream $stream, CommentRepositories $comment): Stream
     {
-        fputcsv($stream->getStream(), [
+        $streamResource = $stream->getStream();
+
+        fputcsv($streamResource, [
             'uuid',
             'like',
             'name',
@@ -122,10 +124,19 @@ class DashboardController extends Controller
         ]);
 
         foreach ($comment->downloadCommentByUserID(Auth::id()) as $value) {
-            fputcsv(
-                $stream->getStream(),
-                array_values(get_object_vars($value))
-            );
+            $data = array_map(function (mixed $value): mixed {
+                if (is_bool($value)) {
+                    return $value ? 'TRUE' : 'FALSE';
+                }
+
+                if (is_null($value)) {
+                    return 'NULL';
+                }
+
+                return $value;
+            }, array_values(get_object_vars($value)));
+
+            fputcsv($streamResource, $data);
         }
 
         return $stream->create(sprintf('backup_comments_%s.csv', now('y-m-d_H:i:s')))->download();
