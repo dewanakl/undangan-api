@@ -171,6 +171,10 @@ class CommentController extends Controller
             $valid->comment = Aman::factory()->masking($valid->comment, ' * ');
         }
 
+        if ($valid->id && !$this->comment->getByUuidWithoutUser($valid->id)->exist()) {
+            return $this->json->errorNotFound();
+        }
+
         $comment = $this->comment->create([
             ...$valid->except(['id']),
             'user_id' => Auth::id(),

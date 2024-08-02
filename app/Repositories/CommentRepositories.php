@@ -101,4 +101,9 @@ class CommentRepositories implements CommentContract
             ->orderBy('is_created', 'DESC')
             ->get();
     }
+
+    public function getByUuidWithoutUser(string $uuid): Model
+    {
+        return Comment::where('uuid', $uuid)->first();
+    }
 }
