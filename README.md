@@ -1,11 +1,11 @@
 <p align="center"><img src="https://raw.githubusercontent.com/dewanakl/Kamu/main/public/kamu.png" width="200" alt="kamu"></p>
 
 <p align="center">
-<a href="https://php.net"><img src="https://img.shields.io/packagist/dependency-v/kamu/framework/php.svg" alt="PHP Programming Language"></a>
+<a href="https://php.net"><img src="https://img.shields.io/packagist/dependency-v/kamu/framework/php.svg?color=birghtgreen" alt="PHP Programming Language"></a>
 <a href="https://packagist.org/packages/kamu/framework"><img src="https://img.shields.io/packagist/dt/kamu/framework" alt="Total Downloads"></a>
-<a href="https://github.com/dewanakl/framework"><img src="https://img.shields.io/github/repo-size/dewanakl/framework" alt="repo size"></a>
-<a href="https://packagist.org/packages/kamu/framework"><img src="https://img.shields.io/packagist/v/kamu/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/kamu/framework"><img src="https://img.shields.io/packagist/l/kamu/framework" alt="License"></a>
+<a href="https://badge.dikit.biz.id"><img src="https://badge.dikit.biz.id/undangan-api?label=views&color=brightgreen" alt="views"></a>
+<a href="https://shields.io"><img src="https://img.shields.io/github/repo-size/dewanakl/undangan-api?color=brightgreen" alt="Repo size"></a>
+<a href="https://shields.io"><img src="https://img.shields.io/github/license/dewanakl/undangan-api?color=brightgreen" alt="License"></a>
 </p>
 
 ## About Kamu
