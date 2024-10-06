@@ -1,42 +1,48 @@
+version: '3'
+
 services:
-    app:
-        build:
-            context: .
-            dockerfile: docker/php/Dockerfile
-        container_name: undangan-app
-        depends_on:
-            - db
-        networks:
-            - undangan
+  app:
+    image: your-custom-php-image:tag
+    container_name: undangan-app
+    restart: unless-stopped
+    depends_on:
+      - db
+    networks:
+      - undangan
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      DB_DATABASE: wedding
+      DB_USERNAME: root
+      DB_PASSWORD: 
+      TIMEZONE: Asia/Jakarta
 
-    db:
-        image: postgres:latest
-        container_name: undangan-db
-        environment:
-            POSTGRES_DB: undangan
-            POSTGRES_USER: root
-            POSTGRES_PASSWORD: 12345678
-        volumes:
-            - postgres_data:/var/lib/postgresql/data
-        networks:
-            - undangan
+#   db:
+#     image: postgres:latest
+#     container_name: undangan-db
+#     environment:
+#       POSTGRES_DB: undangan
+#       POSTGRES_USER: root
+#       POSTGRES_PASSWORD: 12345678
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+#     networks:
+#       - undangan
 
-    nginx:
-        build:
-            context: .
-            dockerfile: docker/nginx/Dockerfile
-        container_name: undangan-nginx
-        ports:
-            - 8080:80
-        networks:
-            - undangan
-        depends_on:
-            - app
+  nginx:
+    image: your-custom-nginx-image:tag
+    container_name: undangan-nginx
+    ports:
+      - 8080:80
+    networks:
+      - undangan
+    depends_on:
+      - app
 
-volumes:
-    postgres_data:
-
+# volumes:
+#   postgres_data:
 
 networks:
-    undangan:
-        driver: bridge
+  undangan:
+    driver: bridge

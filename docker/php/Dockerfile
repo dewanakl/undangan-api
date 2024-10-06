@@ -1,4 +1,5 @@
-FROM php:8.2-fpm
+# FROM php:8.2-fpm
+FROM php:fpm
 
 RUN apt-get update --fix-missing
 RUN apt-get install -y zip unzip libonig-dev libicu-dev
