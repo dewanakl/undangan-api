@@ -3,7 +3,7 @@ name: Docker Build
 on:
     # after php.yml
     workflow_run:
-        workflows: ["PHP Composer"]
+        workflows: ["PHP Composer CI"]
         types:
             - completed
 
