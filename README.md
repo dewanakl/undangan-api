@@ -3,7 +3,7 @@
 <p align="center">
 <a href="https://php.net"><img src="https://img.shields.io/packagist/dependency-v/kamu/framework/php.svg?color=birghtgreen" alt="PHP Programming Language"></a>
 <a href="https://packagist.org/packages/kamu/framework"><img src="https://img.shields.io/packagist/dt/kamu/framework" alt="Total Downloads"></a>
-<a href="https://badge.dikit.biz.id"><img src="https://badge.dikit.biz.id/undangan-api?label=views&color=brightgreen" alt="views"></a>
+<a href="https://cie.my.id"><img src="https://cie.my.id/undangan-api?label=views&color=brightgreen" alt="views"></a>
 <a href="https://shields.io"><img src="https://img.shields.io/github/repo-size/dewanakl/undangan-api?color=brightgreen" alt="Repo size"></a>
 <a href="https://shields.io"><img src="https://img.shields.io/github/license/dewanakl/undangan-api?color=brightgreen" alt="License"></a>
 </p>
