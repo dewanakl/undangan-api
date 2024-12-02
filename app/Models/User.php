@@ -27,6 +27,7 @@ final class User extends Model
         'can_edit',
         'can_delete',
         'can_reply',
+        'is_active',
     ];
 
     protected $casts = [
@@ -34,6 +35,7 @@ final class User extends Model
         'can_edit' => 'bool',
         'can_delete' => 'bool',
         'can_reply' => 'bool',
+        'is_active' => 'bool',
     ];
 
     public function __construct(array $data = [])

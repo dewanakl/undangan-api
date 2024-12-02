@@ -23,7 +23,6 @@ return new class implements Generator
             ]);
         }
 
-
         $user->fill([
             'is_filter' => true,
             'is_active' => true,
