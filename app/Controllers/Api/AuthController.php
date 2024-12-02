@@ -31,7 +31,7 @@ class AuthController extends Controller
                 'exp' => $time + (60 * 60),
                 'iss' => base_url(),
                 'is_admin' => true,
-                ...Auth::user()->only(['id', 'name', 'email'])->toArray()
+                ...Auth::user()->only(['id', 'name', 'email', 'is_active'])->toArray()
             ],
             env('JWT_KEY'),
             env('JWT_ALGO', 'HS256')
