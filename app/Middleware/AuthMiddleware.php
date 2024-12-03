@@ -55,7 +55,7 @@ final class AuthMiddleware implements MiddlewareInterface
             return (new JsonResponse)->errorBadRequest(['user not found.']);
         }
 
-        if (!$user->is_active) {
+        if (!boolval($user->is_active)) {
             return (new JsonResponse)->errorBadRequest(['user not active.']);
         }
 
