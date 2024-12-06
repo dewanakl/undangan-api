@@ -29,6 +29,8 @@ final class AuthMiddleware implements MiddlewareInterface
                     new Key(env('JWT_KEY'), env('JWT_ALGO', 'HS256'))
                 ));
 
+                $user->is_admin = true;
+
                 Auth::login($user);
             } catch (Exception $e) {
                 return (new JsonResponse)->errorBadRequest([$e->getMessage()]);
