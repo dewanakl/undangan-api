@@ -52,12 +52,12 @@ class DashboardController extends Controller
 
     public function user(): JsonResponse
     {
-        return $this->json->successOK(Auth::user()->refresh()->except('password'));
+        return $this->json->successOK(Auth::user()->except('password'));
     }
 
     public function config(): JsonResponse
     {
-        return $this->json->successOK(Auth::user()->refresh()->only(['name', 'can_edit', 'can_delete', 'can_reply']));
+        return $this->json->successOK(Auth::user()->only(['name', 'can_edit', 'can_delete', 'can_reply']));
     }
 
     public function update(UpdateUserRequest $request): JsonResponse
@@ -91,7 +91,7 @@ class DashboardController extends Controller
         }
 
         if (!empty($valid->get('old_password')) && !empty($valid->get('new_password'))) {
-            if (!Hash::check($valid->get('old_password'), Auth::user()->refresh()->password)) {
+            if (!Hash::check($valid->get('old_password'), Auth::user()->password)) {
                 return $this->json->errorBadRequest(['password not match.']);
             }
 

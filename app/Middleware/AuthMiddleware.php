@@ -23,14 +23,18 @@ final class AuthMiddleware implements MiddlewareInterface
                     throw new Exception('JWT Key not found!.');
                 }
 
-                $user = new User();
-                $user->setAttribute((array) JWT::decode(
+                $token = JWT::decode(
                     $request->bearerToken(),
                     new Key(env('JWT_KEY'), env('JWT_ALGO', 'HS256'))
-                ));
+                );
 
-                if (!User::find($user->id)->exist()) {
+                $user = User::find($token->id);
+                if (!$user->exist()) {
                     throw new Exception('user not found');
+                }
+
+                if (!boolval($user->is_active)) {
+                    throw new Exception('user not active');
                 }
 
                 $user->is_admin = true;
