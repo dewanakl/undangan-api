@@ -26,7 +26,7 @@ return new class implements Generator
         $user->fill([
             'is_filter' => true,
             'is_active' => true,
-            'access_key' => Hash::rand(30),
+            'access_key' => Hash::rand(25),
         ])->save();
     }
 };

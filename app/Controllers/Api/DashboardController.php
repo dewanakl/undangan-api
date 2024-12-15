@@ -39,7 +39,7 @@ class DashboardController extends Controller
         $status = Auth::user()
             ->only('id')
             ->fill([
-                'access_key' => Hash::rand(30)
+                'access_key' => Hash::rand(25)
             ])
             ->save();
 
