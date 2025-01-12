@@ -14,7 +14,7 @@ class AuthRequest extends Form
     public function rules(): array
     {
         return [
-            'email' => ['required', 'str', 'trim', 'min:5', 'max:30', 'email'],
+            'email' => ['required', 'str', 'trim', 'min:5', 'max:55', 'email'],
             'password' => ['required', 'str', 'trim', 'min:8', 'max:20']
         ];
     }
