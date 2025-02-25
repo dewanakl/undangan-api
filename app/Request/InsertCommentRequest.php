@@ -18,7 +18,7 @@ class InsertCommentRequest extends Form
             'name' => ['required', 'str', 'trim', 'min:1', 'max:40'],
             'presence' => ['bool'],
             'comment' => ['nullable', 'str', 'min:1', 'max:1000'],
-            'gif_url' => ['nullable', 'str', 'min:1', 'max:100'],
+            'gif_id' => ['nullable', 'str', 'min:1', 'max:100'],
             'ip' => ['nullable', 'str', 'trim', 'max:50'],
             'user_agent' => ['nullable', 'str', 'trim', 'max:500']
         ];

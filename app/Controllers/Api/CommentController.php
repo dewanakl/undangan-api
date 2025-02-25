@@ -26,6 +26,30 @@ class CommentController extends Controller
         $this->comment = $comment;
     }
 
+    private function getTenorUrl(string $id): string|null
+    {
+        // TODO: change with key from db.
+        $url = 'https://tenor.googleapis.com/v2/posts?key=AIzaSyB-Z10TLX7MbkcMT5S_YA1iEqCmGzutV7s&media_filter=tinygif&ids=' . $id;
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Referer: ' . base_url()
+        ]);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $data = json_decode($response, true);
+        if (isset($data['results'][0]['media_formats']['tinygif']['url'])) {
+            return $data['results'][0]['media_formats']['tinygif']['url'];
+        }
+
+        return null;
+    }
+
     public function get(Request $request): JsonResponse
     {
         $valid = $this->validate($request, [
@@ -128,7 +152,7 @@ class CommentController extends Controller
         $valid = $this->validate($request, [
             'presence' => ['bool'],
             'comment' => ['nullable', 'str', 'min:1', 'max:1000'],
-            'gif_url' => ['nullable', 'str', 'min:1', 'max:100'],
+            'gif_id' => ['nullable', 'str', 'min:1', 'max:100'],
         ]);
 
         if ($valid->fails()) {
@@ -141,8 +165,18 @@ class CommentController extends Controller
             return $this->json->errorNotFound();
         }
 
-        if (!empty(Auth::user()->is_filter)) {
+        if (!empty(Auth::user()->is_filter) && !empty($valid->comment)) {
             $valid->comment = Aman::factory()->masking($valid->comment, ' * ');
+        }
+
+        $valid->gif_url = $comment->gif_url;
+        if (!empty($valid->gif_id)) {
+            $url = $this->getTenorUrl($valid->gif_id);
+            if (!$url) {
+                return $this->json->errorBadRequest(['invalid gif id']);
+            }
+
+            $valid->gif_url = $url;
         }
 
         $status = $comment->only(['id', 'presence', 'comment', 'gif_url'])
@@ -168,12 +202,21 @@ class CommentController extends Controller
             return $this->json->errorBadRequest($valid->messages());
         }
 
-        if (!empty(Auth::user()->is_filter)) {
+        if (!empty(Auth::user()->is_filter) && !empty($valid->comment)) {
             $valid->comment = Aman::factory()->masking($valid->comment, ' * ');
         }
 
         if ($valid->id && !$this->comment->getByUuidWithoutUser($valid->id)->exist()) {
             return $this->json->errorNotFound();
+        }
+
+        if (!empty($valid->gif_id)) {
+            $url = $this->getTenorUrl($valid->gif_id);
+            if (!$url) {
+                return $this->json->errorBadRequest(['invalid gif id']);
+            }
+
+            $valid->gif_url = $url;
         }
 
         $comment = $this->comment->create([
