@@ -20,7 +20,7 @@ class CommentRepositories implements CommentContract
     public function getAll(int $user_id, int $limit, int $offset): Model
     {
         return Comment::with('comments')
-            ->select(['uuid', 'name', 'presence', 'comment', 'is_admin', 'created_at', ...(!empty(auth()->user()->is_admin) ? ['ip', 'own', 'user_agent'] : [])])
+            ->select(['uuid', 'name', 'presence', 'comment', 'is_admin', 'gif_url', 'created_at', ...(!empty(auth()->user()->is_admin) ? ['ip', 'own', 'user_agent'] : [])])
             ->where('user_id', $user_id)
             ->whereNull('parent_id')
             ->orderBy('id', 'DESC')
@@ -81,6 +81,7 @@ class CommentRepositories implements CommentContract
                 'comments.presence',
                 'comments.is_admin',
                 'comments.comment',
+                'comments.gif_url',
                 'comments.ip',
                 'comments.user_agent',
                 'comments.created_at',
@@ -93,6 +94,7 @@ class CommentRepositories implements CommentContract
                 'comments.presence',
                 'comments.is_admin',
                 'comments.comment',
+                'comments.gif_url',
                 'comments.ip',
                 'comments.user_agent',
                 'comments.created_at as is_created',

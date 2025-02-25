@@ -53,7 +53,7 @@ class CommentController extends Controller
             return $this->json->errorNotFound();
         }
 
-        return $this->json->successOK($comment->only(['name', 'presence', 'comment', 'is_admin', 'created_at']));
+        return $this->json->successOK($comment->only(['name', 'presence', 'comment', 'is_admin', 'gif_url', 'created_at']));
     }
 
     #[UuidMiddleware]
@@ -127,7 +127,8 @@ class CommentController extends Controller
 
         $valid = $this->validate($request, [
             'presence' => ['bool'],
-            'comment' => ['required', 'str', 'min:1', 'max:1000'],
+            'comment' => ['nullable', 'str', 'min:1', 'max:1000'],
+            'gif_url' => ['nullable', 'str', 'min:1', 'max:100'],
         ]);
 
         if ($valid->fails()) {
@@ -144,8 +145,8 @@ class CommentController extends Controller
             $valid->comment = Aman::factory()->masking($valid->comment, ' * ');
         }
 
-        $status = $comment->only(['id', 'presence', 'comment'])
-            ->fill($valid->only(['presence', 'comment']))
+        $status = $comment->only(['id', 'presence', 'comment', 'gif_url'])
+            ->fill($valid->only(['presence', 'comment', 'gif_url']))
             ->save();
 
         if ($status == 1) {
@@ -183,7 +184,7 @@ class CommentController extends Controller
         ]);
 
         return $this->json->success(
-            $comment->only(['name', 'presence', 'comment', 'uuid', 'own', 'created_at']),
+            $comment->only(['name', 'presence', 'comment', 'uuid', 'own', 'gif_url', 'created_at']),
             Respond::HTTP_CREATED
         );
     }

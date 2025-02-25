@@ -117,6 +117,7 @@ class DashboardController extends Controller
             'presence',
             'is_admin',
             'comment',
+            'gif_url',
             'ip_address',
             'user_agent',
             'created_at',

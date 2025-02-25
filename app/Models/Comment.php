@@ -21,6 +21,7 @@ final class Comment extends Model
         'parent_id',
         'own',
         'is_admin',
+        'gif_url',
     ];
 
     protected $casts = [
@@ -36,7 +37,7 @@ final class Comment extends Model
             'parent_id',
             'uuid',
             function (Query $query): Query {
-                return $query->select(['uuid', 'name', 'presence', 'comment', 'is_admin', 'created_at', ...(!empty(auth()->user()->is_admin) ? ['ip', 'own', 'user_agent'] : [])])->orderBy('id');
+                return $query->select(['uuid', 'name', 'presence', 'comment', 'is_admin', 'gif_url', 'created_at', ...(!empty(auth()->user()->is_admin) ? ['ip', 'own', 'user_agent'] : [])])->orderBy('id');
             }
         )->as('comments')->with($this->likes())->recursive();
     }
