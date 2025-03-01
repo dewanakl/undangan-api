@@ -57,7 +57,7 @@ class DashboardController extends Controller
 
     public function config(): JsonResponse
     {
-        return $this->json->successOK(Auth::user()->only(['name', 'can_edit', 'can_delete', 'can_reply']));
+        return $this->json->successOK(Auth::user()->only(['name', 'can_edit', 'can_delete', 'can_reply', 'tenor_key']));
     }
 
     public function update(UpdateUserRequest $request): JsonResponse
@@ -72,6 +72,10 @@ class DashboardController extends Controller
 
         if (!empty($valid->name)) {
             $user->name = $valid->name;
+        }
+
+        if (!empty($valid->tenor_key)) {
+            $user->tenor_key = $valid->tenor_key;
         }
 
         if ($valid->get('filter') !== null) {

@@ -28,6 +28,7 @@ final class User extends Model
         'can_delete',
         'can_reply',
         'is_active',
+        'tenor_key',
     ];
 
     protected $casts = [

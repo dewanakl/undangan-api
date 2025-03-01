@@ -28,23 +28,28 @@ class CommentController extends Controller
 
     private function getTenorUrl(string $id): string|null
     {
-        // TODO: change with key from db.
-        $url = 'https://tenor.googleapis.com/v2/posts?key=AIzaSyB-Z10TLX7MbkcMT5S_YA1iEqCmGzutV7s&media_filter=tinygif&ids=' . $id;
+        static $type = 'tinygif';
+        $endpoint = 'https://tenor.googleapis.com/v2/posts';
+        $param = sprintf('?key=%s&media_filter=%s&ids=%s', auth()->user()->tenor_key, $type, $id);
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Referer: ' . base_url()
-        ]);
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL,  $endpoint . $param);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Referer: ' . base_url()]);
 
-        $response = curl_exec($ch);
-        curl_close($ch);
+            $response = curl_exec($ch);
+            curl_close($ch);
 
-        $data = json_decode($response, true);
-        if (isset($data['results'][0]['media_formats']['tinygif']['url'])) {
-            return $data['results'][0]['media_formats']['tinygif']['url'];
+            $data = json_decode($response, true);
+            $uri = $data['results'][0]['media_formats'][$type]['url'];
+
+            if (isset($uri)) {
+                return $uri;
+            }
+        } catch (Throwable) {
+            return null;
         }
 
         return null;
@@ -171,6 +176,10 @@ class CommentController extends Controller
 
         $valid->gif_url = $comment->gif_url;
         if (!empty($valid->gif_id)) {
+            if (empty(auth()->user()->tenor_key)) {
+                return $this->json->errorBadRequest(['invalid tenor key']);
+            }
+
             $url = $this->getTenorUrl($valid->gif_id);
             if (!$url) {
                 return $this->json->errorBadRequest(['invalid gif id']);
@@ -211,6 +220,10 @@ class CommentController extends Controller
         }
 
         if (!empty($valid->gif_id)) {
+            if (empty(auth()->user()->tenor_key)) {
+                return $this->json->errorBadRequest(['invalid tenor key']);
+            }
+
             $url = $this->getTenorUrl($valid->gif_id);
             if (!$url) {
                 return $this->json->errorBadRequest(['invalid gif id']);
