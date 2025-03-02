@@ -43,7 +43,7 @@ class CommentController extends Controller
             curl_close($ch);
 
             $data = json_decode($response, true);
-            $uri = $data['results'][0]['media_formats'][$type]['url'];
+            $uri = $data['results'][0]['media_formats'][$type]['url'] ?? null;
 
             if (isset($uri)) {
                 return $uri;
