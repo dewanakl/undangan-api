@@ -74,7 +74,7 @@ class DashboardController extends Controller
             $user->name = $valid->name;
         }
 
-        if (!empty($valid->tenor_key)) {
+        if (array_key_exists('tenor_key', $request->all())) {
             $user->tenor_key = $valid->tenor_key;
         }
 
