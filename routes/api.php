@@ -63,4 +63,10 @@ Route::middleware(AuthMiddleware::class)->group(function () {
             Route::options('/'); // Preflight request [/api/comment/{id}]
         });
     });
+
+    // api v2 comment
+    Route::prefix('/v2/comment')->group(function () {
+        Route::get('/', [CommentController::class, 'getV2']);
+        Route::options('/');
+    });
 });

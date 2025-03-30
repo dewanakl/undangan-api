@@ -8,6 +8,7 @@ interface CommentContract
 {
     public function create(array $data): Model;
     public function getAll(int $user_id, int $limit, int $offset): Model;
+    public function count(int $user_id): int;
     public function getByUuid(int $user_id, string $uuid): Model;
     public function getByOwnId(int $user_id, string $own_id): Model;
     public function deleteByParentID(string $uuid): int;

@@ -73,6 +73,27 @@ class CommentController extends Controller
         ));
     }
 
+    public function getV2(Request $request): JsonResponse
+    {
+        $valid = $this->validate($request, [
+            'next' => ['nullable', 'int'],
+            'per' => ['required', 'int', 'max:10']
+        ]);
+
+        if ($valid->fails()) {
+            return $this->json->errorBadRequest($valid->messages());
+        }
+
+        return $this->json->successOK([
+            'count' => $this->comment->count(Auth::id()),
+            'lists' => $this->comment->getAll(
+                Auth::id(),
+                $valid->per,
+                ($valid->next ?? 0)
+            )
+        ]);
+    }
+
     #[UuidMiddleware]
     public function show(string $id): JsonResponse
     {

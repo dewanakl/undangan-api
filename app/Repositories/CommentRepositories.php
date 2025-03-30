@@ -29,6 +29,15 @@ class CommentRepositories implements CommentContract
             ->get();
     }
 
+    public function count(int $user_id): int
+    {
+        return intval(Comment::select('count(id) as comment_count')
+            ->where('user_id', $user_id)
+            ->whereNull('parent_id')
+            ->first()
+            ->comment_count);
+    }
+
     public function getByUuid(int $user_id, string $uuid): Model
     {
         return Comment::where('uuid', $uuid)
