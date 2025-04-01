@@ -65,8 +65,10 @@ Route::middleware(AuthMiddleware::class)->group(function () {
     });
 
     // api v2 comment
-    Route::prefix('/v2/comment')->group(function () {
-        Route::get('/', [CommentController::class, 'getV2']);
-        Route::options('/');
+    Route::prefix('/v2')->group(function () {
+        Route::prefix('/comment')->group(function () {
+            Route::get('/', [CommentController::class, 'getV2']);
+            Route::options('/');
+        });
     });
 });
