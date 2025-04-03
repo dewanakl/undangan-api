@@ -209,6 +209,13 @@ class CommentController extends Controller
             $valid->gif_url = $url;
         }
 
+        if (
+            empty(isset($valid->comment) ? trim($valid->comment) : '') &&
+            empty(isset($valid->gif_url) ? $valid->gif_url : '')
+        ) {
+            return $this->json->errorBadRequest(['Comment or GIF URL must be provided']);
+        }
+
         $status = $comment->only(['id', 'presence', 'comment', 'gif_url'])
             ->fill($valid->only(['presence', 'comment', 'gif_url']))
             ->save();
@@ -251,6 +258,13 @@ class CommentController extends Controller
             }
 
             $valid->gif_url = $url;
+        }
+
+        if (
+            empty(isset($valid->comment) ? trim($valid->comment) : '') &&
+            empty(isset($valid->gif_url) ? $valid->gif_url : '')
+        ) {
+            return $this->json->errorBadRequest(['Comment or GIF URL must be provided']);
         }
 
         $comment = $this->comment->create([
