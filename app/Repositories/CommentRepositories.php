@@ -19,7 +19,7 @@ class CommentRepositories implements CommentContract
 
     public function getAll(int $user_id, int $limit, int $offset): Model
     {
-        return Comment::with('comments')
+        $comments = Comment::with('comments')
             ->select(['uuid', 'name', 'presence', 'comment', 'is_admin', 'gif_url', 'created_at', ...(!empty(auth()->user()->is_admin) ? ['ip', 'own', 'user_agent'] : [])])
             ->where('user_id', $user_id)
             ->whereNull('parent_id')
@@ -27,6 +27,23 @@ class CommentRepositories implements CommentContract
             ->limit(abs($limit))
             ->offset($offset)
             ->get();
+
+        function mappingName(object &$c): void
+        {
+            if ($c->is_admin) {
+                $c->name = auth()->user()->name;
+            }
+
+            foreach ($c->comments as &$child) {
+                mappingName($child);
+            }
+        }
+
+        foreach ($comments as &$c) {
+            mappingName($c);
+        }
+
+        return $comments;
     }
 
     public function count(int $user_id): int

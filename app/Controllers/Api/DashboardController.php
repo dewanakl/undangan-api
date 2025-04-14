@@ -60,6 +60,11 @@ class DashboardController extends Controller
         return $this->json->successOK(Auth::user()->only(['name', 'can_edit', 'can_delete', 'can_reply', 'tenor_key']));
     }
 
+    public function configV2(): JsonResponse
+    {
+        return $this->json->successOK(Auth::user()->only(['can_edit', 'can_delete', 'can_reply', 'tenor_key']));
+    }
+
     public function update(UpdateUserRequest $request): JsonResponse
     {
         $valid = $request->validated();
