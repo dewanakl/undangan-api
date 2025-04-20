@@ -35,11 +35,13 @@ class CommentRepositories implements CommentContract
             }
 
             foreach ($c->comments as &$child) {
+                $child->is_parent = false;
                 mappingName($child);
             }
         }
 
         foreach ($comments as &$c) {
+            $c->is_parent = true;
             mappingName($c);
         }
 
