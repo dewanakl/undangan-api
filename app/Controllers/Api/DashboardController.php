@@ -100,7 +100,7 @@ class DashboardController extends Controller
         }
 
         if (!empty($valid->get('old_password')) && !empty($valid->get('new_password'))) {
-            if (!Hash::check($valid->get('old_password'), Auth::user()->refresh()->password)) {
+            if (!Hash::check($valid->get('old_password'), Auth::user()->refresh()->password ?? '')) {
                 return $this->json->errorBadRequest(['password not match.']);
             }
 
