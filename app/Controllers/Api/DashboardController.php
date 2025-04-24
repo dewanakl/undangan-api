@@ -57,12 +57,12 @@ class DashboardController extends Controller
 
     public function config(): JsonResponse
     {
-        return $this->json->successOK(Auth::user()->only(['name', 'can_edit', 'can_delete', 'can_reply', 'tenor_key']));
+        return $this->json->successOK(Auth::user()->only(['name', 'can_edit', 'can_delete', 'can_reply', 'tenor_key', 'is_confetti_animation']));
     }
 
     public function configV2(): JsonResponse
     {
-        return $this->json->successOK(Auth::user()->only(['can_edit', 'can_delete', 'can_reply', 'tenor_key']));
+        return $this->json->successOK(Auth::user()->only(['can_edit', 'can_delete', 'can_reply', 'tenor_key', 'is_confetti_animation']));
     }
 
     public function update(UpdateUserRequest $request): JsonResponse
@@ -85,6 +85,10 @@ class DashboardController extends Controller
 
         if ($valid->get('filter') !== null) {
             $user->is_filter = boolval($valid->filter);
+        }
+
+        if ($valid->get('confetti_animation') !== null) {
+            $user->is_confetti_animation = boolval($valid->confetti_animation);
         }
 
         if ($valid->get('can_edit') !== null) {

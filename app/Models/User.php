@@ -29,6 +29,7 @@ final class User extends Model
         'can_reply',
         'is_active',
         'tenor_key',
+        'is_confetti_animation',
     ];
 
     protected $casts = [
@@ -37,6 +38,7 @@ final class User extends Model
         'can_delete' => 'bool',
         'can_reply' => 'bool',
         'is_active' => 'bool',
+        'is_confetti_animation' => 'bool',
     ];
 
     public function __construct(array $data = [])
