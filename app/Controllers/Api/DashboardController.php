@@ -83,23 +83,23 @@ class DashboardController extends Controller
             $user->tenor_key = $valid->tenor_key;
         }
 
-        if (!empty($valid->get('filter'))) {
+        if ($valid->get('filter') !== null) {
             $user->is_filter = boolval($valid->filter);
         }
 
-        if (!empty($valid->get('confetti_animation'))) {
+        if ($valid->get('confetti_animation') !== null) {
             $user->is_confetti_animation = boolval($valid->confetti_animation);
         }
 
-        if (!empty($valid->get('can_edit'))) {
+        if ($valid->get('can_edit') !== null) {
             $user->can_edit = boolval($valid->can_edit);
         }
 
-        if (!empty($valid->get('can_delete'))) {
+        if ($valid->get('can_delete') !== null) {
             $user->can_delete = boolval($valid->can_delete);
         }
 
-        if (!empty($valid->get('can_reply'))) {
+        if ($valid->get('can_reply') !== null) {
             $user->can_reply = boolval($valid->can_reply);
         }
 
