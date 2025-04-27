@@ -28,6 +28,10 @@ class CommentController extends Controller
 
     private function getTenorUrl(string $id): string|null
     {
+        if (empty(auth()->user()->tenor_key)) {
+            return null;
+        }
+
         static $type = 'tinygif';
         $endpoint = 'https://tenor.googleapis.com/v2/posts';
         $param = sprintf('?key=%s&media_filter=%s&ids=%s', auth()->user()->tenor_key, $type, $id);
@@ -39,12 +43,10 @@ class CommentController extends Controller
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Referer: ' . base_url()]);
 
-            $response = curl_exec($ch);
+            $data = json_decode(curl_exec($ch), true);
             curl_close($ch);
 
-            $data = json_decode($response, true);
             $uri = $data['results'][0]['media_formats'][$type]['url'] ?? null;
-
             if (isset($uri)) {
                 return $uri;
             }
@@ -94,6 +96,9 @@ class CommentController extends Controller
         ]);
     }
 
+    /**
+     * @deprecated not used.
+     */
     #[UuidMiddleware]
     public function show(string $id): JsonResponse
     {
@@ -130,7 +135,7 @@ class CommentController extends Controller
             return $this->json->errorNotFound();
         }
 
-        if ($like->destroy() == 1) {
+        if ($like->destroy() === 1) {
             return $this->json->successStatusTrue();
         }
 
@@ -140,7 +145,7 @@ class CommentController extends Controller
     #[UuidMiddleware]
     public function destroy(string $id): JsonResponse
     {
-        if (!boolval(Auth::user()->can_delete) && !boolval(Auth::user()->is_admin)) {
+        if (!Auth::user()->canDelete() && !Auth::user()->isAdmin()) {
             return $this->json->errorBadRequest(['permission is not allowed']);
         }
 
@@ -158,7 +163,7 @@ class CommentController extends Controller
                 return $comment->destroy();
             });
 
-            if ($status == 1) {
+            if ($status === 1) {
                 return $this->json->successStatusTrue();
             }
 
@@ -171,7 +176,7 @@ class CommentController extends Controller
     #[UuidMiddleware]
     public function update(string $id, Request $request): JsonResponse
     {
-        if (!boolval(Auth::user()->can_edit) && !boolval(Auth::user()->is_admin)) {
+        if (!Auth::user()->canEdit() && !Auth::user()->isAdmin()) {
             return $this->json->errorBadRequest(['permission is not allowed']);
         }
 
@@ -191,27 +196,25 @@ class CommentController extends Controller
             return $this->json->errorNotFound();
         }
 
-        if (!empty(Auth::user()->is_filter) && !empty($valid->comment)) {
+        if (auth()->user()->isFilter() && !empty($valid->comment)) {
             $valid->comment = Aman::factory()->masking($valid->comment, ' * ');
         }
 
-        $valid->gif_url = $comment->gif_url;
+        if (empty($valid->gif_id)) {
+            $valid->gif_url = $comment->gif_url;
+        }
+
         if (!empty($valid->gif_id)) {
-            if (empty(auth()->user()->tenor_key)) {
-                return $this->json->errorBadRequest(['invalid tenor key']);
-            }
+            $valid->gif_url = $this->getTenorUrl($valid->gif_id);
 
-            $url = $this->getTenorUrl($valid->gif_id);
-            if (!$url) {
-                return $this->json->errorBadRequest(['invalid gif id']);
+            if (empty($valid->gif_url)) {
+                return $this->json->errorBadRequest(['invalid gif id or tenor key']);
             }
-
-            $valid->gif_url = $url;
         }
 
         if (
             empty(isset($valid->comment) ? trim($valid->comment) : '') &&
-            empty(isset($valid->gif_url) ? $valid->gif_url : '')
+            empty(isset($valid->gif_url) ? trim($valid->gif_url) : '')
         ) {
             return $this->json->errorBadRequest(['Comment or GIF URL must be provided']);
         }
@@ -220,7 +223,7 @@ class CommentController extends Controller
             ->fill($valid->only(['presence', 'comment', 'gif_url']))
             ->save();
 
-        if ($status == 1) {
+        if ($status === 1) {
             return $this->json->successStatusTrue();
         }
 
@@ -231,7 +234,7 @@ class CommentController extends Controller
     {
         $valid = $request->validated();
 
-        if (!boolval(Auth::user()->can_reply) && $valid->get('id') !== null && !boolval(Auth::user()->is_admin)) {
+        if (!Auth::user()->canReply() && !empty($valid->get('id')) && !Auth::user()->isAdmin()) {
             return $this->json->errorBadRequest(['permission is not allowed']);
         }
 
@@ -239,30 +242,25 @@ class CommentController extends Controller
             return $this->json->errorBadRequest($valid->messages());
         }
 
-        if (!empty(Auth::user()->is_filter) && !empty($valid->comment)) {
+        if (auth()->user()->isFilter() && !empty($valid->comment)) {
             $valid->comment = Aman::factory()->masking($valid->comment, ' * ');
         }
 
-        if ($valid->id && !$this->comment->getByUuidWithoutUser($valid->id)->exist()) {
+        if (!empty($valid->id) && !$this->comment->getByUuidWithoutUser($valid->id)->exist()) {
             return $this->json->errorNotFound();
         }
 
         if (!empty($valid->gif_id)) {
-            if (empty(auth()->user()->tenor_key)) {
-                return $this->json->errorBadRequest(['invalid tenor key']);
-            }
+            $valid->gif_url = $this->getTenorUrl($valid->gif_id);
 
-            $url = $this->getTenorUrl($valid->gif_id);
-            if (!$url) {
-                return $this->json->errorBadRequest(['invalid gif id']);
+            if (empty($valid->gif_url)) {
+                return $this->json->errorBadRequest(['invalid gif id or tenor key']);
             }
-
-            $valid->gif_url = $url;
         }
 
         if (
             empty(isset($valid->comment) ? trim($valid->comment) : '') &&
-            empty(isset($valid->gif_url) ? $valid->gif_url : '')
+            empty(isset($valid->gif_url) ? trim($valid->gif_url) : '')
         ) {
             return $this->json->errorBadRequest(['Comment or GIF URL must be provided']);
         }
@@ -271,7 +269,7 @@ class CommentController extends Controller
             ...$valid->except(['id']),
             'user_id' => Auth::id(),
             'parent_id' => $valid->id,
-            'is_admin' => !empty(auth()->user()->is_admin)
+            'is_admin' => Auth::user()->isAdmin()
         ]);
 
         return $this->json->success(

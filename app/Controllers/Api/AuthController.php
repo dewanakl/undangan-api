@@ -24,7 +24,7 @@ class AuthController extends Controller
             return $json->error(Respond::HTTP_UNAUTHORIZED);
         }
 
-        if (!boolval(Auth::user()->is_active)) {
+        if (!auth()->user()->isActive()) {
             return $json->errorBadRequest(['user not active.']);
         }
 

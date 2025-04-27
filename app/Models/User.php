@@ -54,4 +54,39 @@ final class User extends Model
             'password' => Hash::make(fake()->text(8)),
         ];
     }
+
+    public function setAsAdmin(): void
+    {
+        $this->attributes['is_admin'] = true;
+    }
+
+    public function isAdmin(): bool
+    {
+        return boolval($this->attributes['is_admin']);
+    }
+
+    public function isActive(): bool
+    {
+        return boolval($this->attributes['is_active']);
+    }
+
+    public function isFilter(): bool
+    {
+        return boolval($this->attributes['is_filter']);
+    }
+
+    public function canReply(): bool
+    {
+        return boolval($this->attributes['can_reply']);
+    }
+
+    public function canEdit(): bool
+    {
+        return boolval($this->attributes['can_edit']);
+    }
+
+    public function canDelete(): bool
+    {
+        return boolval($this->attributes['can_delete']);
+    }
 }

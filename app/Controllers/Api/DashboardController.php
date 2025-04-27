@@ -43,7 +43,7 @@ class DashboardController extends Controller
             ])
             ->save();
 
-        if ($status == 1) {
+        if ($status === 1) {
             return $this->json->successStatusTrue();
         }
 
@@ -52,7 +52,7 @@ class DashboardController extends Controller
 
     public function user(): JsonResponse
     {
-        return $this->json->successOK(Auth::user()->except('password'));
+        return $this->json->successOK(Auth::user()->except(['id', 'password', 'is_admin', 'is_active', 'created_at', 'updated_at']));
     }
 
     public function config(): JsonResponse
@@ -83,23 +83,23 @@ class DashboardController extends Controller
             $user->tenor_key = $valid->tenor_key;
         }
 
-        if ($valid->get('filter') !== null) {
+        if (!empty($valid->get('filter'))) {
             $user->is_filter = boolval($valid->filter);
         }
 
-        if ($valid->get('confetti_animation') !== null) {
+        if (!empty($valid->get('confetti_animation'))) {
             $user->is_confetti_animation = boolval($valid->confetti_animation);
         }
 
-        if ($valid->get('can_edit') !== null) {
+        if (!empty($valid->get('can_edit'))) {
             $user->can_edit = boolval($valid->can_edit);
         }
 
-        if ($valid->get('can_delete') !== null) {
+        if (!empty($valid->get('can_delete'))) {
             $user->can_delete = boolval($valid->can_delete);
         }
 
-        if ($valid->get('can_reply') !== null) {
+        if (!empty($valid->get('can_reply'))) {
             $user->can_reply = boolval($valid->can_reply);
         }
 
@@ -140,11 +140,11 @@ class DashboardController extends Controller
         foreach ($comment->downloadCommentByUserID(Auth::id()) as $value) {
             $data = array_map(function (mixed $value): mixed {
                 if (is_bool($value)) {
-                    return $value ? 'TRUE' : 'FALSE';
+                    return $value ? 'True' : 'False';
                 }
 
                 if (is_null($value)) {
-                    return 'NULL';
+                    return 'Null';
                 }
 
                 return $value;

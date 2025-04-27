@@ -33,11 +33,11 @@ final class AuthMiddleware implements MiddlewareInterface
                     throw new Exception('user not found');
                 }
 
-                if (!boolval($user->is_active)) {
+                if (!$user->isActive()) {
                     throw new Exception('user not active');
                 }
 
-                $user->is_admin = true;
+                $user->setAsAdmin();
 
                 Auth::login($user);
             } catch (Exception $e) {
@@ -65,7 +65,7 @@ final class AuthMiddleware implements MiddlewareInterface
             return (new JsonResponse)->errorBadRequest(['user not found.']);
         }
 
-        if (!boolval($user->is_active)) {
+        if (!$user->isActive()) {
             return (new JsonResponse)->errorBadRequest(['user not active.']);
         }
 

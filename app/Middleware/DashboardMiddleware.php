@@ -12,7 +12,7 @@ final class DashboardMiddleware implements MiddlewareInterface
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!empty(Auth::user()->is_admin)) {
+        if (Auth::user()->isAdmin()) {
             return $next($request);
         }
 
