@@ -62,7 +62,7 @@ final class User extends Model
 
     public function isAdmin(): bool
     {
-        return boolval($this->attributes['is_admin']);
+        return boolval(@$this->attributes['is_admin'] ?? false);
     }
 
     public function isActive(): bool
