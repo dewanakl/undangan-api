@@ -69,6 +69,8 @@ final class AuthMiddleware implements MiddlewareInterface
             return (new JsonResponse)->errorBadRequest(['user not active.']);
         }
 
+        $user->setAsNonAdmin();
+
         Auth::login($user);
         return $next($request);
     }

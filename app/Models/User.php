@@ -60,9 +60,14 @@ final class User extends Model
         $this->attributes['is_admin'] = true;
     }
 
+    public function setAsNonAdmin(): void
+    {
+        $this->attributes['is_admin'] = false;
+    }
+
     public function isAdmin(): bool
     {
-        return boolval(@$this->attributes['is_admin'] ?? false);
+        return boolval($this->attributes['is_admin']);
     }
 
     public function isActive(): bool
