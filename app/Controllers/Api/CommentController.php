@@ -40,7 +40,6 @@ class CommentController extends Controller
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL,  $endpoint . $param);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Referer: ' . base_url()]);
 
             $data = json_decode(curl_exec($ch), true);
