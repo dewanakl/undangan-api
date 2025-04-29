@@ -38,14 +38,18 @@ class CommentController extends Controller
 
         try {
             $ch = curl_init();
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_URL,  $endpoint . $param);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Referer: ' . base_url()]);
 
-            $data = json_decode(curl_exec($ch), true);
+            $response = curl_exec($ch);
             curl_close($ch);
 
-            $uri = $data['results'][0]['media_formats'][$type]['url'] ?? null;
+            if ($response === false || empty($response)) {
+                return null;
+            }
+
+            $uri = json_decode($response, true)['results'][0]['media_formats'][$type]['url'] ?? null;
             if (isset($uri)) {
                 return $uri;
             }
