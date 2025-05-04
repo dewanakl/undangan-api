@@ -22,6 +22,7 @@ return [
         's' => 'detik',
 
         'ago' => 'yang lalu.',
+        'future' => 'ke depan.',
         'recently' => 'baru saja.',
     ],
 

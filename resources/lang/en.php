@@ -22,6 +22,7 @@ return [
         's' => 'second',
 
         'ago' => 'ago.',
+        'future' => 'from now.',
         'recently' => 'just now.',
     ],
 
