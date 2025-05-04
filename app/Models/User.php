@@ -30,6 +30,7 @@ final class User extends Model
         'is_active',
         'tenor_key',
         'is_confetti_animation',
+        'tz',
     ];
 
     protected $casts = [

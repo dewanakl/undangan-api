@@ -5,6 +5,7 @@ use App\Controllers\Api\CommentController;
 use App\Controllers\Api\DashboardController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\DashboardMiddleware;
+use App\Middleware\TzMiddleware;
 use Core\Routing\Route;
 
 /**
@@ -17,7 +18,7 @@ Route::prefix('/session')->group(function () {
     Route::options('/'); // Preflight request [/api/session]
 });
 
-Route::middleware(AuthMiddleware::class)->group(function () {
+Route::middleware([AuthMiddleware::class, TzMiddleware::class])->group(function () {
 
     // Dashboard
     Route::middleware(DashboardMiddleware::class)->group(function () {

@@ -12,6 +12,7 @@ use Core\Routing\Controller;
 use Core\Http\Request;
 use Core\Http\Stream;
 use Core\Valid\Hash;
+use DateTimeZone;
 
 class DashboardController extends Controller
 {
@@ -77,6 +78,14 @@ class DashboardController extends Controller
 
         if (!empty($valid->name)) {
             $user->name = $valid->name;
+        }
+
+        if (!empty($valid->tz)) {
+            if (!in_array($valid->tz, DateTimeZone::listIdentifiers())) {
+                return $this->json->errorBadRequest(['Invalid time zone']);
+            }
+
+            $user->tz = $valid->tz;
         }
 
         if (array_key_exists('tenor_key', $request->all())) {
