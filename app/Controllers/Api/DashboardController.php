@@ -5,6 +5,7 @@ namespace App\Controllers\Api;
 use App\Repositories\CommentContract;
 use App\Repositories\CommentRepositories;
 use App\Repositories\LikeContract;
+use App\Repositories\UserContract;
 use App\Request\UpdateUserRequest;
 use App\Response\JsonResponse;
 use Core\Auth\Auth;
@@ -35,14 +36,9 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function rotate(): JsonResponse
+    public function rotate(UserContract $userContract): JsonResponse
     {
-        $status = Auth::user()
-            ->only('id')
-            ->fill([
-                'access_key' => Hash::rand(25)
-            ])
-            ->save();
+        $status = $userContract->generateNewAccessKey(Auth::id());
 
         if ($status === 1) {
             return $this->json->successStatusTrue();

@@ -6,6 +6,8 @@ use App\Repositories\CommentContract;
 use App\Repositories\CommentRepositories;
 use App\Repositories\LikeContract;
 use App\Repositories\LikeRepositories;
+use App\Repositories\UserContract;
+use App\Repositories\UserRepositories;
 use Core\Facades\Provider;
 use Core\Http\Request;
 
@@ -20,6 +22,7 @@ class AppServiceProvider extends Provider
     {
         $this->app->bind(CommentContract::class, CommentRepositories::class);
         $this->app->bind(LikeContract::class, LikeRepositories::class);
+        $this->app->bind(UserContract::class, UserRepositories::class);
     }
 
     /**
