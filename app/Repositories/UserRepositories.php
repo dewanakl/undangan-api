@@ -19,8 +19,10 @@ class UserRepositories implements UserContract
             return $key;
         };
 
+        $newKey = $generateUnique();
+
         return User::where('id', $user_id)->update([
-            'access_key' => $generateUnique()
+            'access_key' => $newKey
         ]);
     }
 }
