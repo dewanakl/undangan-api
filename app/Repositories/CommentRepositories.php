@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Comment;
 use Core\Model\Model;
 use Ramsey\Uuid\Uuid;
+use stdClass;
 
 class CommentRepositories implements CommentContract
 {
@@ -17,35 +18,83 @@ class CommentRepositories implements CommentContract
         ]);
     }
 
-    public function getAll(int $user_id, int $limit, int $offset): Model
+    public function getAll(int $user_id, bool $is_admin, string $user_name, int $limit, int $offset): array
     {
-        $comments = Comment::with('comments')
-            ->select(['uuid', 'name', 'presence', 'comment', 'is_admin', 'gif_url', 'created_at', ...(auth()->user()->isAdmin() ? ['ip', 'own', 'user_agent'] : [])])
-            ->where('user_id', $user_id)
-            ->whereNull('parent_id')
-            ->orderBy('id', 'DESC')
+        $selectedFields = [
+            'comments.uuid',
+            'comments.name',
+            'comments.presence',
+            'comments.comment',
+            'comments.is_admin',
+            'comments.gif_url',
+            'comments.created_at',
+        ];
+
+        if ($is_admin) {
+            $selectedFields = [
+                ...$selectedFields,
+                'comments.ip',
+                'comments.own',
+                'comments.user_agent'
+            ];
+        }
+
+        /**
+         * @param Comment $comments
+         * @return array
+         */
+        $buildTree = function ($comments) use (&$buildTree, $selectedFields, $user_id, $user_name): array {
+            $uuids = [];
+            foreach ($comments as $comment) {
+                $uuids[] = $comment->uuid;
+            }
+
+            $grouped = [];
+            Comment::leftJoin('likes', 'comments.uuid', 'likes.comment_id')
+                ->whereIn('comments.parent_id', $uuids)
+                ->where('comments.user_id', $user_id)
+                ->select($selectedFields)
+                ->select(['comments.id', 'false as is_parent', 'comments.parent_id', 'count(likes.id) as like'])
+                ->groupBy(['comments.id', ...$selectedFields])
+                ->orderBy('comments.id', 'DESC')
+                ->get()
+                ->map(function ($child) use (&$grouped): void {
+                    $grouped[$child->parent_id][] = $child;
+                });
+
+            $result = [];
+            foreach ($comments as &$comment) {
+                $comment->comments = isset($grouped[$comment->uuid]) ? $buildTree($grouped[$comment->uuid]) : [];
+
+                if ($comment->is_admin) {
+                    $comment->name = $user_name;
+                }
+
+                // this change is backward-compatible
+                $love = new stdClass();
+                $love->love = $comment->like;
+                $comment->like = $love;
+
+                unset($comment->id);
+                unset($comment->parent_id);
+                $result[] = $comment;
+            }
+
+            return $result;
+        };
+
+        $parents = Comment::leftJoin('likes', 'comments.uuid', 'likes.comment_id')
+            ->whereNull('comments.parent_id')
+            ->where('comments.user_id', $user_id)
+            ->select($selectedFields)
+            ->select(['comments.id', 'true as is_parent', 'comments.parent_id', 'count(likes.id) as like'])
+            ->groupBy(['comments.id', ...$selectedFields])
+            ->orderBy('comments.id', 'DESC')
             ->limit(abs($limit))
             ->offset($offset)
             ->get();
 
-        function mappingName(object &$c): void
-        {
-            if ($c->is_admin) {
-                $c->name = auth()->user()->name;
-            }
-
-            foreach ($c->comments as &$child) {
-                $child->is_parent = false;
-                mappingName($child);
-            }
-        }
-
-        foreach ($comments as &$c) {
-            $c->is_parent = true;
-            mappingName($c);
-        }
-
-        return $comments;
+        return $buildTree($parents);
     }
 
     public function count(int $user_id): int

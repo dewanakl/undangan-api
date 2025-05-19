@@ -73,8 +73,10 @@ class CommentController extends Controller
 
         return $this->json->successOK($this->comment->getAll(
             Auth::id(),
+            Auth::user()->isAdmin(),
+            Auth::user()->name,
             $valid->per,
-            ($valid->next ?? 0)
+            $valid->next ?? 0
         ));
     }
 
@@ -93,8 +95,10 @@ class CommentController extends Controller
             'count' => $this->comment->count(Auth::id()),
             'lists' => $this->comment->getAll(
                 Auth::id(),
+                Auth::user()->isAdmin(),
+                Auth::user()->name,
                 $valid->per,
-                ($valid->next ?? 0)
+                $valid->next ?? 0
             )
         ]);
     }
