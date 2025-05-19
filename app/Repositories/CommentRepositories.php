@@ -56,7 +56,7 @@ class CommentRepositories implements CommentContract
                 ->select($selectedFields)
                 ->select(['comments.id', 'false as is_parent', 'comments.parent_id', 'count(likes.id) as like'])
                 ->groupBy(['comments.id', ...$selectedFields])
-                ->orderBy('comments.id', 'DESC')
+                ->orderBy('comments.id')
                 ->get()
                 ->map(function ($child) use (&$grouped): void {
                     $grouped[$child->parent_id][] = $child;
