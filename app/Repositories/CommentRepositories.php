@@ -43,7 +43,7 @@ class CommentRepositories implements CommentContract
          * @param Comment $comments
          * @return array
          */
-        $buildTree = function ($comments) use (&$buildTree, $selectedFields, $user_id, $user_name): array {
+        $buildTree = function (&$comments) use (&$buildTree, &$selectedFields, &$user_id, &$user_name): array {
             $uuids = [];
             foreach ($comments as $comment) {
                 $uuids[] = $comment->uuid;
