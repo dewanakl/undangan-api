@@ -63,7 +63,7 @@ class CommentRepositories implements CommentContract
                 });
 
             $result = [];
-            foreach ($comments as &$comment) {
+            foreach ($comments as $comment) {
                 $comment->comments = isset($grouped[$comment->uuid]) ? $buildTree($grouped[$comment->uuid]) : [];
 
                 if ($comment->is_admin) {
