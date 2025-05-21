@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Models\Comment;
 use Core\Model\Model;
 use Ramsey\Uuid\Uuid;
-use stdClass;
 
 class CommentRepositories implements CommentContract
 {
@@ -40,10 +39,10 @@ class CommentRepositories implements CommentContract
         }
 
         /**
-         * @param Comment $comments
-         * @return array
+         * @param Comment<int, object>|array<int, object> $comments
+         * @return array<int, object>
          */
-        $buildTree = function ($comments) use (&$buildTree, $selectedFields, $user_id, $user_name): array {
+        $buildTree = static function ($comments) use (&$buildTree, $selectedFields, $user_id, $user_name): array {
             $uuids = [];
             foreach ($comments as $comment) {
                 $uuids[] = $comment->uuid;
@@ -71,9 +70,9 @@ class CommentRepositories implements CommentContract
                 }
 
                 // this change is backward-compatible
-                $love = new stdClass();
-                $love->love = $comment->like;
-                $comment->like = $love;
+                $tmp = new \stdClass();
+                $tmp->love = $comment->like;
+                $comment->like = $tmp;
 
                 unset($comment->id);
                 unset($comment->parent_id);

@@ -3,7 +3,6 @@
 namespace App\Controllers\Api;
 
 use App\Repositories\CommentContract;
-use App\Repositories\CommentRepositories;
 use App\Repositories\LikeContract;
 use App\Repositories\UserContract;
 use App\Request\UpdateUserRequest;
@@ -124,7 +123,7 @@ class DashboardController extends Controller
         return $this->json->errorServer();
     }
 
-    public function download(Stream $stream, CommentRepositories $comment): Stream
+    public function download(Stream $stream, CommentContract $comment): Stream
     {
         $streamResource = $stream->getStream();
 
