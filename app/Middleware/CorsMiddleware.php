@@ -34,7 +34,7 @@ final class CorsMiddleware implements MiddlewareInterface
             strtoupper($request->server->get('HTTP_ACCESS_CONTROL_REQUEST_METHOD', $request->method()))
         );
 
-        $header->set('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type');
+        $header->set('Access-Control-Allow-Headers', 'Accept, Authorization, Content-Type, x-access-key');
 
         return respond()->setCode(Respond::HTTP_NO_CONTENT);
     }
