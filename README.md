@@ -8,18 +8,21 @@
 <a href="https://shields.io"><img src="https://img.shields.io/github/license/dewanakl/undangan-api?color=brightgreen" alt="License"></a>
 </p>
 
-## About Kamu
+## 📖 About Kamu
 
 "Kamu" merupakan PHP framework yang sangat simpel, memberikan pengalaman seolah-olah berada di localhost meskipun dalam mode production. Dibantu dengan "Saya" konsol yang membantu pengembangan aplikasi secara efisien.
 
-## Api Spec
+## 📡 Api Spec
 
 See in postman collection
 ```url
 https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362-b4dc-4c02-8904-d90749a40842?action=share
 ```
 
-## Run without docker
+## ☁️ Deployment
+
+<details>
+<summary>🛠️ Run without docker</summary>
 
 - Create file env
 
@@ -50,8 +53,10 @@ https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362
     ```bash
     php saya coba
     ```
+</details>
 
-## Run with docker
+<details>
+<summary>🐳 Run with docker</summary>
 
 - Create file env
 
@@ -87,13 +92,15 @@ https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362
     ```bash
     docker exec undangan-app php saya migrasi --gen
     ```
+</details>
 
-## Deployment on vercel
+<details>
+<summary>⚡ Deployment on vercel</summary>
 
-- Clone or download this repository
+- Create .env file
 
     ```bash
-    git clone https://github.com/dewanakl/undangan-api.git
+    cp .env.example .env
     ```
 
 - Install package
@@ -102,10 +109,10 @@ https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362
     composer install
     ```
 
-- Create .env file
+- Create key application
 
     ```bash
-    cp .env.example .env
+    php saya key
     ```
 
 - Execute migration database
@@ -114,17 +121,10 @@ https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362
     php saya migrasi --gen
     ```
 
-- Create key application
-
-    ```bash
-    php saya key
-    ```
-
 - Push on your github.
 - Create new project in vercel.
 - Import from your repository.
-- Change environment variables in your project on vercel.
-- Add this :
+- Add environment variables :
   - DB_HOST (your host cloud dbms)
   - DB_PASS (your password cloud dbms)
   - DB_USER (your username cloud dbms)
@@ -136,12 +136,10 @@ https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362
   - DEBUG [false]
   - LOG [false]
   - APP_KEY [copy from your local env]
-- Click deployments tab in vercel project.
-- Click the most recent deploy.
-- Click dot three and redeploy.
 - Done.
+</details>
 
-## Get Started Project
+## 🚀 Get Started Project
 
 - Create a project with composer
 
@@ -161,14 +159,14 @@ https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362
     php saya coba
     ```
 
-## Contributing
+## 🤝 Contributing
 
 I'm very open to those of you who want to contribute to Kamu framework!
 
-## Security Vulnerabilities
+## 🐞 Security Vulnerabilities
 
 If you find a security vulnerability in this Kamu, please email DKL via [dewanakretarta29@gmail.com](mailto:dewanakretarta29@gmail.com).
 
-## License
+## 📜 License
 
 Kamu framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
