@@ -8,7 +8,9 @@ use Core\Auth\Auth;
 use Core\Routing\Controller;
 use Core\Http\Respond;
 use Core\Support\Time;
+use Exception;
 use Firebase\JWT\JWT;
+use Throwable;
 
 class AuthController extends Controller
 {
@@ -20,7 +22,11 @@ class AuthController extends Controller
             return $json->errorBadRequest($valid->messages());
         }
 
-        if (!Auth::attempt($valid->only(['email', 'password']))) {
+        try {
+            if (!Auth::attempt($valid->only(['email', 'password']))) {
+                throw new Exception('Invalid credentials');
+            }
+        } catch (Throwable) {
             return $json->error(Respond::HTTP_UNAUTHORIZED);
         }
 

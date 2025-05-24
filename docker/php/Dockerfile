@@ -9,6 +9,8 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install pdo zip pdo_pgsql pgsql opcache
 RUN docker-php-ext-enable pdo zip pdo_pgsql pgsql opcache
 
+COPY /api/php.ini /usr/local/etc/php/conf.d/opcache.ini
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY . /var/www
