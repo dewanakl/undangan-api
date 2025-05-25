@@ -40,7 +40,7 @@ class AuthController extends Controller
                 'iat' => $time,
                 'exp' => $time + (60 * 60),
                 'iss' => base_url(),
-                ...Auth::user()->only(['id', 'name', 'email'])->toArray()
+                'sub' => strval(auth()->id()),
             ],
             env('JWT_KEY'),
             env('JWT_ALGO', 'HS256')

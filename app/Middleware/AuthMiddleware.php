@@ -28,7 +28,7 @@ final class AuthMiddleware implements MiddlewareInterface
                     new Key(env('JWT_KEY'), env('JWT_ALGO', 'HS256'))
                 );
 
-                $user = User::find($token->id);
+                $user = User::find(intval($token->sub));
                 if (!$user->exist()) {
                     throw new Exception('user not found');
                 }

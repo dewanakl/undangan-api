@@ -69,7 +69,7 @@ class DashboardController extends Controller
             return $this->json->errorBadRequest($valid->messages());
         }
 
-        $user = Auth::user()->only('id');
+        $user = Auth::user()->only(['id', 'password']);
 
         if (!empty($valid->name)) {
             $user->name = $valid->name;
@@ -108,7 +108,7 @@ class DashboardController extends Controller
         }
 
         if (!empty($valid->get('old_password')) && !empty($valid->get('new_password'))) {
-            if (!Hash::check($valid->get('old_password'), Auth::user()->refresh()->password ?? '')) {
+            if (!Hash::check($valid->get('old_password'), $user->password ?? '')) {
                 return $this->json->errorBadRequest(['password not match.']);
             }
 

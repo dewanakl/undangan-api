@@ -15,5 +15,4 @@ interface CommentContract
     public function countCommentByUserID(int $id): int;
     public function countPresenceByUserID(int $id): Model;
     public function downloadCommentByUserID(int $id): Model;
-    public function getByUuidWithoutUser(string $uuid): Model;
 }
