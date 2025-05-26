@@ -60,26 +60,6 @@ class CommentController extends Controller
         return null;
     }
 
-    public function get(Request $request): JsonResponse
-    {
-        $valid = $this->validate($request, [
-            'next' => ['nullable', 'int'],
-            'per' => ['required', 'int', 'max:10']
-        ]);
-
-        if ($valid->fails()) {
-            return $this->json->errorBadRequest($valid->messages());
-        }
-
-        return $this->json->successOK($this->comment->getAll(
-            Auth::id(),
-            Auth::user()->isAdmin(),
-            Auth::user()->name,
-            $valid->per,
-            $valid->next ?? 0
-        ));
-    }
-
     public function getV2(Request $request): JsonResponse
     {
         $valid = $this->validate($request, [
@@ -101,21 +81,6 @@ class CommentController extends Controller
                 $valid->next ?? 0
             )
         ]);
-    }
-
-    /**
-     * @deprecated not used.
-     */
-    #[UuidMiddleware]
-    public function show(string $id): JsonResponse
-    {
-        $comment = $this->comment->getByUuid(Auth::id(), $id);
-
-        if (!$comment->exist()) {
-            return $this->json->errorNotFound();
-        }
-
-        return $this->json->successOK($comment->only(['name', 'presence', 'comment', 'is_admin', 'gif_url', 'created_at']));
     }
 
     #[UuidMiddleware]

@@ -51,11 +51,6 @@ class DashboardController extends Controller
         return $this->json->successOK(Auth::user()->except(['id', 'password', 'is_admin', 'is_active', 'created_at', 'updated_at']));
     }
 
-    public function config(): JsonResponse
-    {
-        return $this->json->successOK(Auth::user()->only(['name', 'can_edit', 'can_delete', 'can_reply', 'tenor_key', 'is_confetti_animation']));
-    }
-
     public function configV2(): JsonResponse
     {
         return $this->json->successOK(Auth::user()->only(['tz', 'can_edit', 'can_delete', 'can_reply', 'tenor_key', 'is_confetti_animation']));

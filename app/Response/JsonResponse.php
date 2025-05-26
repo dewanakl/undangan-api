@@ -13,7 +13,7 @@ class JsonResponse extends Respond
             $data = [$this->codeHttpMessage($code)];
         }
 
-        $this->setContent(json([
+        $this->setContent(json_encode([
             'code' => $code,
             'data' => $data,
             'error' => null
@@ -32,7 +32,7 @@ class JsonResponse extends Respond
             $error = [$this->codeHttpMessage($code)];
         }
 
-        $this->setContent(json([
+        $this->setContent(json_encode([
             'code' => $code,
             'data' => null,
             'error' => $error

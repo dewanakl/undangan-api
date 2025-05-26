@@ -36,14 +36,10 @@ Route::middleware([AuthMiddleware::class, TzMiddleware::class])->group(function 
         Route::options('/user');
     });
 
-    Route::get('/config', [DashboardController::class, 'config']);
-    Route::options('/config'); // Preflight request [/api/config]
-
     // Comment
     Route::prefix('/comment')->group(function () {
 
         Route::controller(CommentController::class)->group(function () {
-            Route::get('/', 'get');
             Route::post('/', 'create');
         });
 
@@ -52,7 +48,6 @@ Route::middleware([AuthMiddleware::class, TzMiddleware::class])->group(function 
         Route::prefix('/{id}')->group(function () {
             Route::controller(CommentController::class)->group(function () {
 
-                Route::get('/', 'show');
                 Route::put('/', 'update');
                 Route::delete('/', 'destroy');
 
@@ -65,7 +60,7 @@ Route::middleware([AuthMiddleware::class, TzMiddleware::class])->group(function 
         });
     });
 
-    // api v2 comment
+    // api v2
     Route::prefix('/v2')->group(function () {
 
         Route::get('/config', [DashboardController::class, 'configV2']);
