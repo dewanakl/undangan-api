@@ -131,16 +131,16 @@
         },
         {
             "name": "kamu/aman",
-            "version": "v1.3.0",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/aman.git",
-                "reference": "8a7d4697e312d463ac360a53f453162030dee19d"
+                "reference": "4cc5bd10bff5520d880b7be594bb5c27e8c595c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/aman/zipball/8a7d4697e312d463ac360a53f453162030dee19d",
-                "reference": "8a7d4697e312d463ac360a53f453162030dee19d",
+                "url": "https://api.github.com/repos/dewanakl/aman/zipball/4cc5bd10bff5520d880b7be594bb5c27e8c595c3",
+                "reference": "4cc5bd10bff5520d880b7be594bb5c27e8c595c3",
                 "shasum": ""
             },
             "require": {
@@ -169,9 +169,9 @@
             "description": "Replace badword",
             "support": {
                 "issues": "https://github.com/dewanakl/aman/issues",
-                "source": "https://github.com/dewanakl/aman/tree/v1.3.0"
+                "source": "https://github.com/dewanakl/aman/tree/v1.4.0"
             },
-            "time": "2025-05-30T03:39:53+00:00"
+            "time": "2025-05-31T06:34:34+00:00"
         },
         {
             "name": "kamu/framework",
