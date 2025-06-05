@@ -49,17 +49,19 @@ class CommentRepositories implements CommentContract
             }
 
             $grouped = [];
-            Comment::leftJoin('likes', 'comments.uuid', 'likes.comment_id')
-                ->whereIn('comments.parent_id', $uuids)
-                ->where('comments.user_id', $user_id)
-                ->select($selectedFields)
-                ->select(['comments.id', 'false as is_parent', 'comments.parent_id', 'count(likes.id) as comment_like'])
-                ->groupBy(['comments.id', ...$selectedFields])
-                ->orderBy('comments.id')
-                ->get()
-                ->map(function ($child) use (&$grouped): void {
-                    $grouped[$child->parent_id][] = $child;
-                });
+            if (count($uuids) > 0) {
+                Comment::leftJoin('likes', 'comments.uuid', 'likes.comment_id')
+                    ->whereIn('comments.parent_id', $uuids)
+                    ->where('comments.user_id', $user_id)
+                    ->select($selectedFields)
+                    ->select(['comments.id', 'false as is_parent', 'comments.parent_id', 'count(likes.id) as comment_like'])
+                    ->groupBy(['comments.id', ...$selectedFields])
+                    ->orderBy('comments.id')
+                    ->get()
+                    ->map(function ($child) use (&$grouped): void {
+                        $grouped[$child->parent_id][] = $child;
+                    });
+            }
 
             $result = [];
             foreach ($comments as $comment) {
