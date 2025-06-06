@@ -127,10 +127,10 @@ class CommentController extends Controller
         }
 
         if ($this->comment->deleteAllByParentID(Auth::id(), $comment->uuid)) {
-                return $this->json->successStatusTrue();
-            }
+            return $this->json->successStatusTrue();
+        }
 
-            return $this->json->errorServer();
+        return $this->json->errorServer();
     }
 
     #[UuidMiddleware]
