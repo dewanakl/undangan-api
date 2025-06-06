@@ -3,7 +3,10 @@
 namespace App\Repositories;
 
 use App\Models\Comment;
+use App\Models\Like;
+use Core\Database\DB;
 use Core\Model\Model;
+use Exception;
 use Ramsey\Uuid\Uuid;
 
 class CommentRepositories implements CommentContract
