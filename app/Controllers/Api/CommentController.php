@@ -122,27 +122,15 @@ class CommentController extends Controller
         }
 
         $comment = $this->comment->getByOwnId(Auth::id(), $id);
-
         if (!$comment->exist()) {
             return $this->json->errorNotFound();
         }
 
-        try {
-            $status = DB::transaction(function (LikeContract $like) use ($comment): int {
-                $like->deleteByCommentID($comment->uuid);
-                $this->comment->deleteByParentID($comment->uuid);
-
-                return $comment->destroy();
-            });
-
-            if ($status === 1) {
+        if ($this->comment->deleteAllByParentID(Auth::id(), $comment->uuid)) {
                 return $this->json->successStatusTrue();
             }
 
             return $this->json->errorServer();
-        } catch (Throwable) {
-            return $this->json->errorServer();
-        }
     }
 
     #[UuidMiddleware]

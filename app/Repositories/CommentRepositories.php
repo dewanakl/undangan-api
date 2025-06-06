@@ -123,6 +123,44 @@ class CommentRepositories implements CommentContract
             ->first();
     }
 
+    public function deleteAllByParentID(int $userId, string $parentId): bool
+    {
+        $commentUuids = [$parentId];
+        $nextParents = [$parentId];
+
+        while (count($nextParents) > 0) {
+            $comments = Comment::where('user_id', $userId)
+                ->whereIn('parent_id', $nextParents)
+                ->select('uuid')
+                ->get();
+
+            $newUuids = [];
+            foreach ($comments as $comment) {
+                $commentUuids[] = $comment->uuid;
+                $newUuids[] = $comment->uuid;
+            }
+
+            $nextParents = $newUuids;
+        }
+
+        return DB::transaction(function () use ($commentUuids, $userId): bool {
+
+            Like::where('user_id', $userId)
+                ->whereIn('comment_id', $commentUuids)
+                ->delete();
+
+            $deletedComments = Comment::where('user_id', $userId)
+                ->whereIn('uuid', $commentUuids)
+                ->delete();
+
+            if (count($commentUuids) === $deletedComments) {
+                return true;
+            }
+
+            throw new Exception('Uncompleted deletion: comments=' . strval($deletedComments));
+        });
+    }
+
     public function deleteByParentID(string $uuid): int
     {
         return Comment::where('parent_id', $uuid)->delete();
