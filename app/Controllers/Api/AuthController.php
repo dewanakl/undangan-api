@@ -34,6 +34,10 @@ class AuthController extends Controller
             return $json->errorBadRequest(['user not active.']);
         }
 
+        if (!env('JWT_KEY')) {
+            return $json->errorBadRequest(['JWT Key not found!.']);
+        }
+
         $time = Time::factory()->getTimestamp();
         $token = JWT::encode(
             [
