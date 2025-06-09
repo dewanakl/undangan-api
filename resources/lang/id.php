@@ -36,6 +36,7 @@ return [
             'email' => ':field tidak valid!.',
             'dns' => ':field tidak valid!.',
             'url' => ':field tidak valid!.',
+            'ip' => ':field tidak valid!.',
             'uuid' => ':field bukan uuid!.',
             'int' => ':field harus angka!.',
             'float' => ':field harus desimal!.',
