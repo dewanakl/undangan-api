@@ -40,12 +40,17 @@ final class GzipMiddleware implements MiddlewareInterface
 
         $response->setContent($compressed);
 
-        $vary = (!$response->headers->has('Vary')) ? [] : explode(', ', $response->headers->get('Vary'));
-        $vary = array_unique([...$vary, 'Accept-Encoding']);
+        $varyList = ['Accept-Encoding'];
 
-        $response->headers
-            ->set('Vary', join(', ', $vary))
-            ->set('Content-Encoding', 'gzip');
+        if ($response->headers->has('Vary')) {
+            $existing = preg_split('/\s*,\s*/', $response->headers->get('Vary'), -1, PREG_SPLIT_NO_EMPTY);
+            $varyList = array_merge($existing, $varyList);
+        }
+
+        $varyList = array_unique(array_map('trim', $varyList));
+        $response->headers->set('Vary', implode(', ', $varyList));
+
+        $response->headers->set('Content-Encoding', 'gzip');
 
         return $response;
     }

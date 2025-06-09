@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use Core\Model\Model;
-use Core\Model\Query;
-use Core\Model\Relational;
 
 final class Comment extends Model
 {
@@ -29,28 +27,4 @@ final class Comment extends Model
         'is_admin' => 'bool',
         'created_at' => 'datetime:diff'
     ];
-
-    public function comments(): Relational
-    {
-        return $this->hasMany(
-            Comment::class,
-            'parent_id',
-            'uuid',
-            function (Query $query): Query {
-                return $query->select(['uuid', 'name', 'presence', 'comment', 'is_admin', 'gif_url', 'created_at', ...(auth()->user()->isAdmin() ? ['ip', 'own', 'user_agent'] : [])])->orderBy('id');
-            }
-        )->as('comments')->with($this->likes())->recursive();
-    }
-
-    public function likes(): Relational
-    {
-        return $this->belongsTo(
-            Like::class,
-            'uuid',
-            'comment_id',
-            function (Query $query): Query {
-                return $query->count('uuid', 'love');
-            }
-        )->as('like');
-    }
 }

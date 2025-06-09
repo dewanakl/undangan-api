@@ -15,9 +15,15 @@ final class CorsMiddleware implements MiddlewareInterface
         $header->set('Access-Control-Allow-Origin', '*');
         $header->set('Access-Control-Expose-Headers', 'Content-Length, Content-Disposition');
 
-        $vary = $header->has('Vary') ? explode(', ', $header->get('Vary')) : [];
-        $vary = array_unique([...$vary, 'Accept', 'Access-Control-Request-Method', 'Access-Control-Request-Headers', 'Origin']);
-        $header->set('Vary', join(', ', $vary));
+        $varyList = ['Accept', 'Access-Control-Request-Method', 'Access-Control-Request-Headers', 'Origin'];
+
+        if ($header->has('Vary')) {
+            $existing = preg_split('/\s*,\s*/', $header->get('Vary'), -1, PREG_SPLIT_NO_EMPTY);
+            $varyList = array_merge($existing, $varyList);
+        }
+
+        $varyList = array_unique(array_map('trim', $varyList));
+        $header->set('Vary', implode(', ', $varyList));
 
         if (!$request->method(Request::OPTIONS)) {
             return $next($request);
