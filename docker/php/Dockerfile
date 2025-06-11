@@ -18,7 +18,7 @@ WORKDIR /var/www
 
 RUN chown -R www-data:www-data /var/www && \
     chmod -R 755 /var/www && \
-    chmod -R 777 /var/www/cache
+    chmod -R 775 /var/www/cache
 
 RUN composer install --prefer-dist --no-dev --optimize-autoloader --no-interaction
 

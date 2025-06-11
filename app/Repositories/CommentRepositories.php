@@ -126,10 +126,10 @@ class CommentRepositories implements CommentContract
             ->first();
     }
 
-    public function deleteAllByParentID(int $userId, string $parentId): bool
+    public function deleteAllByUuid(int $userId, string $uuid): bool
     {
-        $commentUuids = [$parentId];
-        $nextParents = [$parentId];
+        $commentUuids = [$uuid];
+        $nextParents = [$uuid];
 
         while (count($nextParents) > 0) {
             $comments = Comment::where('user_id', $userId)

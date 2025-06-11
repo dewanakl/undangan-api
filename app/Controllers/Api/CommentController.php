@@ -126,7 +126,7 @@ class CommentController extends Controller
             return $this->json->errorNotFound();
         }
 
-        if ($this->comment->deleteAllByParentID(Auth::id(), $comment->uuid)) {
+        if ($this->comment->deleteAllByUuid(Auth::id(), $comment->uuid)) {
             return $this->json->successStatusTrue();
         }
 
