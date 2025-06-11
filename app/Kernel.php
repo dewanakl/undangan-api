@@ -56,10 +56,10 @@ final class Kernel implements KernelContract
     public function middlewares(): array
     {
         return [
-            \App\Middleware\IpUserAgentMiddleware::class,
             \App\Middleware\CorsMiddleware::class,
             \App\Middleware\XSSMiddleware::class,
             \App\Middleware\GzipMiddleware::class,
+            \App\Middleware\IpUserAgentMiddleware::class,
         ];
     }
 

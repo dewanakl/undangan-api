@@ -14,7 +14,7 @@ final class IpUserAgentMiddleware implements MiddlewareInterface
     {
         $valid = Validator::make([
             'ip' => env('HTTP_CF_CONNECTING_IP') ? $request->server->get('HTTP_CF_CONNECTING_IP', $request->ip()) : $request->ip(),
-            'user_agent' => $request->server->get('HTTP_USER_AGENT'),
+            'user_agent' => $request->userAgent(),
         ], [
             'ip' => ['required', 'str', 'trim', 'max:45', 'ip'],
             'user_agent' => ['required', 'str', 'trim', 'max:512'],

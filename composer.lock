@@ -131,16 +131,16 @@
         },
         {
             "name": "kamu/aman",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/aman.git",
-                "reference": "4cc5bd10bff5520d880b7be594bb5c27e8c595c3"
+                "reference": "119a850ad90c6bbf1f3f758d5ac011fdd6ecc22b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/aman/zipball/4cc5bd10bff5520d880b7be594bb5c27e8c595c3",
-                "reference": "4cc5bd10bff5520d880b7be594bb5c27e8c595c3",
+                "url": "https://api.github.com/repos/dewanakl/aman/zipball/119a850ad90c6bbf1f3f758d5ac011fdd6ecc22b",
+                "reference": "119a850ad90c6bbf1f3f758d5ac011fdd6ecc22b",
                 "shasum": ""
             },
             "require": {
@@ -169,22 +169,22 @@
             "description": "Replace badword",
             "support": {
                 "issues": "https://github.com/dewanakl/aman/issues",
-                "source": "https://github.com/dewanakl/aman/tree/v1.4.0"
+                "source": "https://github.com/dewanakl/aman/tree/v1.5.0"
             },
-            "time": "2025-05-31T06:34:34+00:00"
+            "time": "2025-06-09T08:37:23+00:00"
         },
         {
             "name": "kamu/framework",
-            "version": "v3.3.8",
+            "version": "v3.3.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/framework.git",
-                "reference": "1b99db71068c40eb7b4457394a16222c8a068695"
+                "reference": "b4d1553b08b2e18360ca33879dc650a427220b16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/framework/zipball/1b99db71068c40eb7b4457394a16222c8a068695",
-                "reference": "1b99db71068c40eb7b4457394a16222c8a068695",
+                "url": "https://api.github.com/repos/dewanakl/framework/zipball/b4d1553b08b2e18360ca33879dc650a427220b16",
+                "reference": "b4d1553b08b2e18360ca33879dc650a427220b16",
                 "shasum": ""
             },
             "require": {
@@ -229,7 +229,7 @@
                 "issues": "https://github.com/dewanakl/framework/issues",
                 "source": "https://github.com/dewanakl/framework"
             },
-            "time": "2025-06-05T03:43:31+00:00"
+            "time": "2025-06-11T04:28:48+00:00"
         },
         {
             "name": "psr/clock",
