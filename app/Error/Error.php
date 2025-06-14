@@ -19,6 +19,13 @@ class Error extends BaseError
         $res->headers->set('Access-Control-Allow-Methods', '*');
 
         if (!debug()) {
+            /**
+             * Jika aplikasi tidak dalam mode debug, maka error tidak ditampilkan secara rinci.
+             *
+             * Anda dapat menggunakan `$id = request()->getRequestId();` untuk menelusuri error lebih lanjut.
+             * Contoh penggunaannya:
+             * - Cek log berdasarkan ID tersebut, misalnya di folder: cache/log/kamu.log
+             */
             return $res->errorServer();
         }
 
