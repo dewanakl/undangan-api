@@ -95,4 +95,9 @@ final class User extends Model
     {
         return boolval($this->attributes['can_delete']);
     }
+
+    public function getTimezone(): string|null
+    {
+        return $this->attributes['tz'];
+    }
 }
