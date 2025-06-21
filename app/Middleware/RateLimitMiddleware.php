@@ -51,7 +51,7 @@ final class RateLimitMiddleware implements MiddlewareInterface
         if (intval($record['count']) >= $limit) {
             $dateFormat = $record['window_start_time']->toDateTime()
                 ->modify(sprintf('+%d seconds', $window))
-                ->format('Y-m-d H:i:s');
+                ->format('Y-m-d H:i:s T');
 
             return (new JsonResponse)->errorBadRequest([
                 sprintf('Too many requests. Please wait until %s.', $dateFormat),
