@@ -5,8 +5,6 @@ namespace App\Middleware;
 use App\Response\JsonResponse;
 use Closure;
 use Core\Http\Request;
-use Core\Http\Respond;
-use Core\Http\Stream;
 use Core\Middleware\MiddlewareInterface;
 use MongoDB\Client;
 use MongoDB\BSON\UTCDateTime;
@@ -23,19 +21,6 @@ final class RateLimitMiddleware implements MiddlewareInterface
             throw new \Exception('MongoDB PHP Library is not installed.');
         }
 
-        list($response, $headers) = $this->handleRateLimit($request, $next);
-
-        $baseResponse = ($response instanceof Stream) ? respond() : $response;
-
-        foreach ($headers as $key => $value) {
-            $baseResponse->headers->set($key, $value);
-        }
-
-        return $response;
-    }
-
-    public function handleRateLimit(Request $request, Closure $next)
-    {
         $limit = intval(env('RATE_LIMIT', 120));
         $window = intval(env('RATE_LIMIT_WINDOW', 60 * 60 * 24));
 
@@ -50,20 +35,6 @@ final class RateLimitMiddleware implements MiddlewareInterface
             'window_start_time' => ['$gte' => new UTCDateTime((time() - $window) * 1000)]
         ]);
 
-        $rateLimitHeaders = [
-            'X-Rate-Limit-Value' => sprintf('%d/%d', $limit, $limit),
-            'X-Rate-Limit-Reset' => time() + $window
-        ];
-
-        $response = $next($request);
-
-        if (
-            !$response instanceof Stream &&
-            !($response instanceof Respond && $response->getCode() >= 300 && $response->getCode() < 400)
-        ) {
-            $response = respond()->transform($response);
-        }
-
         if (!$record) {
             $collection->findOneAndUpdate(
                 ['ip' => context('ip')],
@@ -74,16 +45,17 @@ final class RateLimitMiddleware implements MiddlewareInterface
                 ['upsert' => true]
             );
 
-            return [$response, $rateLimitHeaders];
+            return $next($request);
         }
 
-        $rateLimitHeaders['X-Rate-Limit-Value'] = sprintf('%d/%d', $limit - intval($record['count']), $limit);
-        $rateLimitHeaders['X-Rate-Limit-Reset'] = $record['window_start_time']->toDateTime()->getTimestamp() + $window;
-
         if (intval($record['count']) >= $limit) {
-            $response = (new JsonResponse)->errorBadRequest(['Rate limit exceeded. Please try again later.']);
+            $dateFormat = $record['window_start_time']->toDateTime()
+                ->modify(sprintf('+%d seconds', $window))
+                ->format('Y-m-d H:i:s');
 
-            return [$response, $rateLimitHeaders];
+            return (new JsonResponse)->errorBadRequest([
+                sprintf('Too many requests. Please wait until %s.', $dateFormat),
+            ]);
         }
 
         $collection->updateOne(
@@ -91,7 +63,7 @@ final class RateLimitMiddleware implements MiddlewareInterface
             ['$inc' => ['count' => 1]]
         );
 
-        return [$response, $rateLimitHeaders];
+        return $next($request);
     }
 
     private function createIndexIfnotExists($collection, $window)
