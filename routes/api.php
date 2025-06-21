@@ -5,6 +5,7 @@ use App\Controllers\Api\CommentController;
 use App\Controllers\Api\DashboardController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\DashboardMiddleware;
+use App\Middleware\RateLimitMiddleware;
 use App\Middleware\TzMiddleware;
 use Core\Routing\Route;
 
@@ -13,12 +14,12 @@ use Core\Routing\Route;
  * keep simple yeah.
  */
 
-Route::prefix('/session')->group(function () {
+Route::middleware(RateLimitMiddleware::class)->prefix('/session')->group(function () {
     Route::post('/', [AuthController::class, 'login']);
     Route::options('/'); // Preflight request [/api/session]
 });
 
-Route::middleware([AuthMiddleware::class, TzMiddleware::class])->group(function () {
+Route::middleware([RateLimitMiddleware::class, AuthMiddleware::class, TzMiddleware::class])->group(function () {
 
     // Dashboard
     Route::middleware(DashboardMiddleware::class)->group(function () {
