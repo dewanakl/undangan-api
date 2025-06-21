@@ -20,7 +20,7 @@ final class RateLimitMiddleware implements MiddlewareInterface
         }
 
         if (!class_exists(Client::class) || !class_exists(UTCDateTime::class)) {
-            throw new \Exception('MongoDB PHP Library is not installed. Please install it using "composer require mongodb/mongodb"');
+            throw new \Exception('MongoDB PHP Library is not installed.');
         }
 
         list($response, $headers) = $this->handleRateLimit($request, $next);
@@ -51,8 +51,7 @@ final class RateLimitMiddleware implements MiddlewareInterface
         ]);
 
         $rateLimitHeaders = [
-            'X-Rate-Limit-Limit' => $limit,
-            'X-Rate-Limit-Remaining' => $limit,
+            'X-Rate-Limit-Value' => sprintf('%d/%d', $limit, $limit),
             'X-Rate-Limit-Reset' => time() + $window
         ];
 
@@ -78,7 +77,7 @@ final class RateLimitMiddleware implements MiddlewareInterface
             return [$response, $rateLimitHeaders];
         }
 
-        $rateLimitHeaders['X-Rate-Limit-Remaining'] = max(0, $limit - intval($record['count']));
+        $rateLimitHeaders['X-Rate-Limit-Value'] = sprintf('%d/%d', $limit - intval($record['count']), $limit);
         $rateLimitHeaders['X-Rate-Limit-Reset'] = $record['window_start_time']->toDateTime()->getTimestamp() + $window;
 
         if (intval($record['count']) >= $limit) {
