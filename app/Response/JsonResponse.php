@@ -15,7 +15,6 @@ class JsonResponse extends Respond
 
         return $this->setCode($code)->transform([
             'id' => request()->getRequestId(),
-            'code' => $code,
             'data' => $data,
             'error' => null
         ]);
@@ -30,7 +29,6 @@ class JsonResponse extends Respond
 
         return $this->setCode($code)->transform([
             'id' => request()->getRequestId(),
-            'code' => $code,
             'data' => null,
             'error' => $error
         ]);

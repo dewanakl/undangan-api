@@ -42,7 +42,7 @@ class AuthController extends Controller
         $token = JWT::encode(
             [
                 'iat' => $time,
-                'exp' => $time + (60 * 60),
+                'exp' => $time + intval(env('JWT_EXP', 3600)),
                 'iss' => base_url(),
                 'sub' => strval(auth()->id()),
             ],

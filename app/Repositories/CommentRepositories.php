@@ -66,7 +66,7 @@ class CommentRepositories implements CommentContract
                     });
             }
 
-            $result = [];
+            $results = [];
             foreach ($comments as $comment) {
                 $comment->comments = isset($grouped[$comment->uuid]) ? $buildTree($grouped[$comment->uuid]) : [];
 
@@ -74,17 +74,12 @@ class CommentRepositories implements CommentContract
                     $comment->name = $user_name;
                 }
 
-                // this change is backward-compatible
-                $tmp = new \stdClass();
-                $tmp->love = $comment->comment_like;
-                $comment->like = $tmp;
-
                 unset($comment->id);
                 unset($comment->parent_id);
-                $result[] = $comment;
+                $results[] = $comment;
             }
 
-            return $result;
+            return $results;
         };
 
         $parents = Comment::leftJoin('likes', 'comments.uuid', 'likes.comment_id')

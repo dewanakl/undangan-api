@@ -131,16 +131,16 @@
         },
         {
             "name": "kamu/aman",
-            "version": "v1.5.0",
+            "version": "v1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/aman.git",
-                "reference": "119a850ad90c6bbf1f3f758d5ac011fdd6ecc22b"
+                "reference": "70e4d8af5c2abdf91212c1a3b513aeb7667d5d86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/aman/zipball/119a850ad90c6bbf1f3f758d5ac011fdd6ecc22b",
-                "reference": "119a850ad90c6bbf1f3f758d5ac011fdd6ecc22b",
+                "url": "https://api.github.com/repos/dewanakl/aman/zipball/70e4d8af5c2abdf91212c1a3b513aeb7667d5d86",
+                "reference": "70e4d8af5c2abdf91212c1a3b513aeb7667d5d86",
                 "shasum": ""
             },
             "require": {
@@ -169,9 +169,9 @@
             "description": "Replace badword",
             "support": {
                 "issues": "https://github.com/dewanakl/aman/issues",
-                "source": "https://github.com/dewanakl/aman/tree/v1.5.0"
+                "source": "https://github.com/dewanakl/aman/tree/v1.5.1"
             },
-            "time": "2025-06-09T08:37:23+00:00"
+            "time": "2025-06-25T01:49:23+00:00"
         },
         {
             "name": "kamu/framework",
@@ -586,21 +586,20 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "4.8.1",
+            "version": "4.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "fdf4dd4e2ff1813111bd0ad58d7a1ddbb5b56c28"
+                "reference": "4e0e23cc785f0724a0e838279a9eb03f28b092a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/fdf4dd4e2ff1813111bd0ad58d7a1ddbb5b56c28",
-                "reference": "fdf4dd4e2ff1813111bd0ad58d7a1ddbb5b56c28",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/4e0e23cc785f0724a0e838279a9eb03f28b092a0",
+                "reference": "4e0e23cc785f0724a0e838279a9eb03f28b092a0",
                 "shasum": ""
             },
             "require": {
                 "brick/math": "^0.8.8 || ^0.9 || ^0.10 || ^0.11 || ^0.12 || ^0.13",
-                "ext-json": "*",
                 "php": "^8.0",
                 "ramsey/collection": "^1.2 || ^2.0"
             },
@@ -659,9 +658,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ramsey/uuid/issues",
-                "source": "https://github.com/ramsey/uuid/tree/4.8.1"
+                "source": "https://github.com/ramsey/uuid/tree/4.9.0"
             },
-            "time": "2025-06-01T06:28:46+00:00"
+            "time": "2025-06-25T14:20:11+00:00"
         }
     ],
     "packages-dev": [
@@ -866,16 +865,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v6.4.22",
+            "version": "v6.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "7d29659bc3c9d8e9a34e2c3414ef9e9e003e6cf3"
+                "reference": "9056771b8eca08d026cd3280deeec3cfd99c4d93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/7d29659bc3c9d8e9a34e2c3414ef9e9e003e6cf3",
-                "reference": "7d29659bc3c9d8e9a34e2c3414ef9e9e003e6cf3",
+                "url": "https://api.github.com/repos/symfony/console/zipball/9056771b8eca08d026cd3280deeec3cfd99c4d93",
+                "reference": "9056771b8eca08d026cd3280deeec3cfd99c4d93",
                 "shasum": ""
             },
             "require": {
@@ -940,7 +939,7 @@
                 "terminal"
             ],
             "support": {
-                "source": "https://github.com/symfony/console/tree/v6.4.22"
+                "source": "https://github.com/symfony/console/tree/v6.4.23"
             },
             "funding": [
                 {
@@ -956,7 +955,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-05-07T07:05:04+00:00"
+            "time": "2025-06-27T19:37:22+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -1515,16 +1514,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v6.4.21",
+            "version": "v6.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "22560f80c0c5cd58cc0bcaf73455ffd81eb380d5"
+                "reference": "d55b1834cdbfcc31bc2cd7e095ba5ed9a88f6600"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/22560f80c0c5cd58cc0bcaf73455ffd81eb380d5",
-                "reference": "22560f80c0c5cd58cc0bcaf73455ffd81eb380d5",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/d55b1834cdbfcc31bc2cd7e095ba5ed9a88f6600",
+                "reference": "d55b1834cdbfcc31bc2cd7e095ba5ed9a88f6600",
                 "shasum": ""
             },
             "require": {
@@ -1580,7 +1579,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v6.4.21"
+                "source": "https://github.com/symfony/var-dumper/tree/v6.4.23"
             },
             "funding": [
                 {
@@ -1596,7 +1595,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-04-09T07:34:50+00:00"
+            "time": "2025-06-27T15:05:27+00:00"
         }
     ],
     "aliases": [],
