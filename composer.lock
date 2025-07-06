@@ -175,16 +175,16 @@
         },
         {
             "name": "kamu/framework",
-            "version": "v3.3.11",
+            "version": "v3.3.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dewanakl/framework.git",
-                "reference": "3f60c513a8b2cec95625bbc31acdec677eb6584c"
+                "reference": "6c5ec4b9d3943b07f2115db4516a6c563b051595"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dewanakl/framework/zipball/3f60c513a8b2cec95625bbc31acdec677eb6584c",
-                "reference": "3f60c513a8b2cec95625bbc31acdec677eb6584c",
+                "url": "https://api.github.com/repos/dewanakl/framework/zipball/6c5ec4b9d3943b07f2115db4516a6c563b051595",
+                "reference": "6c5ec4b9d3943b07f2115db4516a6c563b051595",
                 "shasum": ""
             },
             "require": {
@@ -229,7 +229,7 @@
                 "issues": "https://github.com/dewanakl/framework/issues",
                 "source": "https://github.com/dewanakl/framework"
             },
-            "time": "2025-06-14T14:08:52+00:00"
+            "time": "2025-07-06T13:29:17+00:00"
         },
         {
             "name": "mongodb/mongodb",
