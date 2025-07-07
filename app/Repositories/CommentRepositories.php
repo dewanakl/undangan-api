@@ -132,13 +132,11 @@ class CommentRepositories implements CommentContract
                 ->select('uuid')
                 ->get();
 
-            $newUuids = [];
+            $nextParents = [];
             foreach ($comments as $comment) {
                 $commentUuids[] = $comment->uuid;
-                $newUuids[] = $comment->uuid;
+                $nextParents[] = $comment->uuid;
             }
-
-            $nextParents = $newUuids;
         }
 
         return DB::transaction(function () use ($commentUuids, $userId): bool {
