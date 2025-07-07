@@ -6,7 +6,6 @@ use App\Controllers\Api\DashboardController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\DashboardMiddleware;
 use App\Middleware\RateLimitMiddleware;
-use App\Middleware\TzMiddleware;
 use Core\Routing\Route;
 
 /**
@@ -19,7 +18,7 @@ Route::middleware(RateLimitMiddleware::class)->prefix('/session')->group(functio
     Route::options('/'); // Preflight request [/api/session]
 });
 
-Route::middleware([RateLimitMiddleware::class, AuthMiddleware::class, TzMiddleware::class])->group(function () {
+Route::middleware([RateLimitMiddleware::class, AuthMiddleware::class])->group(function () {
 
     // Dashboard
     Route::middleware(DashboardMiddleware::class)->group(function () {
