@@ -8,6 +8,7 @@ use Core\Http\Request;
 use Core\Middleware\MiddlewareInterface;
 use MongoDB\Client;
 use MongoDB\BSON\UTCDateTime;
+use MongoDB\Operation\FindOneAndUpdate;
 
 final class RateLimitMiddleware implements MiddlewareInterface
 {
@@ -30,26 +31,28 @@ final class RateLimitMiddleware implements MiddlewareInterface
 
         $this->createIndexIfnotExists($collection, $window);
 
-        $record = $collection->findOne([
-            'ip' => context('ip'),
-            'window_start_time' => ['$gte' => new UTCDateTime((time() - $window) * 1000)]
-        ]);
+        $result = $collection->findOneAndUpdate(
+            [
+                'ip' => context('ip'),
+                'window_start' => ['$gte' => new UTCDateTime((time() - $window) * 1000)]
+            ],
+            [
+                '$inc' => ['count' => 1],
+                '$setOnInsert' => ['window_start' => new UTCDateTime(time() * 1000)]
+            ],
+            [
+                'upsert' => true,
+                'returnDocument' => FindOneAndUpdate::RETURN_DOCUMENT_AFTER
+            ]
+        );
 
-        if (!$record) {
-            $collection->findOneAndUpdate(
-                ['ip' => context('ip')],
-                ['$set' => [
-                    'count' => 1,
-                    'window_start_time' => new UTCDateTime(time() * 1000)
-                ]],
-                ['upsert' => true]
+        if ($result && intval($result['count']) > $limit) {
+            $collection->updateOne(
+                ['_id' => $result['_id']],
+                ['$inc' => ['count' => -1]]
             );
 
-            return $next($request);
-        }
-
-        if (intval($record['count']) >= $limit) {
-            $dateFormat = $record['window_start_time']->toDateTime()
+            $dateFormat = $result['window_start']->toDateTime()
                 ->modify(sprintf('+%d seconds', $window))
                 ->format('Y-m-d H:i:s T');
 
@@ -57,11 +60,6 @@ final class RateLimitMiddleware implements MiddlewareInterface
                 sprintf('Too many requests. Please wait until %s.', $dateFormat),
             ]);
         }
-
-        $collection->updateOne(
-            ['_id' => $record['_id']],
-            ['$inc' => ['count' => 1]]
-        );
 
         return $next($request);
     }
@@ -79,7 +77,7 @@ final class RateLimitMiddleware implements MiddlewareInterface
                 $ipIndexExists = true;
             }
 
-            if (isset($index['expireAfterSeconds']) && $key === ['window_start_time' => 1]) {
+            if (isset($index['expireAfterSeconds']) && $key === ['window_start' => 1]) {
                 $ttlIndexName = $index->getName();
                 $existingExpireAfter = $index['expireAfterSeconds'];
             }
@@ -96,7 +94,7 @@ final class RateLimitMiddleware implements MiddlewareInterface
 
         if (!$ttlIndexName || $existingExpireAfter !== $expectedTtl) {
             $collection->createIndex(
-                ['window_start_time' => 1],
+                ['window_start' => 1],
                 ['expireAfterSeconds' => $expectedTtl]
             );
         }
