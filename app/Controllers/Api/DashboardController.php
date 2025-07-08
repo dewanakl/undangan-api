@@ -138,7 +138,7 @@ class DashboardController extends Controller
         ]);
 
         foreach ($comment->downloadCommentByUserID(Auth::id()) as $value) {
-            $value->created_at = Time::factory($value->created_at)->tz(auth()->user()->getTimezone());
+            $value->insert_at = Time::factory($value->insert_at)->tz(auth()->user()->getTimezone());
 
             $data = array_map(function (mixed $value): mixed {
                 if (is_bool($value)) {
