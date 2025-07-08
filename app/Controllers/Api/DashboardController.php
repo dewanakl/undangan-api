@@ -11,6 +11,7 @@ use Core\Auth\Auth;
 use Core\Routing\Controller;
 use Core\Http\Request;
 use Core\Http\Stream;
+use Core\Support\Time;
 use Core\Valid\Hash;
 use DateTimeZone;
 
@@ -137,7 +138,7 @@ class DashboardController extends Controller
         ]);
 
         foreach ($comment->downloadCommentByUserID(Auth::id()) as $value) {
-            $value->created_at = $value->created_at->tz(auth()->user()->getTimezone());
+            $value->created_at = Time::factory($value->created_at)->tz(auth()->user()->getTimezone());
 
             $data = array_map(function (mixed $value): mixed {
                 if (is_bool($value)) {
