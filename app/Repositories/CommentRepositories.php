@@ -209,10 +209,10 @@ class CommentRepositories implements CommentContract
                 'comments.gif_url',
                 'comments.ip',
                 'comments.user_agent',
-                'comments.created_at as is_created',
+                'comments.created_at',
                 'comments.parent_id'
             ])
-            ->orderBy('is_created', 'DESC')
+            ->orderBy('created_at', 'DESC')
             ->get();
     }
 }
