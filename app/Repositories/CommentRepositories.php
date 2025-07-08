@@ -212,7 +212,7 @@ class CommentRepositories implements CommentContract
                 'comments.created_at',
                 'comments.parent_id'
             ])
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('comments.created_at', 'DESC')
             ->get();
     }
 }
