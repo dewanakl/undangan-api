@@ -27,7 +27,7 @@ return new class implements Generator
             'is_filter' => true,
             'is_active' => true,
             'is_confetti_animation' => true,
-            'tz' => env('TIMEZONE', 'Asia/Jakarta'),
+            'tz' => 'Asia/Jakarta',
             'access_key' => Hash::rand(25),
         ])->save();
     }
