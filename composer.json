@@ -12,8 +12,7 @@
         "firebase/php-jwt": "^6.3",
         "kamu/aman": "^1.0",
         "kamu/framework": "^3.3.0",
-        "mongodb/mongodb": "^1.21",
-        "ramsey/uuid": "^4.7"
+        "mongodb/mongodb": "^1.21"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
