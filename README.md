@@ -19,6 +19,9 @@ See in postman collection
 https://www.postman.com/dewanakl/workspace/undangan/collection/20716209-a29ef362-b4dc-4c02-8904-d90749a40842?action=share
 ```
 
+> [!WARNING]
+> Gunakan versi 3.7.2, untuk versi 4 masih tahap pengembangan dan berpotensi teredapat bug 🐛
+
 ## ☁️ Deployment
 
 <details>
